@@ -20,6 +20,7 @@ model User {
   programs TrainingProgram[]
   volumeTracking VolumeTracking[]
   progress Progress[]
+  workoutSessions WorkoutSession[]
 }
 
 model Profile {
@@ -102,6 +103,7 @@ model TrainingProgram {
   endDate   DateTime?
   user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   days      WorkoutDay[]
+  sessions  WorkoutSession[]
 }
 
 model WorkoutDay {
@@ -111,6 +113,7 @@ model WorkoutDay {
   name      String? // push_day, pull_day, leg_day
   program   TrainingProgram @relation(fields: [programId], references: [id], onDelete: Cascade)
   exercises WorkoutExercise[]
+  sessions  WorkoutSession[]
 }
 
 model WorkoutExercise {
@@ -128,6 +131,19 @@ model WorkoutExercise {
 }
 
 // ─── Workout Logging Models ───────────────────────────────────────────
+
+model WorkoutSession {
+  id          String    @id @default(cuid())
+  userId      String
+  programId   String
+  dayId       String
+  startedAt   DateTime  @default(now())
+  completedAt DateTime?
+
+  user    User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  program TrainingProgram @relation(fields: [programId], references: [id], onDelete: Cascade)
+  day     WorkoutDay      @relation(fields: [dayId], references: [id], onDelete: Cascade)
+}
 
 model WorkoutSet {
   id                 String  @id @default(cuid())
