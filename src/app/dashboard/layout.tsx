@@ -42,6 +42,12 @@ export default function DashboardLayout({
             >
               Progress
             </Link>
+            <Link
+              href="/dashboard/volume"
+              className="text-sm text-neutral-600 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-100"
+            >
+              Volume
+            </Link>
           </nav>
         </div>
       </header>

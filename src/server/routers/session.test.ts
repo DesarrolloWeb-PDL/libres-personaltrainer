@@ -129,7 +129,7 @@ describe("sessionRouter", () => {
       });
 
       const caller = sessionRouter.createCaller(mockCtx);
-      const result = await caller.complete({ id: "sess-1" });
+      const result = await caller.complete({ id: "sess-1", userId: "user-1" });
 
       expect(result.completedAt).not.toBeNull();
     });

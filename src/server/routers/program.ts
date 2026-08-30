@@ -2,12 +2,15 @@ import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "../trpc";
 import { PrismaProgramAdapter } from "@/lib/infrastructure/prisma/adapters/program";
 import { PrismaExerciseAdapter } from "@/lib/infrastructure/prisma/adapters/exercise";
+import { PrismaVolumeTrackingAdapter } from "@/lib/infrastructure/prisma/adapters/volume-tracking";
 import { generateProgram, selectSplit } from "@/lib/domain/training-engine";
+import { applyDeload, shouldDeload } from "@/lib/domain/deload";
 import type { Exercise as DomainExercise } from "@/lib/domain/types";
 import type { Equipment } from "@/lib/domain/types";
 
 const programRepo = new PrismaProgramAdapter();
 const exerciseRepo = new PrismaExerciseAdapter();
+const volumeRepo = new PrismaVolumeTrackingAdapter();
 
 /**
  * Maps DB equipment name to domain Equipment type.
@@ -101,6 +104,81 @@ export const programRouter = createTRPCRouter({
       return created;
     }),
 
+  /** Regenerate program with deload consideration */
+  regenerate: publicProcedure
+    .input(
+      z.object({
+        userId: z.string(),
+        name: z.string().default("My Training Program"),
+        trainingFrequency: z.number().int().min(1).max(7),
+        experienceLevel: z.enum(["beginner", "intermediate", "advanced"]),
+        weeksSinceDeload: z.number().min(0),
+      })
+    )
+    .mutation(async ({ input }) => {
+      // Fetch available exercises from DB
+      const dbExercises = await exerciseRepo.findAll();
+
+      // Map to domain exercises (assume all are compound for now)
+      const exercises = dbExercises.map((ex) => toDomainExercise(ex));
+
+      // Generate program using the domain training engine
+      let program = generateProgram(
+        {
+          age: 25,
+          experienceLevel: input.experienceLevel,
+          goals: ["muscle_gain"],
+          equipment: "full_gym",
+          trainingFrequency: input.trainingFrequency,
+        },
+        exercises,
+      );
+
+      // Check if deload should be applied
+      const shouldDeloadNow = shouldDeload(input.weeksSinceDeload);
+
+      if (shouldDeloadNow) {
+        // Apply deload adjustments to the program
+        program = {
+          ...program,
+          days: applyDeload(program.days),
+        };
+
+        // Mark this week as deload
+        await volumeRepo.markDeloadWeek(input.userId, getCurrentWeekString());
+      }
+
+      // Persist the generated program
+      const created = await programRepo.create({
+        userId: input.userId,
+        name: shouldDeloadNow
+          ? `${input.name} (Deload Week)`
+          : input.name,
+        splitType: program.splitType,
+        startDate: new Date(),
+        days: program.days.map((day) => ({
+          dayNumber: day.dayNumber,
+          name: day.name,
+          exercises: day.exercises.map((we, idx) => {
+            // Find the DB exercise ID from the domain exercise
+            const dbEx = dbExercises.find((d) => d.name === we.exercise.name);
+            return {
+              exerciseId: dbEx?.id ?? exercises[0].id,
+              sets: we.sets,
+              reps: we.reps,
+              rpe: we.rpe,
+              order: idx + 1,
+            };
+          }),
+        })),
+      });
+
+      return {
+        program: created,
+        wasDeloadApplied: shouldDeloadNow,
+      };
+    }),
+
   /** Get the current active program for a user */
   getCurrent: publicProcedure
     .input(z.object({ userId: z.string() }))
@@ -122,3 +200,17 @@ export const programRouter = createTRPCRouter({
       return programRepo.findByUserId(input.userId);
     }),
 });
+
+// ─── Helpers ─────────────────────────────────────────────────────────
+
+function getCurrentWeekString(): string {
+  const now = new Date();
+  const d = new Date(now);
+  const dayNum = d.getUTCDay() || 7;
+  d.setUTCDate(d.getUTCDate() + 4 - dayNum);
+  const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+  const weekNo = Math.ceil(
+    ((d.getTime() - yearStart.getTime()) / 86400000 + 1) / 7,
+  );
+  return `${d.getUTCFullYear()}-W${String(weekNo).padStart(2, "0")}`;
+}
