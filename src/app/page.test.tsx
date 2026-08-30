@@ -1,8 +1,12 @@
-import { test, expect } from "vitest";
-import { render, screen } from "@/__tests__/test-utils";
+import { test, expect, vi } from "vitest";
+import { redirect } from "next/navigation";
 import Home from "@/app/page";
 
-test("renders home page", () => {
-  render(<Home />);
-  expect(screen.getByRole("heading", { name: /libres personal trainer/i })).toBeInTheDocument();
+vi.mock("next/navigation", () => ({
+  redirect: vi.fn(),
+}));
+
+test("redirects to dashboard", () => {
+  Home();
+  expect(redirect).toHaveBeenCalledWith("/dashboard");
 });
