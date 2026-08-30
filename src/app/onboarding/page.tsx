@@ -7,8 +7,8 @@ import { OnboardingWizard } from "@/components/onboarding/onboarding-wizard";
  * For now, we use a placeholder that Phase 9 can wire to real auth.
  */
 export default function OnboardingPage() {
-  // TODO: Replace with real auth session in Phase 9
-  const userId = "user-placeholder";
+  // TODO: Replace with real auth session
+  const userId = "cmtg8qhsf0000pgkzcm8m2mma";
 
   return (
     <main className="min-h-screen bg-neutral-50 px-4 py-12 dark:bg-neutral-950">

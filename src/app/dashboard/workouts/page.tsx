@@ -4,8 +4,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { api } from "@/lib/api/trpc-client";
 
-// TODO: Replace with real auth session in Phase 9
-const userId = "user-placeholder";
+// TODO: Replace with real auth session
+const userId = "cmtg8qhsf0000pgkzcm8m2mma";
 
 /**
  * Workout list page — shows all past sessions and current active session.

@@ -4,8 +4,8 @@ import { useState } from "react";
 import Link from "next/link";
 import { api } from "@/lib/api/trpc-client";
 
-// TODO: Replace with real auth session in Phase 9
-const userId = "user-placeholder";
+// TODO: Replace with real auth session
+const userId = "cmtg8qhsf0000pgkzcm8m2mma";
 
 /**
  * Dashboard page — shows current program, quick stats, and generate button.
