@@ -13,10 +13,6 @@ interface OverreachingWarningProps {
   onDismiss?: () => void;
 }
 
-/**
- * OverreachingWarning — Warning banner when muscle groups exceed MRV.
- * Shows which muscles are overreaching and recommends action.
- */
 export function OverreachingWarning({
   overreachingMuscles,
   onDismiss,
@@ -30,33 +26,31 @@ export function OverreachingWarning({
     .join(", ");
 
   return (
-    <div className="rounded-lg border border-red-200 bg-red-50 p-4 dark:border-red-800 dark:bg-red-900/20">
+    <div className="rounded-xl border border-red-500/30 bg-red-500/10 p-4">
       <div className="flex items-start gap-3">
-        <div className="flex-shrink-0">
-          <span className="text-2xl">⚠️</span>
-        </div>
+        <div className="w-1 h-10 bg-red-500 rounded-full flex-shrink-0 mt-1" />
         <div className="flex-1">
-          <h3 className="text-sm font-semibold text-red-800 dark:text-red-200">
+          <h3 className="text-sm font-bold text-red-400">
             Overreaching Detected
           </h3>
-          <p className="mt-1 text-sm text-red-700 dark:text-red-300">
-            You&apos;re training <strong>{muscleNames}</strong> above your
+          <p className="mt-1 text-sm text-zinc-300">
+            You&apos;re training <strong className="text-zinc-100">{muscleNames}</strong> above your
             Maximum Recoverable Volume (MRV). This can lead to:
           </p>
-          <ul className="mt-2 list-disc pl-5 text-sm text-red-700 dark:text-red-300">
+          <ul className="mt-2 list-disc pl-5 text-sm text-zinc-400">
             <li>Decreased performance</li>
             <li>Increased injury risk</li>
             <li>Accumulated fatigue</li>
           </ul>
-          <p className="mt-2 text-sm text-red-700 dark:text-red-300">
-            <strong>Recommendation:</strong> Consider a deload week or reduce
+          <p className="mt-2 text-sm text-zinc-300">
+            <strong className="text-zinc-100">Recommendation:</strong> Consider a deload week or reduce
             volume for these muscle groups.
           </p>
         </div>
         {onDismiss && (
           <button
             onClick={onDismiss}
-            className="flex-shrink-0 rounded p-1 text-red-400 hover:text-red-600 dark:text-red-500 dark:hover:text-red-300"
+            className="flex-shrink-0 rounded-lg p-2 text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800 transition-colors"
             aria-label="Dismiss warning"
           >
             ✕

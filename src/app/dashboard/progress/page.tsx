@@ -120,55 +120,77 @@ export default function ProgressPage() {
     <div className="space-y-6">
       {/* Page Header */}
       <div>
-        <h1 className="text-2xl font-bold text-neutral-900 dark:text-neutral-100">
-          Progress
-        </h1>
-        <p className="text-sm text-neutral-500 dark:text-neutral-400">
+        <h1 className="text-2xl font-bold text-zinc-50">Progress</h1>
+        <p className="text-sm text-zinc-400">
           Track your body weight, strength, and volume over time.
         </p>
       </div>
 
       {/* Overview Cards */}
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-        <div className="rounded-lg border border-neutral-200 bg-white p-4 dark:border-neutral-700 dark:bg-neutral-900">
-          <p className="text-xs text-neutral-500 dark:text-neutral-400">
-            Current Weight
-          </p>
-          <p className="mt-1 text-2xl font-bold text-neutral-900 dark:text-neutral-100">
-            {isLoading ? "..." : latestWeight !== null ? `${latestWeight} kg` : "—"}
-          </p>
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+        <div className="rounded-xl bg-zinc-900 border border-zinc-800 p-4">
+          <div className="flex items-center gap-3">
+            <div className="w-1 h-10 bg-blue-500 rounded-full" />
+            <div>
+              <p className="text-xs font-medium text-zinc-500 uppercase tracking-wider">
+                Current Weight
+              </p>
+              <p className="text-3xl font-black text-zinc-50">
+                {isLoading ? "..." : latestWeight !== null ? `${latestWeight}` : "—"}
+              </p>
+              {latestWeight !== null && (
+                <p className="text-xs text-zinc-400">kg</p>
+              )}
+            </div>
+          </div>
         </div>
-        <div className="rounded-lg border border-neutral-200 bg-white p-4 dark:border-neutral-700 dark:bg-neutral-900">
-          <p className="text-xs text-neutral-500 dark:text-neutral-400">
-            Estimated 1RM
-          </p>
-          <p className="mt-1 text-2xl font-bold text-neutral-900 dark:text-neutral-100">
-            {isLoading ? "..." : latest1RM !== null ? `${latest1RM} kg` : "—"}
-          </p>
+        <div className="rounded-xl bg-zinc-900 border border-zinc-800 p-4">
+          <div className="flex items-center gap-3">
+            <div className="w-1 h-10 bg-lime-500 rounded-full" />
+            <div>
+              <p className="text-xs font-medium text-zinc-500 uppercase tracking-wider">
+                Estimated 1RM
+              </p>
+              <p className="text-3xl font-black text-zinc-50">
+                {isLoading ? "..." : latest1RM !== null ? `${latest1RM}` : "—"}
+              </p>
+              {latest1RM !== null && (
+                <p className="text-xs text-zinc-400">kg</p>
+              )}
+            </div>
+          </div>
         </div>
-        <div className="rounded-lg border border-neutral-200 bg-white p-4 dark:border-neutral-700 dark:bg-neutral-900">
-          <p className="text-xs text-neutral-500 dark:text-neutral-400">
-            Total Volume
-          </p>
-          <p className="mt-1 text-2xl font-bold text-neutral-900 dark:text-neutral-100">
-            {isLoading ? "..." : totalVolume > 0 ? `${totalVolume.toLocaleString()} kg` : "—"}
-          </p>
+        <div className="rounded-xl bg-zinc-900 border border-zinc-800 p-4">
+          <div className="flex items-center gap-3">
+            <div className="w-1 h-10 bg-amber-500 rounded-full" />
+            <div>
+              <p className="text-xs font-medium text-zinc-500 uppercase tracking-wider">
+                Total Volume
+              </p>
+              <p className="text-3xl font-black text-zinc-50">
+                {isLoading ? "..." : totalVolume > 0 ? totalVolume.toLocaleString() : "—"}
+              </p>
+              {totalVolume > 0 && (
+                <p className="text-xs text-zinc-400">kg</p>
+              )}
+            </div>
+          </div>
         </div>
       </div>
 
       {/* Date Range Selector */}
       <div className="flex items-center gap-2">
-        <span className="text-xs text-neutral-500 dark:text-neutral-400">
+        <span className="text-xs font-medium text-zinc-500 uppercase tracking-wider">
           Range:
         </span>
         {(["3m", "6m", "1y", "all"] as const).map((range) => (
           <button
             key={range}
             onClick={() => setDateRange(range)}
-            className={`rounded px-3 py-1 text-xs font-medium ${
+            className={`rounded-lg px-3 py-1.5 text-xs font-bold transition-colors ${
               dateRange === range
-                ? "bg-blue-600 text-white"
-                : "bg-neutral-100 text-neutral-700 hover:bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-300 dark:hover:bg-neutral-700"
+                ? "bg-blue-500 text-white"
+                : "bg-zinc-800 text-zinc-400 hover:bg-zinc-700"
             }`}
           >
             {range === "all" ? "All" : range.toUpperCase()}
@@ -190,40 +212,38 @@ export default function ProgressPage() {
 
       {/* Charts */}
       {isLoading ? (
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-          <div className="rounded-lg border border-neutral-200 bg-white p-4 dark:border-neutral-700 dark:bg-neutral-900">
-            <p className="text-sm text-neutral-500 dark:text-neutral-400">Loading weight data...</p>
+        <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+          <div className="rounded-xl bg-zinc-900 border border-zinc-800 p-4">
+            <p className="text-sm text-zinc-400">Loading weight data...</p>
           </div>
-          <div className="rounded-lg border border-neutral-200 bg-white p-4 dark:border-neutral-700 dark:bg-neutral-900">
-            <p className="text-sm text-neutral-500 dark:text-neutral-400">Loading strength data...</p>
+          <div className="rounded-xl bg-zinc-900 border border-zinc-800 p-4">
+            <p className="text-sm text-zinc-400">Loading strength data...</p>
           </div>
         </div>
       ) : (
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+        <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
           <BodyWeightChart data={weightHistory} />
           <OneRMChart data={oneRMHistory} />
         </div>
       )}
 
       {isLoading ? (
-        <div className="rounded-lg border border-neutral-200 bg-white p-4 dark:border-neutral-700 dark:bg-neutral-900">
-          <p className="text-sm text-neutral-500 dark:text-neutral-400">Loading volume data...</p>
+        <div className="rounded-xl bg-zinc-900 border border-zinc-800 p-4">
+          <p className="text-sm text-zinc-400">Loading volume data...</p>
         </div>
       ) : (
         <VolumeLoadChart data={volumeHistory} muscleGroups={muscleGroups} />
       )}
 
       {/* Data Export */}
-      <div className="rounded-lg border border-neutral-200 bg-white p-4 dark:border-neutral-700 dark:bg-neutral-900">
-        <h3 className="mb-2 text-sm font-semibold text-neutral-900 dark:text-neutral-100">
-          Export Data
-        </h3>
-        <p className="mb-3 text-xs text-neutral-500 dark:text-neutral-400">
+      <div className="rounded-xl bg-zinc-900 border border-zinc-800 p-4">
+        <h3 className="mb-1 text-sm font-semibold text-zinc-50">Export Data</h3>
+        <p className="mb-3 text-xs text-zinc-400">
           Download your progress data as CSV for external analysis.
         </p>
         <button
           onClick={handleExportCSV}
-          className="rounded bg-neutral-100 px-4 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-300 dark:hover:bg-neutral-700"
+          className="rounded-xl bg-zinc-800 px-4 py-2.5 text-sm font-bold text-zinc-300 hover:bg-zinc-700 transition-colors"
         >
           Download CSV
         </button>

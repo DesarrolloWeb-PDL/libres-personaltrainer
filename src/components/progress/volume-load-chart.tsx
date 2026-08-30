@@ -26,29 +26,28 @@ interface VolumeLoadChartProps {
 }
 
 const CHART_COLORS = [
-  "#2563eb",
-  "#dc2626",
-  "#16a34a",
-  "#d97706",
-  "#7c3aed",
-  "#0891b2",
-  "#be123c",
-  "#65a30d",
-  "#c2410c",
-  "#6d28d9",
+  "#3B82F6",
+  "#EF4444",
+  "#84CC16",
+  "#F59E0B",
+  "#8B5CF6",
+  "#06B6D4",
+  "#EC4899",
+  "#65A30D",
+  "#EA580C",
+  "#7C3AED",
 ];
 
 const tooltipStyle = {
-  backgroundColor: "#fff",
-  border: "1px solid #e5e7eb",
-  borderRadius: "8px",
+  backgroundColor: "#18181B",
+  border: "1px solid #3F3F46",
+  borderRadius: "12px",
   fontSize: "12px",
+  color: "#F4F4F5",
 };
 
-/**
- * VolumeLoadChart — Bar chart showing volume load per muscle group per week.
- * Memoized to prevent unnecessary re-renders when parent updates.
- */
+const gridStyle = { stroke: "#27272A" };
+
 export const VolumeLoadChart = memo(function VolumeLoadChart({
   data,
   muscleGroups,
@@ -62,7 +61,7 @@ export const VolumeLoadChart = memo(function VolumeLoadChart({
           dataKey={group}
           name={group}
           fill={CHART_COLORS[i % CHART_COLORS.length]}
-          radius={[2, 2, 0, 0]}
+          radius={[4, 4, 0, 0]}
         />
       )),
     [muscleGroups],
@@ -70,32 +69,27 @@ export const VolumeLoadChart = memo(function VolumeLoadChart({
 
   if (data.length === 0) {
     return (
-      <div className="rounded-lg border border-neutral-200 bg-white p-4 dark:border-neutral-700 dark:bg-neutral-900">
-        <h3 className="mb-2 text-sm font-semibold text-neutral-900 dark:text-neutral-100">
-          {title}
-        </h3>
-        <p className="text-sm text-neutral-500 dark:text-neutral-400">
-          No volume data yet. Complete workouts to see volume load per muscle
-          group.
+      <div className="rounded-xl bg-zinc-900 border border-zinc-800 p-4">
+        <h3 className="mb-2 text-sm font-semibold text-zinc-50">{title}</h3>
+        <p className="text-sm text-zinc-400">
+          No volume data yet. Complete workouts to see volume load per muscle group.
         </p>
       </div>
     );
   }
 
   return (
-    <div className="rounded-lg border border-neutral-200 bg-white p-4 dark:border-neutral-700 dark:bg-neutral-900">
-      <h3 className="mb-4 text-sm font-semibold text-neutral-900 dark:text-neutral-100">
-        {title}
-      </h3>
+    <div className="rounded-xl bg-zinc-900 border border-zinc-800 p-4">
+      <h3 className="mb-4 text-sm font-semibold text-zinc-50">{title}</h3>
       <ResponsiveContainer width="100%" height={350}>
         <BarChart data={data}>
-          <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+          <CartesianGrid {...gridStyle} strokeDasharray="3 3" />
           <XAxis
             dataKey="week"
-            tick={{ fontSize: 11 }}
-            stroke="#9ca3af"
+            tick={{ fontSize: 11, fill: "#71717A" }}
+            stroke="#3F3F46"
           />
-          <YAxis tick={{ fontSize: 12 }} stroke="#9ca3af" />
+          <YAxis tick={{ fontSize: 12, fill: "#71717A" }} stroke="#3F3F46" />
           <Tooltip contentStyle={tooltipStyle} />
           <Legend />
           {bars}
@@ -111,10 +105,6 @@ interface BodyWeightChartProps {
   title?: string;
 }
 
-/**
- * BodyWeightChart — Line chart showing body weight over time with weekly averages.
- * Memoized to prevent unnecessary re-renders when parent updates.
- */
 export const BodyWeightChart = memo(function BodyWeightChart({
   data,
   weeklyAverages,
@@ -135,11 +125,9 @@ export const BodyWeightChart = memo(function BodyWeightChart({
 
   if (data.length === 0) {
     return (
-      <div className="rounded-lg border border-neutral-200 bg-white p-4 dark:border-neutral-700 dark:bg-neutral-900">
-        <h3 className="mb-2 text-sm font-semibold text-neutral-900 dark:text-neutral-100">
-          {title}
-        </h3>
-        <p className="text-sm text-neutral-500 dark:text-neutral-400">
+      <div className="rounded-xl bg-zinc-900 border border-zinc-800 p-4">
+        <h3 className="mb-2 text-sm font-semibold text-zinc-50">{title}</h3>
+        <p className="text-sm text-zinc-400">
           No body weight data yet. Log your weight to see the trend.
         </p>
       </div>
@@ -147,21 +135,19 @@ export const BodyWeightChart = memo(function BodyWeightChart({
   }
 
   return (
-    <div className="rounded-lg border border-neutral-200 bg-white p-4 dark:border-neutral-700 dark:bg-neutral-900">
-      <h3 className="mb-4 text-sm font-semibold text-neutral-900 dark:text-neutral-100">
-        {title}
-      </h3>
+    <div className="rounded-xl bg-zinc-900 border border-zinc-800 p-4">
+      <h3 className="mb-4 text-sm font-semibold text-zinc-50">{title}</h3>
       <ResponsiveContainer width="100%" height={300}>
         <LineChart data={chartData}>
-          <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+          <CartesianGrid {...gridStyle} strokeDasharray="3 3" />
           <XAxis
             dataKey="date"
-            tick={{ fontSize: 12 }}
-            stroke="#9ca3af"
+            tick={{ fontSize: 12, fill: "#71717A" }}
+            stroke="#3F3F46"
           />
           <YAxis
-            tick={{ fontSize: 12 }}
-            stroke="#9ca3af"
+            tick={{ fontSize: 12, fill: "#71717A" }}
+            stroke="#3F3F46"
             domain={["auto", "auto"]}
           />
           <Tooltip contentStyle={tooltipStyle} />
@@ -169,18 +155,18 @@ export const BodyWeightChart = memo(function BodyWeightChart({
           <Line
             type="monotone"
             dataKey="Daily"
-            stroke="#2563eb"
+            stroke="#3B82F6"
             strokeWidth={1.5}
-            dot={{ r: 3 }}
+            dot={{ r: 3, fill: "#3B82F6" }}
             strokeDasharray="5 5"
           />
           {weeklyAverages && weeklyAverages.length > 0 && (
             <Line
               type="monotone"
               dataKey="Weekly Avg"
-              stroke="#16a34a"
+              stroke="#84CC16"
               strokeWidth={2}
-              dot={{ r: 4 }}
+              dot={{ r: 4, fill: "#84CC16" }}
             />
           )}
         </LineChart>
@@ -194,21 +180,15 @@ interface OneRMChartProps {
   title?: string;
 }
 
-/**
- * OneRMChart — Line chart showing estimated 1RM progression over time.
- * Memoized for performance.
- */
 export const OneRMChart = memo(function OneRMChart({
   data,
   title = "Estimated 1RM Progression",
 }: OneRMChartProps) {
   if (data.length === 0) {
     return (
-      <div className="rounded-lg border border-neutral-200 bg-white p-4 dark:border-neutral-700 dark:bg-neutral-900">
-        <h3 className="mb-2 text-sm font-semibold text-neutral-900 dark:text-neutral-100">
-          {title}
-        </h3>
-        <p className="text-sm text-neutral-500 dark:text-neutral-400">
+      <div className="rounded-xl bg-zinc-900 border border-zinc-800 p-4">
+        <h3 className="mb-2 text-sm font-semibold text-zinc-50">{title}</h3>
+        <p className="text-sm text-zinc-400">
           No strength data yet. Log your lifts to see 1RM progression.
         </p>
       </div>
@@ -216,21 +196,19 @@ export const OneRMChart = memo(function OneRMChart({
   }
 
   return (
-    <div className="rounded-lg border border-neutral-200 bg-white p-4 dark:border-neutral-700 dark:bg-neutral-900">
-      <h3 className="mb-4 text-sm font-semibold text-neutral-900 dark:text-neutral-100">
-        {title}
-      </h3>
+    <div className="rounded-xl bg-zinc-900 border border-zinc-800 p-4">
+      <h3 className="mb-4 text-sm font-semibold text-zinc-50">{title}</h3>
       <ResponsiveContainer width="100%" height={300}>
         <LineChart data={data}>
-          <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+          <CartesianGrid {...gridStyle} strokeDasharray="3 3" />
           <XAxis
             dataKey="date"
-            tick={{ fontSize: 12 }}
-            stroke="#9ca3af"
+            tick={{ fontSize: 12, fill: "#71717A" }}
+            stroke="#3F3F46"
           />
           <YAxis
-            tick={{ fontSize: 12 }}
-            stroke="#9ca3af"
+            tick={{ fontSize: 12, fill: "#71717A" }}
+            stroke="#3F3F46"
             domain={["auto", "auto"]}
           />
           <Tooltip contentStyle={tooltipStyle} />
@@ -239,9 +217,9 @@ export const OneRMChart = memo(function OneRMChart({
             type="monotone"
             dataKey="value"
             name="1RM (kg)"
-            stroke="#7c3aed"
+            stroke="#3B82F6"
             strokeWidth={2}
-            dot={{ r: 4 }}
+            dot={{ r: 4, fill: "#3B82F6" }}
           />
         </LineChart>
       </ResponsiveContainer>

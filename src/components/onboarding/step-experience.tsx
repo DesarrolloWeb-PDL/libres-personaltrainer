@@ -28,17 +28,12 @@ const LEVELS = [
   },
 ];
 
-/**
- * Step 2: Experience Level — radio button selection.
- */
 export function StepExperience({ data, onUpdate }: StepExperienceProps) {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-xl font-semibold text-neutral-900 dark:text-neutral-100">
-          Experience Level
-        </h2>
-        <p className="mt-1 text-sm text-neutral-500 dark:text-neutral-400">
+        <h2 className="text-xl font-semibold text-zinc-50">Experience Level</h2>
+        <p className="mt-1 text-sm text-zinc-400">
           How would you describe your training experience?
         </p>
       </div>
@@ -49,10 +44,10 @@ export function StepExperience({ data, onUpdate }: StepExperienceProps) {
           return (
             <label
               key={level.value}
-              className={`flex cursor-pointer rounded-lg border p-4 transition-colors ${
+              className={`flex cursor-pointer rounded-xl border p-4 transition-colors ${
                 isSelected
-                  ? "border-blue-500 bg-blue-50 dark:border-blue-400 dark:bg-blue-900/20"
-                  : "border-neutral-200 bg-white hover:border-neutral-300 dark:border-neutral-700 dark:bg-neutral-900 dark:hover:border-neutral-600"
+                  ? "border-blue-500 bg-blue-500/10"
+                  : "border-zinc-700 bg-zinc-800 hover:border-zinc-600"
               }`}
             >
               <input
@@ -61,13 +56,13 @@ export function StepExperience({ data, onUpdate }: StepExperienceProps) {
                 value={level.value}
                 checked={isSelected}
                 onChange={() => onUpdate({ experienceLevel: level.value })}
-                className="mt-0.5 h-4 w-4 border-neutral-300 text-blue-600 focus:ring-blue-500"
+                className="mt-0.5 h-4 w-4 border-zinc-600 text-blue-500 focus:ring-blue-500"
               />
               <div className="ml-3">
-                <span className="block text-sm font-medium text-neutral-900 dark:text-neutral-100">
+                <span className="block text-sm font-medium text-zinc-100">
                   {level.label}
                 </span>
-                <span className="block text-xs text-neutral-500 dark:text-neutral-400">
+                <span className="block text-xs text-zinc-400">
                   {level.description}
                 </span>
               </div>

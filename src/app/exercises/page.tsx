@@ -3,9 +3,6 @@ import { ExerciseBrowser } from "@/components/exercise/exercise-browser";
 
 export const dynamic = "force-dynamic";
 
-/**
- * Exercise browser page — server component that fetches data and renders the browser.
- */
 export default async function ExercisesPage() {
   const [exercises, muscleGroups, equipment] = await Promise.all([
     prisma.exercise.findMany({
@@ -17,8 +14,8 @@ export default async function ExercisesPage() {
   ]);
 
   return (
-    <main className="mx-auto max-w-7xl px-4 py-8">
-      <h1 className="mb-6 text-2xl font-bold text-neutral-900 dark:text-neutral-100">
+    <main className="mx-auto max-w-7xl px-4 py-6 pb-24">
+      <h1 className="mb-6 text-2xl font-bold text-zinc-50">
         Exercise Database
       </h1>
       <ExerciseBrowser

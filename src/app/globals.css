@@ -1,4 +1,10 @@
+@import "tailwindcss";
+
+:root {
+  color-scheme: dark;
+}
+
 body {
-  margin: 0;
+  @apply bg-zinc-950 text-zinc-50 antialiased;
   font-family: system-ui, -apple-system, sans-serif;
 }

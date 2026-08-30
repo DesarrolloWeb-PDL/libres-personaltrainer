@@ -4,9 +4,6 @@ import { useParams, useRouter } from "next/navigation";
 import { api } from "@/lib/api/trpc-client";
 import { WorkoutLogger } from "@/components/workout/workout-logger";
 
-/**
- * Active workout session page — shows exercises and allows logging sets.
- */
 export default function WorkoutSessionPage() {
   const params = useParams();
   const router = useRouter();
@@ -23,7 +20,7 @@ export default function WorkoutSessionPage() {
   if (session.isLoading) {
     return (
       <div className="flex items-center justify-center py-20">
-        <p className="text-neutral-500 dark:text-neutral-400">Loading workout...</p>
+        <p className="text-zinc-400">Loading workout...</p>
       </div>
     );
   }
@@ -31,9 +28,7 @@ export default function WorkoutSessionPage() {
   if (!session.data) {
     return (
       <div className="py-20 text-center">
-        <p className="text-neutral-500 dark:text-neutral-400">
-          Workout session not found.
-        </p>
+        <p className="text-zinc-400">Workout session not found.</p>
       </div>
     );
   }
@@ -48,7 +43,6 @@ export default function WorkoutSessionPage() {
   };
 
   const handleCompleteWorkout = async () => {
-    // userId is required by the tRPC router for volume tracking
     const userId = session.data?.userId ?? "user-1";
     await completeSession.mutateAsync({ id: sessionId, userId });
   };
@@ -59,16 +53,23 @@ export default function WorkoutSessionPage() {
       <div>
         <button
           onClick={() => router.push("/dashboard/workouts")}
-          className="mb-2 text-sm text-blue-600 hover:text-blue-700 dark:text-blue-400"
+          className="mb-2 text-sm text-blue-500 hover:text-blue-400"
         >
           ← Back to Workouts
         </button>
-        <h1 className="text-2xl font-bold text-neutral-900 dark:text-neutral-100">
-          {session.data.day?.name ?? "Workout"}
-        </h1>
-        <p className="mt-1 text-sm text-neutral-500 dark:text-neutral-400">
-          Started at {new Date(session.data.startedAt).toLocaleTimeString()}
-        </p>
+        <div className="rounded-xl bg-zinc-900 border border-zinc-800 p-4">
+          <div className="flex items-center gap-3">
+            <div className="w-1 h-10 bg-blue-500 rounded-full" />
+            <div>
+              <h1 className="text-2xl font-bold text-zinc-50">
+                {session.data.day?.name ?? "Workout"}
+              </h1>
+              <p className="text-sm text-zinc-400">
+                Started at {new Date(session.data.startedAt).toLocaleTimeString()}
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Workout Logger */}

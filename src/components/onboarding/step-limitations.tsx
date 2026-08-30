@@ -7,17 +7,12 @@ interface StepLimitationsProps {
   onUpdate: (partial: Partial<WizardData>) => void;
 }
 
-/**
- * Step 5: Medical History — optional textarea for injuries/limitations.
- */
 export function StepLimitations({ data, onUpdate }: StepLimitationsProps) {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-xl font-semibold text-neutral-900 dark:text-neutral-100">
-          Medical History
-        </h2>
-        <p className="mt-1 text-sm text-neutral-500 dark:text-neutral-400">
+        <h2 className="text-xl font-semibold text-zinc-50">Medical History</h2>
+        <p className="mt-1 text-sm text-zinc-400">
           Optional but recommended — helps us avoid exercises that could cause discomfort.
         </p>
       </div>
@@ -25,10 +20,10 @@ export function StepLimitations({ data, onUpdate }: StepLimitationsProps) {
       <div>
         <label
           htmlFor="injuries"
-          className="block text-sm font-medium text-neutral-700 dark:text-neutral-300"
+          className="block text-sm font-medium text-zinc-300"
         >
           Injuries or Limitations{" "}
-          <span className="text-neutral-400">(optional)</span>
+          <span className="text-zinc-500">(optional)</span>
         </label>
         <textarea
           id="injuries"
@@ -38,15 +33,15 @@ export function StepLimitations({ data, onUpdate }: StepLimitationsProps) {
             onUpdate({ injuries: e.target.value || undefined })
           }
           placeholder="e.g. Lower back pain, right shoulder impingement, knee surgery in 2023..."
-          className="mt-1 block w-full rounded-lg border border-neutral-300 bg-white px-3 py-2 text-sm text-neutral-900 placeholder-neutral-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-neutral-600 dark:bg-neutral-800 dark:text-neutral-100"
+          className="mt-1 block w-full rounded-xl border border-zinc-700 bg-zinc-800 px-3 py-2.5 text-sm text-zinc-100 placeholder-zinc-500 focus:border-blue-500 focus:outline-none"
         />
-        <p className="mt-1 text-xs text-neutral-400 dark:text-neutral-500">
+        <p className="mt-1 text-xs text-zinc-500">
           Include any past or current injuries, surgeries, or physical limitations.
         </p>
       </div>
 
-      <div className="rounded-lg bg-emerald-50 p-4 dark:bg-emerald-900/20">
-        <p className="text-sm text-emerald-700 dark:text-emerald-300">
+      <div className="rounded-xl bg-lime-500/10 border border-lime-500/20 p-4">
+        <p className="text-sm text-lime-400">
           <strong>Why we ask:</strong> This information helps the training engine
           suggest safer exercise substitutions and avoid movements that might
           aggravate existing conditions.

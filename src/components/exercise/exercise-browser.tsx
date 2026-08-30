@@ -23,9 +23,6 @@ interface ExerciseBrowserProps {
   isLoading?: boolean;
 }
 
-/**
- * Exercise browser — search bar, muscle group filter, equipment filter, and grid.
- */
 export function ExerciseBrowser({
   exercises,
   muscleGroups,
@@ -36,7 +33,6 @@ export function ExerciseBrowser({
   const [selectedMuscleGroup, setSelectedMuscleGroup] = useState("");
   const [selectedEquipment, setSelectedEquipment] = useState("");
 
-  // Client-side filtering (would be server-side via tRPC in production)
   const filtered = exercises.filter((ex) => {
     const matchesSearch =
       !search ||
@@ -54,80 +50,129 @@ export function ExerciseBrowser({
 
   return (
     <div className="space-y-4">
-      {/* Search bar */}
-      <input
-        type="text"
-        placeholder="Search exercises..."
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-        className="w-full rounded-lg border border-neutral-300 bg-white px-4 py-2.5 text-sm text-neutral-900 placeholder-neutral-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-neutral-600 dark:bg-neutral-800 dark:text-neutral-100"
-      />
-
-      {/* Filters */}
-      <div className="flex flex-wrap gap-3">
-        <select
-          value={selectedMuscleGroup}
-          onChange={(e) => setSelectedMuscleGroup(e.target.value)}
-          className="rounded-lg border border-neutral-300 bg-white px-3 py-2 text-sm text-neutral-700 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-neutral-600 dark:bg-neutral-800 dark:text-neutral-300"
+      {/* Search Bar */}
+      <div className="relative">
+        <svg
+          className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-zinc-500"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth={1.5}
+          stroke="currentColor"
         >
-          <option value="">All muscle groups</option>
-          {muscleGroups.map((mg) => (
-            <option key={mg.id} value={mg.id}>
-              {mg.nameEs ?? mg.name}
-            </option>
-          ))}
-        </select>
-
-        <select
-          value={selectedEquipment}
-          onChange={(e) => setSelectedEquipment(e.target.value)}
-          className="rounded-lg border border-neutral-300 bg-white px-3 py-2 text-sm text-neutral-700 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-neutral-600 dark:bg-neutral-800 dark:text-neutral-300"
-        >
-          <option value="">All equipment</option>
-          {equipment.map((eq) => (
-            <option key={eq.id} value={eq.id}>
-              {eq.nameEs ?? eq.name}
-            </option>
-          ))}
-        </select>
-
-        {(search || selectedMuscleGroup || selectedEquipment) && (
-          <button
-            onClick={() => {
-              setSearch("");
-              setSelectedMuscleGroup("");
-              setSelectedEquipment("");
-            }}
-            className="rounded-lg border border-neutral-300 bg-white px-3 py-2 text-sm text-neutral-600 hover:bg-neutral-50 dark:border-neutral-600 dark:bg-neutral-800 dark:text-neutral-400"
-          >
-            Clear filters
-          </button>
-        )}
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="m21 21-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
+          />
+        </svg>
+        <input
+          type="text"
+          placeholder="Search exercises..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="w-full rounded-xl border border-zinc-700 bg-zinc-900 py-3 pl-10 pr-4 text-sm text-zinc-100 placeholder-zinc-500 focus:border-blue-500 focus:outline-none"
+        />
       </div>
 
-      {/* Results count */}
-      <p className="text-sm text-neutral-500 dark:text-neutral-400">
+      {/* Filter Chips - Muscle Groups */}
+      <div className="flex flex-wrap gap-2">
+        <button
+          onClick={() => setSelectedMuscleGroup("")}
+          className={`rounded-full px-3 py-1.5 text-xs font-bold transition-colors ${
+            !selectedMuscleGroup
+              ? "bg-blue-500 text-white"
+              : "bg-zinc-800 text-zinc-400 hover:bg-zinc-700"
+          }`}
+        >
+          All
+        </button>
+        {muscleGroups.map((mg) => (
+          <button
+            key={mg.id}
+            onClick={() =>
+              setSelectedMuscleGroup(
+                selectedMuscleGroup === mg.id ? "" : mg.id,
+              )
+            }
+            className={`rounded-full px-3 py-1.5 text-xs font-bold transition-colors ${
+              selectedMuscleGroup === mg.id
+                ? "bg-blue-500 text-white"
+                : "bg-zinc-800 text-zinc-400 hover:bg-zinc-700"
+            }`}
+          >
+            {mg.nameEs ?? mg.name}
+          </button>
+        ))}
+      </div>
+
+      {/* Equipment Filter */}
+      <div className="flex flex-wrap gap-2">
+        <button
+          onClick={() => setSelectedEquipment("")}
+          className={`rounded-full px-3 py-1.5 text-xs font-bold transition-colors ${
+            !selectedEquipment
+              ? "bg-blue-500 text-white"
+              : "bg-zinc-800 text-zinc-400 hover:bg-zinc-700"
+          }`}
+        >
+          All Equipment
+        </button>
+        {equipment.map((eq) => (
+          <button
+            key={eq.id}
+            onClick={() =>
+              setSelectedEquipment(
+                selectedEquipment === eq.id ? "" : eq.id,
+              )
+            }
+            className={`rounded-full px-3 py-1.5 text-xs font-bold transition-colors ${
+              selectedEquipment === eq.id
+                ? "bg-blue-500 text-white"
+                : "bg-zinc-800 text-zinc-400 hover:bg-zinc-700"
+            }`}
+          >
+            {eq.nameEs ?? eq.name}
+          </button>
+        ))}
+      </div>
+
+      {/* Clear Filters */}
+      {(search || selectedMuscleGroup || selectedEquipment) && (
+        <button
+          onClick={() => {
+            setSearch("");
+            setSelectedMuscleGroup("");
+            setSelectedEquipment("");
+          }}
+          className="text-sm font-medium text-blue-500 hover:text-blue-400"
+        >
+          Clear all filters
+        </button>
+      )}
+
+      {/* Results Count */}
+      <p className="text-xs font-medium text-zinc-500 uppercase tracking-wider">
         {isLoading
           ? "Loading exercises..."
           : `${filtered.length} exercise${filtered.length !== 1 ? "s" : ""} found`}
       </p>
 
-      {/* Loading state */}
+      {/* Loading State */}
       {isLoading && (
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {Array.from({ length: 6 }).map((_, i) => (
             <div
               key={i}
-              className="h-48 animate-pulse rounded-xl bg-neutral-100 dark:bg-neutral-800"
+              className="h-48 animate-pulse rounded-xl bg-zinc-900 border border-zinc-800"
             />
           ))}
         </div>
       )}
 
-      {/* Empty state */}
+      {/* Empty State */}
       {!isLoading && filtered.length === 0 && (
-        <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-neutral-300 py-12 dark:border-neutral-600">
-          <p className="text-neutral-500 dark:text-neutral-400">
+        <div className="flex flex-col items-center justify-center rounded-xl border-2 border-dashed border-zinc-700 py-12">
+          <p className="text-sm text-zinc-400">
             No exercises match your filters.
           </p>
           <button
@@ -136,16 +181,16 @@ export function ExerciseBrowser({
               setSelectedMuscleGroup("");
               setSelectedEquipment("");
             }}
-            className="mt-2 text-sm text-blue-600 hover:underline dark:text-blue-400"
+            className="mt-2 text-sm font-medium text-blue-500 hover:text-blue-400"
           >
             Reset filters
           </button>
         </div>
       )}
 
-      {/* Exercise grid */}
+      {/* Exercise Grid */}
       {!isLoading && filtered.length > 0 && (
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {filtered.map((exercise) => (
             <ExerciseCard key={exercise.id} exercise={exercise} />
           ))}

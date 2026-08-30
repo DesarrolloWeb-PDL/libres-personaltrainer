@@ -71,47 +71,66 @@ export default function VolumeDashboardPage() {
     <div className="space-y-6">
       {/* Page Header */}
       <div>
-        <h1 className="text-2xl font-bold text-neutral-900 dark:text-neutral-100">
-          Volume Tracking
-        </h1>
-        <p className="text-sm text-neutral-500 dark:text-neutral-400">
+        <h1 className="text-2xl font-bold text-zinc-50">Volume Tracking</h1>
+        <p className="text-sm text-zinc-400">
           Monitor your training volume per muscle group and optimize recovery.
         </p>
       </div>
 
       {/* Summary Cards */}
-      <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-        <div className="rounded-lg border border-neutral-200 bg-white p-4 dark:border-neutral-700 dark:bg-neutral-900">
-          <p className="text-xs text-neutral-500 dark:text-neutral-400">
-            Total Sets
-          </p>
-          <p className="mt-1 text-2xl font-bold text-neutral-900 dark:text-neutral-100">
-            {isLoading ? "..." : summaryStats.totalSets}
-          </p>
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+        <div className="rounded-xl bg-zinc-900 border border-zinc-800 p-4">
+          <div className="flex items-center gap-3">
+            <div className="w-1 h-10 bg-blue-500 rounded-full" />
+            <div>
+              <p className="text-xs font-medium text-zinc-500 uppercase tracking-wider">
+                Total Sets
+              </p>
+              <p className="text-3xl font-black text-zinc-50">
+                {isLoading ? "..." : summaryStats.totalSets}
+              </p>
+            </div>
+          </div>
         </div>
-        <div className="rounded-lg border border-neutral-200 bg-white p-4 dark:border-neutral-700 dark:bg-neutral-900">
-          <p className="text-xs text-neutral-500 dark:text-neutral-400">
-            Total Volume
-          </p>
-          <p className="mt-1 text-2xl font-bold text-neutral-900 dark:text-neutral-100">
-            {isLoading ? "..." : summaryStats.totalVolume.toLocaleString()} kg
-          </p>
+        <div className="rounded-xl bg-zinc-900 border border-zinc-800 p-4">
+          <div className="flex items-center gap-3">
+            <div className="w-1 h-10 bg-lime-500 rounded-full" />
+            <div>
+              <p className="text-xs font-medium text-zinc-500 uppercase tracking-wider">
+                Total Volume
+              </p>
+              <p className="text-3xl font-black text-zinc-50">
+                {isLoading ? "..." : summaryStats.totalVolume.toLocaleString()}
+              </p>
+              <p className="text-xs text-zinc-400">kg</p>
+            </div>
+          </div>
         </div>
-        <div className="rounded-lg border border-neutral-200 bg-white p-4 dark:border-neutral-700 dark:bg-neutral-900">
-          <p className="text-xs text-neutral-500 dark:text-neutral-400">
-            Optimal
-          </p>
-          <p className="mt-1 text-2xl font-bold text-green-600 dark:text-green-400">
-            {isLoading ? "..." : summaryStats.optimalCount}
-          </p>
+        <div className="rounded-xl bg-zinc-900 border border-zinc-800 p-4">
+          <div className="flex items-center gap-3">
+            <div className="w-1 h-10 bg-lime-500 rounded-full" />
+            <div>
+              <p className="text-xs font-medium text-zinc-500 uppercase tracking-wider">
+                Optimal
+              </p>
+              <p className="text-3xl font-black text-lime-400">
+                {isLoading ? "..." : summaryStats.optimalCount}
+              </p>
+            </div>
+          </div>
         </div>
-        <div className="rounded-lg border border-neutral-200 bg-white p-4 dark:border-neutral-700 dark:bg-neutral-900">
-          <p className="text-xs text-neutral-500 dark:text-neutral-400">
-            Issues
-          </p>
-          <p className="mt-1 text-2xl font-bold text-red-600 dark:text-red-400">
-            {isLoading ? "..." : summaryStats.undertrainingCount + summaryStats.overreachingCount}
-          </p>
+        <div className="rounded-xl bg-zinc-900 border border-zinc-800 p-4">
+          <div className="flex items-center gap-3">
+            <div className="w-1 h-10 bg-rose-500 rounded-full" />
+            <div>
+              <p className="text-xs font-medium text-zinc-500 uppercase tracking-wider">
+                Issues
+              </p>
+              <p className="text-3xl font-black text-rose-400">
+                {isLoading ? "..." : summaryStats.undertrainingCount + summaryStats.overreachingCount}
+              </p>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -132,8 +151,8 @@ export default function VolumeDashboardPage() {
 
       {/* Volume Landmarks Display */}
       {isLoading ? (
-        <div className="rounded-lg border border-neutral-200 bg-white p-4 dark:border-neutral-700 dark:bg-neutral-900">
-          <p className="text-sm text-neutral-500 dark:text-neutral-400">Loading volume status...</p>
+        <div className="rounded-xl bg-zinc-900 border border-zinc-800 p-4">
+          <p className="text-sm text-zinc-400">Loading volume status...</p>
         </div>
       ) : (
         <VolumeLandmarks statuses={statuses} />

@@ -37,9 +37,6 @@ const GOALS: { value: GoalOption; label: string; description: string }[] = [
   },
 ];
 
-/**
- * Step 3: Goals — multi-select checkboxes.
- */
 export function StepGoals({ data, onUpdate }: StepGoalsProps) {
   const selected = data.goals ?? [];
 
@@ -53,10 +50,8 @@ export function StepGoals({ data, onUpdate }: StepGoalsProps) {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-xl font-semibold text-neutral-900 dark:text-neutral-100">
-          Your Goals
-        </h2>
-        <p className="mt-1 text-sm text-neutral-500 dark:text-neutral-400">
+        <h2 className="text-xl font-semibold text-zinc-50">Your Goals</h2>
+        <p className="mt-1 text-sm text-zinc-400">
           Select all that apply. We&apos;ll tailor your program accordingly.
         </p>
       </div>
@@ -67,23 +62,23 @@ export function StepGoals({ data, onUpdate }: StepGoalsProps) {
           return (
             <label
               key={goal.value}
-              className={`flex cursor-pointer rounded-lg border p-4 transition-colors ${
+              className={`flex cursor-pointer rounded-xl border p-4 transition-colors ${
                 isSelected
-                  ? "border-blue-500 bg-blue-50 dark:border-blue-400 dark:bg-blue-900/20"
-                  : "border-neutral-200 bg-white hover:border-neutral-300 dark:border-neutral-700 dark:bg-neutral-900 dark:hover:border-neutral-600"
+                  ? "border-blue-500 bg-blue-500/10"
+                  : "border-zinc-700 bg-zinc-800 hover:border-zinc-600"
               }`}
             >
               <input
                 type="checkbox"
                 checked={isSelected}
                 onChange={() => toggleGoal(goal.value)}
-                className="mt-0.5 h-4 w-4 rounded border-neutral-300 text-blue-600 focus:ring-blue-500"
+                className="mt-0.5 h-4 w-4 rounded border-zinc-600 text-blue-500 focus:ring-blue-500"
               />
               <div className="ml-3">
-                <span className="block text-sm font-medium text-neutral-900 dark:text-neutral-100">
+                <span className="block text-sm font-medium text-zinc-100">
                   {goal.label}
                 </span>
-                <span className="block text-xs text-neutral-500 dark:text-neutral-400">
+                <span className="block text-xs text-zinc-400">
                   {goal.description}
                 </span>
               </div>
@@ -93,7 +88,7 @@ export function StepGoals({ data, onUpdate }: StepGoalsProps) {
       </div>
 
       {selected.length > 0 && (
-        <p className="text-xs text-neutral-500 dark:text-neutral-400">
+        <p className="text-xs text-zinc-400">
           {selected.length} goal{selected.length !== 1 ? "s" : ""} selected
         </p>
       )}
