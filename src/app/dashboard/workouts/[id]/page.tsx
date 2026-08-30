@@ -48,7 +48,9 @@ export default function WorkoutSessionPage() {
   };
 
   const handleCompleteWorkout = async () => {
-    await completeSession.mutateAsync({ id: sessionId });
+    // userId is required by the tRPC router for volume tracking
+    const userId = session.data?.userId ?? "user-1";
+    await completeSession.mutateAsync({ id: sessionId, userId });
   };
 
   return (

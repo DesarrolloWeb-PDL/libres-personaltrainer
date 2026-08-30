@@ -69,6 +69,11 @@ function generateWorkoutDays(
   frequency: number,
   exercises: Exercise[],
 ): WorkoutDay[] {
+  // Handle custom split — return empty for now
+  if (splitType === 'custom') {
+    return []
+  }
+  
   const template = SPLIT_TEMPLATES[splitType]
   const days: WorkoutDay[] = []
 

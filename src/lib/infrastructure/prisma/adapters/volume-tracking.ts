@@ -91,10 +91,6 @@ export class PrismaVolumeTrackingAdapter implements VolumeTrackingRepository {
             program: {
               userId,
             },
-          },
-        },
-        workoutExercise: {
-          day: {
             sessions: {
               some: {
                 startedAt: {

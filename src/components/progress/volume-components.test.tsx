@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi } from "vitest";
 import { VolumeLandmarks } from "@/components/progress/volume-landmarks";
 import { OverreachingWarning } from "@/components/progress/overreaching-warning";
 import { DeloadRecommendation } from "@/components/progress/deload-recommendation";

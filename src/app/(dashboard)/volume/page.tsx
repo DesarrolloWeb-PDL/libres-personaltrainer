@@ -4,17 +4,18 @@ import { useState, useMemo } from "react";
 import { VolumeLandmarks } from "@/components/progress/volume-landmarks";
 import { OverreachingWarning } from "@/components/progress/overreaching-warning";
 import { DeloadRecommendation } from "@/components/progress/deload-recommendation";
+import type { MuscleGroup } from "@/lib/domain/types";
 
 // Mock data — will be replaced with tRPC queries
 const MOCK_USER_ID = "user-1";
 
 interface VolumeStatusItem {
-  muscleGroup: string;
+  muscleGroup: MuscleGroup;
   status: "undertraining" | "optimal" | "overreaching";
   sets: number;
   volumeLoad: number;
   landmarks: {
-    muscleGroup: string;
+    muscleGroup: MuscleGroup;
     MEV: number;
     MAV: number;
     MRV: number;
