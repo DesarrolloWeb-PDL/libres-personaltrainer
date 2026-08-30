@@ -21,6 +21,7 @@ const equipmentEnum = z.enum([
   "home_gym",
   "bodyweight_only",
 ]);
+const genderEnum = z.enum(["male", "female", "other"]);
 
 /**
  * Onboarding tRPC router — profile creation and retrieval during onboarding flow.
@@ -44,6 +45,9 @@ export const onboardingRouter = createTRPCRouter({
         goals: z.array(goalsEnum).min(1).optional(),
         equipment: equipmentEnum.optional(),
         injuries: z.string().optional(),
+        gender: genderEnum.optional(),
+        weight: z.number().min(20).max(300).optional(),
+        height: z.number().min(100).max(250).optional(),
       })
     )
     .mutation(async ({ input }) => {
@@ -68,6 +72,9 @@ export const onboardingRouter = createTRPCRouter({
         goals: z.array(goalsEnum).optional(),
         equipment: equipmentEnum.optional(),
         injuries: z.string().optional(),
+        gender: genderEnum.optional(),
+        weight: z.number().min(20).max(300).optional(),
+        height: z.number().min(100).max(250).optional(),
       })
     )
     .mutation(async ({ input }) => {

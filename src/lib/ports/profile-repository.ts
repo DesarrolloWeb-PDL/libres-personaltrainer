@@ -13,6 +13,9 @@ export interface ProfileRecord {
   goals: string | null;
   equipment: string | null;
   injuries: string | null;
+  gender: string | null;
+  weight: number | null;
+  height: number | null;
 }
 
 export interface CreateProfileData {
@@ -22,6 +25,9 @@ export interface CreateProfileData {
   goals?: string;
   equipment?: string;
   injuries?: string;
+  gender?: string;
+  weight?: number;
+  height?: number;
 }
 
 export interface UpdateProfileData {
@@ -30,6 +36,9 @@ export interface UpdateProfileData {
   goals?: string | null;
   equipment?: string;
   injuries?: string;
+  gender?: string | null;
+  weight?: number | null;
+  height?: number | null;
 }
 
 export interface ProfileRepository {

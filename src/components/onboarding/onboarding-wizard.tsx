@@ -32,6 +32,7 @@ export function OnboardingWizard({ userId }: OnboardingWizardProps) {
     const { createCaller } = await import("@/app/api/trpc/[trpc]/caller");
     const caller = createCaller();
 
+    // 1. Save profile via onboarding wizard
     await caller.onboarding.submitWizard({
       userId,
       name: data.name,
@@ -40,6 +41,21 @@ export function OnboardingWizard({ userId }: OnboardingWizardProps) {
       goals: data.goals,
       equipment: data.equipment,
       injuries: data.injuries,
+    });
+
+    // 2. Auto-generate training program based on profile
+    const frequencyMap: Record<string, number> = {
+      full_gym: 5,
+      home_gym: 4,
+      bodyweight_only: 3,
+    };
+    const trainingFrequency = frequencyMap[data.equipment ?? "full_gym"] ?? 4;
+
+    await caller.program.generate({
+      userId,
+      name: "My Training Program",
+      trainingFrequency,
+      experienceLevel: data.experienceLevel ?? "intermediate",
     });
 
     localStorage.removeItem("onboarding-wizard-data");

@@ -21,6 +21,7 @@ model User {
   volumeTracking VolumeTracking[]
   progress Progress[]
   workoutSessions WorkoutSession[]
+  mealEntries MealEntry[]
 }
 
 model Profile {
@@ -31,6 +32,9 @@ model Profile {
   goals           String? // muscle_gain, fat_loss, strength, endurance
   equipment       String? // full_gym, home_gym, bodyweight_only
   injuries        String?
+  gender          String? // male, female, other
+  weight          Float?  // kg
+  height          Float?  // cm
   user            User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   medicalHistory MedicalHistory[]
@@ -178,4 +182,22 @@ model Progress {
   estimated1RM Float?
   notes        String?
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// ─── Nutrition Models ─────────────────────────────────────────────────
+
+model MealEntry {
+  id        String   @id @default(cuid())
+  userId    String
+  name      String
+  calories  Int
+  protein   Int      @default(0)
+  carbs     Int      @default(0)
+  fat       Int      @default(0)
+  date      DateTime @default(now())
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, date])
 }
