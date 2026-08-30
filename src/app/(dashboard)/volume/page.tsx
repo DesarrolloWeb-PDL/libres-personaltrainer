@@ -3,7 +3,7 @@
 import { useState, useMemo } from "react";
 import { VolumeLandmarks } from "@/components/progress/volume-landmarks";
 import { OverreachingWarning } from "@/components/progress/overreaching-warning";
-import { DeloadRecommendation } from "@/components/deload-recommendation";
+import { DeloadRecommendation } from "@/components/progress/deload-recommendation";
 
 // Mock data — will be replaced with tRPC queries
 const MOCK_USER_ID = "user-1";
