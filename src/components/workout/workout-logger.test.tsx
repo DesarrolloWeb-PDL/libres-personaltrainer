@@ -45,7 +45,6 @@ describe("WorkoutLogger", () => {
       />,
     );
 
-    // Set numbers appear as td elements with specific styling
     const setNumbers = screen.getAllByText(/^[123]$/);
     expect(setNumbers.length).toBeGreaterThanOrEqual(3);
   });
@@ -63,43 +62,7 @@ describe("WorkoutLogger", () => {
     expect(rpeSelects.length).toBe(3);
   });
 
-  it("disables Log button when inputs are empty", () => {
-    render(
-      <WorkoutLogger
-        exercises={mockExercises}
-        onLogSet={vi.fn()}
-        onCompleteWorkout={vi.fn()}
-      />,
-    );
-
-    const logButtons = screen.getAllByText("Log");
-    logButtons.forEach((btn) => {
-      expect((btn as HTMLButtonElement).disabled).toBe(true);
-    });
-  });
-
-  it("enables Log button when all inputs are filled", () => {
-    render(
-      <WorkoutLogger
-        exercises={mockExercises}
-        onLogSet={vi.fn()}
-        onCompleteWorkout={vi.fn()}
-      />,
-    );
-
-    const repsInputs = screen.getAllByPlaceholderText("10");
-    const weightInputs = screen.getAllByPlaceholderText("60");
-    const rpeSelects = screen.getAllByDisplayValue("RPE");
-
-    fireEvent.change(repsInputs[0], { target: { value: "10" } });
-    fireEvent.change(weightInputs[0], { target: { value: "80" } });
-    fireEvent.change(rpeSelects[0], { target: { value: "7" } });
-
-    const logButtons = screen.getAllByText("Log");
-    expect((logButtons[0] as HTMLButtonElement).disabled).toBe(false);
-  });
-
-  it("calls onLogSet with correct data when Log is clicked", async () => {
+  it("calls onLogSet with correct data when Complete Set is clicked", async () => {
     const onLogSet = vi.fn().mockResolvedValue(undefined);
 
     render(
@@ -110,21 +73,32 @@ describe("WorkoutLogger", () => {
       />,
     );
 
-    const repsInputs = screen.getAllByPlaceholderText("10");
-    const weightInputs = screen.getAllByPlaceholderText("60");
-    const rpeSelects = screen.getAllByDisplayValue("RPE");
+    // Use +/- buttons to set values
+    const increaseRepsButtons = screen.getAllByLabelText("Increase reps");
+    const increaseWeightButtons = screen.getAllByLabelText("Increase weight");
 
-    fireEvent.change(repsInputs[0], { target: { value: "12" } });
-    fireEvent.change(weightInputs[0], { target: { value: "70" } });
+    // Click increase buttons to set values
+    // Weight: 5 clicks × 2.5 = 12.5
+    for (let i = 0; i < 5; i++) {
+      fireEvent.click(increaseWeightButtons[0]);
+    }
+    // Reps: 10 clicks × 1 = 10
+    for (let i = 0; i < 10; i++) {
+      fireEvent.click(increaseRepsButtons[0]);
+    }
+
+    // Set RPE
+    const rpeSelects = screen.getAllByDisplayValue("RPE");
     fireEvent.change(rpeSelects[0], { target: { value: "8" } });
 
-    const logButtons = screen.getAllByText("Log");
-    fireEvent.click(logButtons[0]);
+    // Click Complete Set
+    const completeButtons = screen.getAllByText("Complete Set");
+    fireEvent.click(completeButtons[0]);
 
     await waitFor(() => {
       expect(onLogSet).toHaveBeenCalledWith("ws-1", {
-        reps: 12,
-        weight: 70,
+        reps: 10,
+        weight: 12.5,
         rpe: 8,
       });
     });
