@@ -9,6 +9,12 @@ interface BodyWeightFormProps {
 
 /**
  * BodyWeightForm — Simple form for logging body weight with optional notes.
+ *
+ * Accessibility:
+ * - ARIA labels for all inputs
+ * - Error messages linked to inputs via aria-describedby
+ * - Keyboard navigation support
+ * - Screen reader announcements for form state
  */
 export function BodyWeightForm({
   onSubmit,
@@ -41,8 +47,12 @@ export function BodyWeightForm({
     <form
       onSubmit={handleSubmit}
       className="rounded-lg border border-neutral-200 bg-white p-4 dark:border-neutral-700 dark:bg-neutral-900"
+      aria-labelledby="body-weight-form-title"
     >
-      <h3 className="mb-3 text-sm font-semibold text-neutral-900 dark:text-neutral-100">
+      <h3
+        id="body-weight-form-title"
+        className="mb-3 text-sm font-semibold text-neutral-900 dark:text-neutral-100"
+      >
         Log Body Weight
       </h3>
 
@@ -62,6 +72,9 @@ export function BodyWeightForm({
             value={weight}
             onChange={(e) => setWeight(e.target.value)}
             placeholder="75.5"
+            aria-required="true"
+            aria-invalid={error ? "true" : "false"}
+            aria-describedby={error ? "weight-error" : undefined}
             className="w-full rounded border border-neutral-200 bg-white px-3 py-2 text-sm dark:border-neutral-600 dark:bg-neutral-800 dark:text-neutral-100"
           />
         </div>
@@ -86,6 +99,7 @@ export function BodyWeightForm({
         <button
           type="submit"
           disabled={isSubmitting || !weight}
+          aria-label={isSubmitting ? "Saving weight entry" : "Log weight entry"}
           className="rounded bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {isSubmitting ? "Saving..." : "Log"}
@@ -93,7 +107,13 @@ export function BodyWeightForm({
       </div>
 
       {error && (
-        <p className="mt-2 text-xs text-red-600 dark:text-red-400">{error}</p>
+        <p
+          id="weight-error"
+          role="alert"
+          className="mt-2 text-xs text-red-600 dark:text-red-400"
+        >
+          {error}
+        </p>
       )}
     </form>
   );

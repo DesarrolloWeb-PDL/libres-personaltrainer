@@ -54,3 +54,70 @@ jobs:
       - run: npx playwright install --with-deps
       - run: npm run build
       - run: npm run test:e2e
+      - name: Upload Playwright report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 10
+
+  lighthouse:
+    runs-on: ubuntu-latest
+    needs: [build]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - name: Run Lighthouse CI
+        uses: treosh/lighthouse-ci-action@v12
+        with:
+          urls: |
+            http://localhost:3000
+            http://localhost:3000/onboarding
+            http://localhost:3000/dashboard
+          configPath: ./lighthouserc.json
+          uploadArtifacts: true
+
+  accessibility:
+    runs-on: ubuntu-latest
+    needs: [build]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - name: Start server
+        run: |
+          npm run start &
+          sleep 5
+      - name: Run axe accessibility tests
+        run: npx @axe-core/cli http://localhost:3000 --exit
+      - name: Run axe on onboarding
+        run: npx @axe-core/cli http://localhost:3000/onboarding --exit
+      - name: Run axe on dashboard
+        run: npx @axe-core/cli http://localhost:3000/dashboard --exit
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: next-build
+          path: .next/
+          retention-days: 7

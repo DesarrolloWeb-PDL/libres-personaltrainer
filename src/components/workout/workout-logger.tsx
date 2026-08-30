@@ -40,6 +40,12 @@ interface WorkoutLoggerProps {
  *
  * Each set has: set number, reps input, weight input, RPE selector, completed toggle.
  * Includes a rest timer that starts after completing a set.
+ *
+ * Accessibility:
+ * - ARIA labels for all inputs and buttons
+ * - Keyboard navigation support
+ * - Screen reader announcements for set completion
+ * - Proper table semantics with headers
  */
 export function WorkoutLogger({
   exercises,
@@ -96,7 +102,11 @@ export function WorkoutLogger({
     <div className="space-y-6">
       {/* Rest Timer */}
       {(isRunning || display !== "01:30") && (
-        <div className="rounded-lg border border-neutral-200 bg-neutral-50 p-4 text-center dark:border-neutral-700 dark:bg-neutral-800">
+        <div
+          className="rounded-lg border border-neutral-200 bg-neutral-50 p-4 text-center dark:border-neutral-700 dark:bg-neutral-800"
+          role="timer"
+          aria-label={`Rest timer: ${display}`}
+        >
           <p className="text-sm text-neutral-500 dark:text-neutral-400">
             Rest Timer
           </p>
@@ -107,6 +117,7 @@ export function WorkoutLogger({
             {isRunning ? (
               <button
                 onClick={pause}
+                aria-label="Pause rest timer"
                 className="rounded bg-neutral-200 px-3 py-1 text-sm text-neutral-700 hover:bg-neutral-300 dark:bg-neutral-700 dark:text-neutral-200 dark:hover:bg-neutral-600"
               >
                 Pause
@@ -114,6 +125,7 @@ export function WorkoutLogger({
             ) : (
               <button
                 onClick={resume}
+                aria-label="Resume rest timer"
                 className="rounded bg-blue-600 px-3 py-1 text-sm text-white hover:bg-blue-700"
               >
                 Resume
@@ -121,6 +133,7 @@ export function WorkoutLogger({
             )}
             <button
               onClick={() => reset(90)}
+              aria-label="Reset rest timer to 90 seconds"
               className="rounded bg-neutral-200 px-3 py-1 text-sm text-neutral-700 hover:bg-neutral-300 dark:bg-neutral-700 dark:text-neutral-200 dark:hover:bg-neutral-600"
             >
               Reset
@@ -137,9 +150,10 @@ export function WorkoutLogger({
         const totalSets = exercise.workoutSets.length;
 
         return (
-          <div
+          <section
             key={exercise.id}
             className="rounded-lg border border-neutral-200 bg-white p-4 dark:border-neutral-700 dark:bg-neutral-900"
+            aria-label={`${exercise.exercise.name} - ${completedCount} of ${totalSets} sets completed`}
           >
             <div className="mb-3 flex items-center justify-between">
               <div>
@@ -152,21 +166,24 @@ export function WorkoutLogger({
                   </p>
                 )}
               </div>
-              <span className="text-sm text-neutral-500 dark:text-neutral-400">
+              <span
+                className="text-sm text-neutral-500 dark:text-neutral-400"
+                aria-label={`${completedCount} of ${totalSets} sets completed`}
+              >
                 {completedCount}/{totalSets}
               </span>
             </div>
 
             {/* Sets Table */}
             <div className="overflow-x-auto">
-              <table className="w-full text-sm">
+              <table className="w-full text-sm" aria-label={`Sets for ${exercise.exercise.name}`}>
                 <thead>
                   <tr className="border-b border-neutral-100 text-left text-xs text-neutral-500 dark:border-neutral-800 dark:text-neutral-400">
-                    <th className="pb-2 pr-2">Set</th>
-                    <th className="pb-2 px-2">Reps</th>
-                    <th className="pb-2 px-2">Weight</th>
-                    <th className="pb-2 px-2">RPE</th>
-                    <th className="pb-2 pl-2">Done</th>
+                    <th scope="col" className="pb-2 pr-2">Set</th>
+                    <th scope="col" className="pb-2 px-2">Reps</th>
+                    <th scope="col" className="pb-2 px-2">Weight (kg)</th>
+                    <th scope="col" className="pb-2 px-2">RPE</th>
+                    <th scope="col" className="pb-2 pl-2">Status</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -193,6 +210,7 @@ export function WorkoutLogger({
                               updateLocalSet(set.id, "reps", e.target.value)
                             }
                             disabled={set.completed}
+                            aria-label={`Set ${set.setNumber} reps`}
                             className="w-16 rounded border border-neutral-200 bg-white px-2 py-1 text-center text-sm dark:border-neutral-600 dark:bg-neutral-800 dark:text-neutral-100"
                             placeholder="10"
                           />
@@ -209,6 +227,7 @@ export function WorkoutLogger({
                               updateLocalSet(set.id, "weight", e.target.value)
                             }
                             disabled={set.completed}
+                            aria-label={`Set ${set.setNumber} weight in kilograms`}
                             className="w-20 rounded border border-neutral-200 bg-white px-2 py-1 text-center text-sm dark:border-neutral-600 dark:bg-neutral-800 dark:text-neutral-100"
                             placeholder="60"
                           />
@@ -220,6 +239,7 @@ export function WorkoutLogger({
                               updateLocalSet(set.id, "rpe", e.target.value)
                             }
                             disabled={set.completed}
+                            aria-label={`Set ${set.setNumber} RPE (Rate of Perceived Exertion)`}
                             className="w-16 rounded border border-neutral-200 bg-white px-2 py-1 text-sm dark:border-neutral-600 dark:bg-neutral-800 dark:text-neutral-100"
                           >
                             <option value="">RPE</option>
@@ -232,13 +252,17 @@ export function WorkoutLogger({
                         </td>
                         <td className="py-1.5 pl-2">
                           {set.completed ? (
-                            <span className="text-green-600 dark:text-green-400">
+                            <span
+                              className="text-green-600 dark:text-green-400"
+                              aria-label="Set completed"
+                            >
                               ✓
                             </span>
                           ) : (
                             <button
                               onClick={() => handleCompleteSet(set.id)}
                               disabled={!local.reps || !local.weight || !local.rpe}
+                              aria-label={`Log set ${set.setNumber}`}
                               className="rounded bg-blue-600 px-2 py-0.5 text-xs text-white hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
                             >
                               Log
@@ -251,7 +275,7 @@ export function WorkoutLogger({
                 </tbody>
               </table>
             </div>
-          </div>
+          </section>
         );
       })}
 
@@ -259,6 +283,7 @@ export function WorkoutLogger({
       {allExercisesComplete && (
         <button
           onClick={onCompleteWorkout}
+          aria-label="Complete workout session"
           className="w-full rounded-lg bg-green-600 py-3 text-lg font-semibold text-white hover:bg-green-700"
         >
           Complete Workout
