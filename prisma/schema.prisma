@@ -1,0 +1,165 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─── Core User Models ────────────────────────────────────────────────
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  profile Profile?
+  programs TrainingProgram[]
+  volumeTracking VolumeTracking[]
+  progress Progress[]
+}
+
+model Profile {
+  id              String  @id @default(cuid())
+  userId          String  @unique
+  age             Int?
+  experienceLevel String? // beginner, intermediate, advanced
+  goals           String? // muscle_gain, fat_loss, strength, endurance
+  equipment       String? // full_gym, home_gym, bodyweight_only
+  injuries        String?
+  user            User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  medicalHistory MedicalHistory[]
+}
+
+model MedicalHistory {
+  id        String  @id @default(cuid())
+  profileId String
+  condition String
+  severity  String? // mild, moderate, severe
+  notes     String?
+  profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+}
+
+// ─── Exercise Database Models ─────────────────────────────────────────
+
+model Exercise {
+  id          String  @id @default(cuid())
+  name        String  @unique
+  nameEs      String?
+  instructions String?
+
+  muscleGroupId String?
+  muscleGroup   MuscleGroup? @relation(fields: [muscleGroupId], references: [id])
+
+  equipmentId String?
+  equipment   Equipment? @relation(fields: [equipmentId], references: [id])
+
+  media         ExerciseMedia[]
+  substitutions Exercise[] @relation("ExerciseSubstitutions")
+  substitutedBy Exercise[] @relation("ExerciseSubstitutions")
+
+  workoutExercises WorkoutExercise[]
+}
+
+model MuscleGroup {
+  id       String @id @default(cuid())
+  name     String @unique
+  nameEs   String?
+  category String? // chest, back, legs, shoulders, arms, core
+
+  exercises Exercise[]
+}
+
+model Equipment {
+  id   String @id @default(cuid())
+  name String @unique
+  nameEs String?
+
+  exercises Exercise[]
+}
+
+model ExerciseMedia {
+  id         String  @id @default(cuid())
+  exerciseId String
+  type       String  // gif, video, image
+  url        String
+  isPrimary  Boolean @default(false)
+  exercise   Exercise @relation(fields: [exerciseId], references: [id], onDelete: Cascade)
+}
+
+// ─── Training Program Models ──────────────────────────────────────────
+
+model TrainingProgram {
+  id        String    @id @default(cuid())
+  userId    String
+  name      String
+  splitType String?   // push_pull_legs, upper_lower, full_body, custom
+  startDate DateTime?
+  endDate   DateTime?
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  days      WorkoutDay[]
+}
+
+model WorkoutDay {
+  id       String @id @default(cuid())
+  programId String
+  dayNumber Int
+  name      String? // push_day, pull_day, leg_day
+  program   TrainingProgram @relation(fields: [programId], references: [id], onDelete: Cascade)
+  exercises WorkoutExercise[]
+}
+
+model WorkoutExercise {
+  id         String @id @default(cuid())
+  dayId      String
+  exerciseId String
+  sets       Int?
+  reps       Int?
+  weight     Float?
+  rpe        Float?
+  order      Int
+  day        WorkoutDay @relation(fields: [dayId], references: [id], onDelete: Cascade)
+  exercise   Exercise   @relation(fields: [exerciseId], references: [id])
+  workoutSets WorkoutSet[]
+}
+
+// ─── Workout Logging Models ───────────────────────────────────────────
+
+model WorkoutSet {
+  id                 String  @id @default(cuid())
+  workoutExerciseId String
+  setNumber          Int
+  reps               Int?
+  weight             Float?
+  rpe                Float?
+  completed          Boolean @default(false)
+  workoutExercise    WorkoutExercise @relation(fields: [workoutExerciseId], references: [id], onDelete: Cascade)
+}
+
+model VolumeTracking {
+  id         String @id @default(cuid())
+  userId     String
+  muscleGroup String
+  week       String // ISO week, e.g., "2026-W35"
+  sets       Int
+  volumeLoad Float? // weight * reps * sets
+  user       User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, muscleGroup, week])
+}
+
+// ─── Progress Models ──────────────────────────────────────────────────
+
+model Progress {
+  id           String   @id @default(cuid())
+  userId       String
+  date         DateTime @default(now())
+  bodyWeight   Float?
+  estimated1RM Float?
+  notes        String?
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}

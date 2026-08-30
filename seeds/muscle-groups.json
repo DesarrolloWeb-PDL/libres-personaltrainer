@@ -1,0 +1,17 @@
+[
+  { "name": "Chest", "nameEs": "Pecho", "category": "chest" },
+  { "name": "Back", "nameEs": "Espalda", "category": "back" },
+  { "name": "Shoulders", "nameEs": "Hombros", "category": "shoulders" },
+  { "name": "Biceps", "nameEs": "Bíceps", "category": "arms" },
+  { "name": "Triceps", "nameEs": "Tríceps", "category": "arms" },
+  { "name": "Forearms", "nameEs": "Antebrazos", "category": "arms" },
+  { "name": "Quadriceps", "nameEs": "Cuádriceps", "category": "legs" },
+  { "name": "Hamstrings", "nameEs": "Isquiotibiales", "category": "legs" },
+  { "name": "Glutes", "nameEs": "Glúteos", "category": "legs" },
+  { "name": "Calves", "nameEs": "Pantorrillas", "category": "legs" },
+  { "name": "Abs", "nameEs": "Abdominales", "category": "core" },
+  { "name": "Obliques", "nameEs": "Oblicuos", "category": "core" },
+  { "name": "Traps", "nameEs": "Trapecios", "category": "back" },
+  { "name": "Lats", "nameEs": "Dorsales", "category": "back" },
+  { "name": "Hip Flexors", "nameEs": "Flexores de cadera", "category": "core" }
+]

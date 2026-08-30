@@ -1,0 +1,122 @@
+[
+  {
+    "name": "Barbell Bench Press",
+    "nameEs": "Press de banca con barra",
+    "instructions": "Lie on bench, grip bar wider than shoulder width. Lower bar to mid-chest, press up until arms are extended.",
+    "muscleGroup": "Chest",
+    "equipment": "Barbell",
+    "media": []
+  },
+  {
+    "name": "Barbell Back Squat",
+    "nameEs": "Sentadilla posterior con barra",
+    "instructions": "Place bar on upper back. Feet shoulder-width apart. Squat until thighs are parallel to floor.",
+    "muscleGroup": "Quadriceps",
+    "equipment": "Barbell",
+    "media": []
+  },
+  {
+    "name": "Conventional Deadlift",
+    "nameEs": "Peso muerto convencional",
+    "instructions": "Stand over bar, feet hip-width. Grip bar outside knees. Lift by extending hips and knees simultaneously.",
+    "muscleGroup": "Hamstrings",
+    "equipment": "Barbell",
+    "media": []
+  },
+  {
+    "name": "Overhead Press",
+    "nameEs": "Press militar",
+    "instructions": "Stand with bar at shoulder height. Press bar overhead until arms are fully extended.",
+    "muscleGroup": "Shoulders",
+    "equipment": "Barbell",
+    "media": []
+  },
+  {
+    "name": "Barbell Row",
+    "nameEs": "Remo con barra",
+    "instructions": "Hinge at hips, grip bar wider than shoulder width. Pull bar to lower chest, squeeze shoulder blades.",
+    "muscleGroup": "Lats",
+    "equipment": "Barbell",
+    "media": []
+  },
+  {
+    "name": "Pull-up",
+    "nameEs": "Dominada",
+    "instructions": "Hang from bar with overhand grip. Pull body up until chin is over the bar.",
+    "muscleGroup": "Lats",
+    "equipment": "Pull-up Bar",
+    "media": []
+  },
+  {
+    "name": "Dumbbell Lateral Raise",
+    "nameEs": "Elevación lateral con mancuernas",
+    "instructions": "Stand with dumbbells at sides. Raise arms out to sides until parallel with floor.",
+    "muscleGroup": "Shoulders",
+    "equipment": "Dumbbell",
+    "media": []
+  },
+  {
+    "name": "Bicep Curl",
+    "nameEs": "Curl de bíceps",
+    "instructions": "Stand holding dumbbells with palms forward. Curl weights up by bending elbows.",
+    "muscleGroup": "Biceps",
+    "equipment": "Dumbbell",
+    "media": []
+  },
+  {
+    "name": "Tricep Dip",
+    "nameEs": "Fondo de tríceps",
+    "instructions": "Grip parallel bars. Lower body by bending elbows to 90 degrees. Push back up.",
+    "muscleGroup": "Triceps",
+    "equipment": "Dip Station",
+    "media": []
+  },
+  {
+    "name": "Romanian Deadlift",
+    "nameEs": "Peso muerto rumano",
+    "instructions": "Hold barbell at hip level. Hinge at hips, lowering bar along legs. Feel stretch in hamstrings.",
+    "muscleGroup": "Hamstrings",
+    "equipment": "Barbell",
+    "media": []
+  },
+  {
+    "name": "Cable Fly",
+    "nameEs": "Apertura en polea",
+    "instructions": "Stand between cable machines, grip handles. Bring hands together in hugging motion.",
+    "muscleGroup": "Chest",
+    "equipment": "Cable Machine",
+    "media": []
+  },
+  {
+    "name": "Face Pull",
+    "nameEs": "Jalón a la cara",
+    "instructions": "Set cable at face height. Pull rope toward face, separating ends. Squeeze rear delts.",
+    "muscleGroup": "Shoulders",
+    "equipment": "Cable Machine",
+    "media": []
+  },
+  {
+    "name": "Plank",
+    "nameEs": "Plancha",
+    "instructions": "Hold push-up position on forearms. Keep body straight from head to heels.",
+    "muscleGroup": "Abs",
+    "equipment": "Bodyweight",
+    "media": []
+  },
+  {
+    "name": "Lat Pulldown",
+    "nameEs": "Jalón al pecho",
+    "instructions": "Sit at machine, grip bar wide. Pull bar down to upper chest, squeeze lats.",
+    "muscleGroup": "Lats",
+    "equipment": "Lat Pulldown",
+    "media": []
+  },
+  {
+    "name": "Glute Bridge",
+    "nameEs": "Puente de glúteos",
+    "instructions": "Lie on back, knees bent, feet flat. Lift hips until body forms straight line from knees to shoulders.",
+    "muscleGroup": "Glutes",
+    "equipment": "Bodyweight",
+    "media": []
+  }
+]

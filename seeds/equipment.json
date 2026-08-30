@@ -1,0 +1,17 @@
+[
+  { "name": "Barbell", "nameEs": "Barra" },
+  { "name": "Dumbbell", "nameEs": "Mancuerna" },
+  { "name": "Cable Machine", "nameEs": "Máquina de poleas" },
+  { "name": "Pull-up Bar", "nameEs": "Barra de dominadas" },
+  { "name": "Kettlebell", "nameEs": "Pesa rusa" },
+  { "name": "Resistance Band", "nameEs": "Banda elástica" },
+  { "name": "Smith Machine", "nameEs": "Máquina Smith" },
+  { "name": "Leg Press", "nameEs": "Prensa de piernas" },
+  { "name": "Lat Pulldown", "nameEs": "Jalón al pecho" },
+  { "name": "Dip Station", "nameEs": "Estación de fondos" },
+  { "name": "EZ Bar", "nameEs": "Barra Z" },
+  { "name": "Bodyweight", "nameEs": "Peso corporal" },
+  { "name": "Medicine Ball", "nameEs": "Balón medicinal" },
+  { "name": "Foam Roller", "nameEs": "Rodillo de espuma" },
+  { "name": "Treadmill", "nameEs": "Cinta de correr" }
+]
