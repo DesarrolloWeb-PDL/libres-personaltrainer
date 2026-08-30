@@ -1,6 +1,8 @@
 import { prisma } from "@/lib/infrastructure/prisma/client";
 import { ExerciseBrowser } from "@/components/exercise/exercise-browser";
 
+export const dynamic = "force-dynamic";
+
 /**
  * Exercise browser page — server component that fetches data and renders the browser.
  */
