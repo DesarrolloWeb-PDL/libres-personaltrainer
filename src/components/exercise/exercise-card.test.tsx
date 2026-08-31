@@ -7,7 +7,12 @@ const mockExercise: ExerciseWithRelations = {
   id: "ex-1",
   name: "Barbell Bench Press",
   nameEs: "Press de banca con barra",
+  slug: "barbell-bench-press",
   instructions: "Lie on bench, grip bar wider than shoulder width.",
+  gifUrl: "https://example.com/bench.gif",
+  bodyPart: "chest",
+  category: "strength",
+  muscle: "pectorals",
   muscleGroupId: "mg-1",
   muscleGroup: {
     id: "mg-1",
@@ -52,6 +57,16 @@ describe("ExerciseCard", () => {
     expect(screen.getByText("Barra")).toBeInTheDocument();
   });
 
+  it("renders body part badge", () => {
+    render(<ExerciseCard exercise={mockExercise} />);
+    expect(screen.getByText("chest")).toBeInTheDocument();
+  });
+
+  it("renders category badge", () => {
+    render(<ExerciseCard exercise={mockExercise} />);
+    expect(screen.getByText("strength")).toBeInTheDocument();
+  });
+
   it("renders instructions preview", () => {
     render(<ExerciseCard exercise={mockExercise} />);
     expect(
@@ -64,7 +79,12 @@ describe("ExerciseCard", () => {
       id: "ex-2",
       name: "Plank",
       nameEs: null,
+      slug: null,
       instructions: null,
+      gifUrl: null,
+      bodyPart: null,
+      category: null,
+      muscle: null,
       muscleGroupId: null,
       muscleGroup: null,
       equipmentId: null,

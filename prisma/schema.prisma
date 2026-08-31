@@ -95,7 +95,12 @@ model Exercise {
   id          String  @id @default(cuid())
   name        String  @unique
   nameEs      String?
+  slug        String? @unique
   instructions String?
+  gifUrl      String?
+  bodyPart    String?
+  category    String?
+  muscle      String?
 
   muscleGroupId String?
   muscleGroup   MuscleGroup? @relation(fields: [muscleGroupId], references: [id])

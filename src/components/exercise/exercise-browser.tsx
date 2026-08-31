@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { ExerciseCard } from "./exercise-card";
 import type { ExerciseWithRelations } from "@/lib/ports/exercise-repository";
 
@@ -21,6 +21,7 @@ interface ExerciseBrowserProps {
   muscleGroups: MuscleGroup[];
   equipment: Equipment[];
   isLoading?: boolean;
+  onSelect?: (exercise: ExerciseWithRelations) => void;
 }
 
 export function ExerciseBrowser({
@@ -28,10 +29,20 @@ export function ExerciseBrowser({
   muscleGroups,
   equipment,
   isLoading = false,
+  onSelect,
 }: ExerciseBrowserProps) {
   const [search, setSearch] = useState("");
   const [selectedMuscleGroup, setSelectedMuscleGroup] = useState("");
   const [selectedEquipment, setSelectedEquipment] = useState("");
+  const [selectedBodyPart, setSelectedBodyPart] = useState("");
+
+  const bodyParts = useMemo(() => {
+    const set = new Set<string>();
+    for (const ex of exercises) {
+      if (ex.bodyPart) set.add(ex.bodyPart);
+    }
+    return Array.from(set).sort();
+  }, [exercises]);
 
   const filtered = exercises.filter((ex) => {
     const matchesSearch =
@@ -45,8 +56,13 @@ export function ExerciseBrowser({
     const matchesEquipment =
       !selectedEquipment || ex.equipmentId === selectedEquipment;
 
-    return matchesSearch && matchesMuscle && matchesEquipment;
+    const matchesBodyPart =
+      !selectedBodyPart || ex.bodyPart === selectedBodyPart;
+
+    return matchesSearch && matchesMuscle && matchesEquipment && matchesBodyPart;
   });
+
+  const hasFilters = search || selectedMuscleGroup || selectedEquipment || selectedBodyPart;
 
   return (
     <div className="space-y-4">
@@ -67,14 +83,45 @@ export function ExerciseBrowser({
         </svg>
         <input
           type="text"
-          placeholder="Search exercises..."
+          placeholder="Buscar ejercicios..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           className="w-full rounded-xl border border-zinc-700 bg-zinc-900 py-3 pl-10 pr-4 text-sm text-zinc-100 placeholder-zinc-500 focus:border-blue-500 focus:outline-none"
         />
       </div>
 
-      {/* Filter Chips - Muscle Groups */}
+      {/* Body Part Filter */}
+      {bodyParts.length > 0 && (
+        <div className="flex flex-wrap gap-2">
+          <button
+            onClick={() => setSelectedBodyPart("")}
+            className={`rounded-full px-3 py-1.5 text-xs font-bold transition-colors ${
+              !selectedBodyPart
+                ? "bg-blue-500 text-white"
+                : "bg-zinc-800 text-zinc-400 hover:bg-zinc-700"
+            }`}
+          >
+            Todas las zonas
+          </button>
+          {bodyParts.map((bp) => (
+            <button
+              key={bp}
+              onClick={() =>
+                setSelectedBodyPart(selectedBodyPart === bp ? "" : bp)
+              }
+              className={`rounded-full px-3 py-1.5 text-xs font-bold transition-colors ${
+                selectedBodyPart === bp
+                  ? "bg-blue-500 text-white"
+                  : "bg-zinc-800 text-zinc-400 hover:bg-zinc-700"
+              }`}
+            >
+              {bp}
+            </button>
+          ))}
+        </div>
+      )}
+
+      {/* Muscle Group Filter */}
       <div className="flex flex-wrap gap-2">
         <button
           onClick={() => setSelectedMuscleGroup("")}
@@ -84,7 +131,7 @@ export function ExerciseBrowser({
               : "bg-zinc-800 text-zinc-400 hover:bg-zinc-700"
           }`}
         >
-          All
+          Todos los músculos
         </button>
         {muscleGroups.map((mg) => (
           <button
@@ -115,7 +162,7 @@ export function ExerciseBrowser({
               : "bg-zinc-800 text-zinc-400 hover:bg-zinc-700"
           }`}
         >
-          All Equipment
+          Todo el equipo
         </button>
         {equipment.map((eq) => (
           <button
@@ -137,33 +184,34 @@ export function ExerciseBrowser({
       </div>
 
       {/* Clear Filters */}
-      {(search || selectedMuscleGroup || selectedEquipment) && (
+      {hasFilters && (
         <button
           onClick={() => {
             setSearch("");
             setSelectedMuscleGroup("");
             setSelectedEquipment("");
+            setSelectedBodyPart("");
           }}
           className="text-sm font-medium text-blue-500 hover:text-blue-400"
         >
-          Clear all filters
+          Limpiar filtros
         </button>
       )}
 
       {/* Results Count */}
       <p className="text-xs font-medium text-zinc-500 uppercase tracking-wider">
         {isLoading
-          ? "Loading exercises..."
-          : `${filtered.length} exercise${filtered.length !== 1 ? "s" : ""} found`}
+          ? "Cargando ejercicios..."
+          : `${filtered.length} ejercicio${filtered.length !== 1 ? "s" : ""} encontrado${filtered.length !== 1 ? "s" : ""}`}
       </p>
 
       {/* Loading State */}
       {isLoading && (
-        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          {Array.from({ length: 6 }).map((_, i) => (
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+          {Array.from({ length: 12 }).map((_, i) => (
             <div
               key={i}
-              className="h-48 animate-pulse rounded-xl bg-zinc-900 border border-zinc-800"
+              className="aspect-square animate-pulse rounded-xl bg-zinc-900 border border-zinc-800"
             />
           ))}
         </div>
@@ -173,26 +221,31 @@ export function ExerciseBrowser({
       {!isLoading && filtered.length === 0 && (
         <div className="flex flex-col items-center justify-center rounded-xl border-2 border-dashed border-zinc-700 py-12">
           <p className="text-sm text-zinc-400">
-            No exercises match your filters.
+            No se encontraron ejercicios con esos filtros.
           </p>
           <button
             onClick={() => {
               setSearch("");
               setSelectedMuscleGroup("");
               setSelectedEquipment("");
+              setSelectedBodyPart("");
             }}
             className="mt-2 text-sm font-medium text-blue-500 hover:text-blue-400"
           >
-            Reset filters
+            Restablecer filtros
           </button>
         </div>
       )}
 
       {/* Exercise Grid */}
       {!isLoading && filtered.length > 0 && (
-        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
           {filtered.map((exercise) => (
-            <ExerciseCard key={exercise.id} exercise={exercise} />
+            <ExerciseCard
+              key={exercise.id}
+              exercise={exercise}
+              onSelect={onSelect}
+            />
           ))}
         </div>
       )}

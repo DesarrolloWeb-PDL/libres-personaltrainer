@@ -22,7 +22,12 @@ export interface ExerciseWithRelations {
   id: string;
   name: string;
   nameEs: string | null;
+  slug: string | null;
   instructions: string | null;
+  gifUrl: string | null;
+  bodyPart: string | null;
+  category: string | null;
+  muscle: string | null;
   muscleGroupId: string | null;
   muscleGroup: {
     id: string;

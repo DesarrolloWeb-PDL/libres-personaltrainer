@@ -1,5 +1,7 @@
 import { createTRPCRouter } from "../trpc";
 import { exerciseRouter } from "./exercise";
+import { muscleGroupRouter } from "./muscleGroup";
+import { equipmentRouter } from "./equipment";
 import { userRouter } from "./user";
 import { onboardingRouter } from "./onboarding";
 import { programRouter } from "./program";
@@ -13,6 +15,8 @@ import { nutritionRouter } from "./nutrition";
  */
 export const appRouter = createTRPCRouter({
   exercise: exerciseRouter,
+  muscleGroup: muscleGroupRouter,
+  equipment: equipmentRouter,
   user: userRouter,
   onboarding: onboardingRouter,
   program: programRouter,
