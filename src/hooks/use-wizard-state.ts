@@ -29,38 +29,46 @@ const STEP_KEY = "onboarding-wizard-step";
 
 /**
  * Wizard state hook — tracks multi-step form data with localStorage persistence.
+ *
+ * IMPORTANT: Always initialize with default values (matching SSR) to avoid
+ * hydration mismatches. Load from localStorage in useEffect after hydration.
  */
 export function useWizardState(totalSteps = 5): UseWizardStateReturn {
-  const [currentStep, setCurrentStep] = useState(() => {
-    if (typeof window !== "undefined") {
-      const saved = localStorage.getItem(STEP_KEY);
-      return saved ? parseInt(saved, 10) : 1;
-    }
-    return 1;
-  });
+  const [currentStep, setCurrentStep] = useState(1);
+  const [data, setData] = useState<WizardData>({});
+  const [hydrated, setHydrated] = useState(false);
 
-  const [data, setData] = useState<WizardData>(() => {
-    if (typeof window !== "undefined") {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved) {
-        try {
-          return JSON.parse(saved) as WizardData;
-        } catch {
-          return {};
-        }
+  // Load from localStorage AFTER hydration (not during useState initializer)
+  useEffect(() => {
+    const savedStep = localStorage.getItem(STEP_KEY);
+    if (savedStep) {
+      setCurrentStep(parseInt(savedStep, 10));
+    }
+
+    const savedData = localStorage.getItem(STORAGE_KEY);
+    if (savedData) {
+      try {
+        setData(JSON.parse(savedData) as WizardData);
+      } catch {
+        // Ignore parse errors
       }
     }
-    return {};
-  });
 
-  // Persist to localStorage on changes
+    setHydrated(true);
+  }, []);
+
+  // Persist to localStorage on changes (only after initial hydration load)
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-  }, [data]);
+    if (hydrated) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    }
+  }, [data, hydrated]);
 
   useEffect(() => {
-    localStorage.setItem(STEP_KEY, currentStep.toString());
-  }, [currentStep]);
+    if (hydrated) {
+      localStorage.setItem(STEP_KEY, currentStep.toString());
+    }
+  }, [currentStep, hydrated]);
 
   const setStep = useCallback((step: number) => {
     if (step >= 1 && step <= totalSteps) {
