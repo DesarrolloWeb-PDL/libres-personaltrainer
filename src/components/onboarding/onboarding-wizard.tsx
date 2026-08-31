@@ -43,20 +43,7 @@ export function OnboardingWizard({ userId }: OnboardingWizardProps) {
       injuries: data.injuries,
     });
 
-    // 2. Auto-generate training program based on profile
-    const frequencyMap: Record<string, number> = {
-      full_gym: 5,
-      home_gym: 4,
-      bodyweight_only: 3,
-    };
-    const trainingFrequency = frequencyMap[data.equipment ?? "full_gym"] ?? 4;
-
-    await caller.program.generate({
-      userId,
-      name: "My Training Program",
-      trainingFrequency,
-      experienceLevel: data.experienceLevel ?? "intermediate",
-    });
+    // DON'T auto-generate program — let user choose on dashboard
 
     localStorage.removeItem("onboarding-wizard-data");
     localStorage.removeItem("onboarding-wizard-step");
