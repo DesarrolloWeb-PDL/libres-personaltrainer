@@ -3,8 +3,7 @@
 import { useState } from "react";
 import { api } from "@/lib/api/trpc-client";
 import { useClientDate } from "@/hooks/use-client-date";
-
-const userId = "cmtg8qhsf0000pgkzcm8m2mma";
+import { useSession } from "next-auth/react";
 
 const ACTIVITY_LEVELS = [
   { value: 1.2, label: "Sedentary", description: "Desk job, little exercise" },
@@ -30,6 +29,8 @@ function calculateTDEE(
 }
 
 export default function NutritionPage() {
+  const { data: session } = useSession();
+  const userId = session?.user?.id ?? "";
   const [weight, setWeight] = useState("");
   const [height, setHeight] = useState("");
   const [age, setAge] = useState("");

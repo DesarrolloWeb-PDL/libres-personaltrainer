@@ -6,5 +6,5 @@ import { appRouter } from "@/server/routers/_app";
  * tRPC procedures directly.
  */
 export function createCaller() {
-  return appRouter.createCaller({});
+  return appRouter.createCaller({ session: null });
 }

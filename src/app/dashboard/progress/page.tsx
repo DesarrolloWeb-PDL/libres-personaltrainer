@@ -8,22 +8,23 @@ import {
   BodyWeightChart,
   VolumeLoadChart,
 } from "@/components/progress/volume-load-chart";
-
-const USER_ID = "cmtg8qhsf0000pgkzcm8m2mma";
+import { useSession } from "next-auth/react";
 
 export default function ProgressPage() {
+  const { data: session } = useSession();
+  const userId = session?.user?.id ?? "";
   const [dateRange, setDateRange] = useState<"3m" | "6m" | "1y" | "all">(
     "all",
   );
 
   const weightQuery = api.progress.getWeightHistory.useQuery({
-    userId: USER_ID,
+    userId,
   });
   const oneRMQuery = api.progress.get1RMHistory.useQuery({
-    userId: USER_ID,
+    userId,
   });
   const volumeQuery = api.progress.getVolumeHistory.useQuery({
-    userId: USER_ID,
+    userId,
   });
 
   const weightHistory = useMemo(() => {
@@ -106,7 +107,7 @@ export default function ProgressPage() {
   const utils = api.useUtils();
 
   const handleExportCSV = useCallback(async () => {
-    const csv = await utils.progress.exportCSV.fetch({ userId: USER_ID });
+    const csv = await utils.progress.exportCSV.fetch({ userId });
     const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
@@ -202,7 +203,7 @@ export default function ProgressPage() {
       <BodyWeightForm
         onSubmit={async (data) => {
           await recordMutation.mutateAsync({
-            userId: USER_ID,
+            userId,
             bodyWeight: data.bodyWeight,
             notes: data.notes,
           });

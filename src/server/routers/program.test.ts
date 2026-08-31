@@ -59,7 +59,7 @@ vi.mock("@/lib/domain/training-engine", () => ({
 
 import { programRouter } from "./program";
 
-const mockCtx = {};
+const mockCtx = { session: null };
 
 describe("programRouter", () => {
   beforeEach(() => {

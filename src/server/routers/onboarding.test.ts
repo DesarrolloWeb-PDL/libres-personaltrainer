@@ -40,7 +40,7 @@ describe("onboardingRouter", () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
-    caller = onboardingRouter.createCaller({});
+    caller = onboardingRouter.createCaller({ session: null });
   });
 
   describe("getProfile", () => {

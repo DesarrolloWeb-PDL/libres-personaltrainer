@@ -39,7 +39,7 @@ vi.mock("@/lib/infrastructure/prisma/client", () => ({
 
 import { sessionRouter } from "./session";
 
-const mockCtx = {};
+const mockCtx = { session: null };
 
 const mockSession = {
   id: "sess-1",

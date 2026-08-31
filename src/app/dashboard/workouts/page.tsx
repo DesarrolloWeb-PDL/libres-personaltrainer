@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { api } from "@/lib/api/trpc-client";
 import { useFormattedDate } from "@/hooks/use-client-date";
+import { useSession } from "next-auth/react";
 
 /** Renders a formatted date/time from an ISO string, avoiding hydration mismatch. */
 function FormattedDate({
@@ -17,9 +18,9 @@ function FormattedDate({
   return <>{formatted || "\u00A0"}</>;
 }
 
-const userId = "cmtg8qhsf0000pgkzcm8m2mma";
-
 export default function WorkoutsPage() {
+  const { data: session } = useSession();
+  const userId = session?.user?.id ?? "";
   const router = useRouter();
   const currentProgram = api.program.getCurrent.useQuery({ userId });
   const sessions = api.session.listByUser.useQuery({ userId });

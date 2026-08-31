@@ -5,19 +5,20 @@ import { api } from "@/lib/api/trpc-client";
 import { VolumeLandmarks } from "@/components/progress/volume-landmarks";
 import { OverreachingWarning } from "@/components/progress/overreaching-warning";
 import { DeloadRecommendation } from "@/components/progress/deload-recommendation";
-
-const USER_ID = "cmtg8qhsf0000pgkzcm8m2mma";
+import { useSession } from "next-auth/react";
 
 export default function VolumeDashboardPage() {
+  const { data: session } = useSession();
+  const userId = session?.user?.id ?? "";
   const [warningDismissed, setWarningDismissed] = useState(false);
 
   const statusQuery = api.volume.getStatus.useQuery({
-    userId: USER_ID,
+    userId,
     experienceLevel: "intermediate",
   });
 
   const deloadQuery = api.volume.getDeloadRecommendation.useQuery({
-    userId: USER_ID,
+    userId,
     weeksSinceDeload: 0,
   });
 
@@ -64,7 +65,7 @@ export default function VolumeDashboardPage() {
   const isLoading = statusQuery.isLoading || deloadQuery.isLoading;
 
   const handleActivateDeload = async () => {
-    await activateDeloadMutation.mutateAsync({ userId: USER_ID });
+    await activateDeloadMutation.mutateAsync({ userId });
   };
 
   return (

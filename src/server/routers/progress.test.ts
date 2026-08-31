@@ -43,7 +43,7 @@ vi.mock("@/lib/domain/plateau", () => ({
 
 import { progressRouter } from "./progress";
 
-const mockCtx = {};
+const mockCtx = { session: null };
 
 const mockProgressEntry = {
   id: "prog-1",

@@ -1,7 +1,13 @@
 import { OnboardingWizard } from "@/components/onboarding/onboarding-wizard";
+import { auth } from "@/lib/auth";
+import { redirect } from "next/navigation";
 
-export default function OnboardingPage() {
-  const userId = "cmtg8qhsf0000pgkzcm8m2mma";
+export default async function OnboardingPage() {
+  const session = await auth();
+
+  if (!session?.user?.id) {
+    redirect("/login");
+  }
 
   return (
     <main className="min-h-screen bg-zinc-950 px-4 py-12">
@@ -14,7 +20,7 @@ export default function OnboardingPage() {
             Let&apos;s set up your profile to personalize your training program.
           </p>
         </div>
-        <OnboardingWizard userId={userId} />
+        <OnboardingWizard userId={session.user.id} />
       </div>
     </main>
   );

@@ -4,6 +4,7 @@ import { useParams, useRouter } from "next/navigation";
 import { api } from "@/lib/api/trpc-client";
 import { WorkoutLogger } from "@/components/workout/workout-logger";
 import { useFormattedDate } from "@/hooks/use-client-date";
+import { useSession } from "next-auth/react";
 
 /** Renders a formatted time from an ISO string, avoiding hydration mismatch. */
 function SessionTime({ startedAt }: { startedAt: string }) {
@@ -12,19 +13,21 @@ function SessionTime({ startedAt }: { startedAt: string }) {
 }
 
 export default function WorkoutSessionPage() {
+  const { data: session } = useSession();
+  const userId = session?.user?.id ?? "";
   const params = useParams();
   const router = useRouter();
   const sessionId = params.id as string;
 
-  const session = api.session.getById.useQuery({ id: sessionId });
+  const workoutSession = api.session.getById.useQuery({ id: sessionId });
   const logSet = api.session.logSet.useMutation({
-    onSuccess: () => session.refetch(),
+    onSuccess: () => workoutSession.refetch(),
   });
   const completeSession = api.session.complete.useMutation({
     onSuccess: () => router.push("/dashboard/workouts"),
   });
 
-  if (session.isLoading) {
+  if (workoutSession.isLoading) {
     return (
       <div className="flex items-center justify-center py-20">
         <p className="text-zinc-400">Loading workout...</p>
@@ -32,7 +35,7 @@ export default function WorkoutSessionPage() {
     );
   }
 
-  if (!session.data) {
+  if (!workoutSession.data) {
     return (
       <div className="py-20 text-center">
         <p className="text-zinc-400">Workout session not found.</p>
@@ -40,7 +43,7 @@ export default function WorkoutSessionPage() {
     );
   }
 
-  const exercises = session.data.day?.exercises ?? [];
+  const exercises = workoutSession.data.day?.exercises ?? [];
 
   const handleLogSet = async (
     setId: string,
@@ -50,7 +53,6 @@ export default function WorkoutSessionPage() {
   };
 
   const handleCompleteWorkout = async () => {
-    const userId = session.data?.userId ?? "user-1";
     await completeSession.mutateAsync({ id: sessionId, userId });
   };
 
@@ -69,10 +71,10 @@ export default function WorkoutSessionPage() {
             <div className="w-1 h-10 bg-blue-500 rounded-full" />
             <div>
               <h1 className="text-2xl font-bold text-zinc-50">
-                {session.data.day?.name ?? "Workout"}
+                {workoutSession.data.day?.name ?? "Workout"}
               </h1>
               <p className="text-sm text-zinc-400">
-                Started at <SessionTime startedAt={session.data.startedAt} />
+                Started at <SessionTime startedAt={workoutSession.data.startedAt} />
               </p>
             </div>
           </div>

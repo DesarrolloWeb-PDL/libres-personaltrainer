@@ -4,8 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { api } from "@/lib/api/trpc-client";
 import { useClientDate, useFormattedDate } from "@/hooks/use-client-date";
-
-const userId = "cmtg8qhsf0000pgkzcm8m2mma";
+import { useSession } from "next-auth/react";
 
 /** Split icon mapping */
 const SPLIT_ICONS: Record<string, string> = {
@@ -33,6 +32,8 @@ function FormattedDate({
 }
 
 export default function DashboardPage() {
+  const { data: session } = useSession();
+  const userId = session?.user?.id ?? "";
   const [generating, setGenerating] = useState(false);
   const [selectedSplit, setSelectedSplit] = useState<string | null>(null);
   const [showPlanSelection, setShowPlanSelection] = useState(false);

@@ -59,7 +59,7 @@ vi.mock("@/lib/infrastructure/prisma/adapters/exercise", () => {
 import { exerciseRouter } from "./exercise";
 
 describe("exerciseRouter", () => {
-  const caller = exerciseRouter.createCaller({});
+  const caller = exerciseRouter.createCaller({ session: null });
 
   describe("list", () => {
     it("returns all exercises", async () => {
