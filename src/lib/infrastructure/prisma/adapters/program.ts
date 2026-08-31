@@ -81,4 +81,12 @@ export class PrismaProgramAdapter implements ProgramRepository {
       orderBy: { startDate: "desc" },
     }) as Promise<ProgramRecord[]>;
   }
+
+  async deleteByUserId(userId: string): Promise<void> {
+    // Delete all training programs for this user
+    // Cascade deletes will handle WorkoutDay, WorkoutExercise, WorkoutSet, WorkoutSession
+    await prisma.trainingProgram.deleteMany({
+      where: { userId },
+    });
+  }
 }

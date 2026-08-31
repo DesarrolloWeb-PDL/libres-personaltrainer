@@ -298,6 +298,14 @@ export const programRouter = createTRPCRouter({
     .query(({ input }) => {
       return programRepo.findByUserId(input.userId);
     }),
+
+  /** Delete current program and all sessions for a user (start over) */
+  deleteCurrent: publicProcedure
+    .input(z.object({ userId: z.string() }))
+    .mutation(async ({ input }) => {
+      await programRepo.deleteByUserId(input.userId);
+      return { success: true };
+    }),
 });
 
 // ─── Helpers ─────────────────────────────────────────────────────────

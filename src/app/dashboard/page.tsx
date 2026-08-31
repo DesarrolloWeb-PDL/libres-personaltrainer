@@ -35,6 +35,7 @@ function FormattedDate({
 export default function DashboardPage() {
   const [generating, setGenerating] = useState(false);
   const [selectedSplit, setSelectedSplit] = useState<string | null>(null);
+  const [showPlanSelection, setShowPlanSelection] = useState(false);
   const clientDate = useClientDate();
 
   const currentProgram = api.program.getCurrent.useQuery({ userId });
@@ -47,10 +48,19 @@ export default function DashboardPage() {
       currentProgram.refetch();
       setGenerating(false);
       setSelectedSplit(null);
+      setShowPlanSelection(false);
     },
     onError: () => {
       setGenerating(false);
       setSelectedSplit(null);
+    },
+  });
+
+  const deleteProgram = api.program.deleteCurrent.useMutation({
+    onSuccess: () => {
+      currentProgram.refetch();
+      sessions.refetch();
+      setShowPlanSelection(true);
     },
   });
 
@@ -116,7 +126,7 @@ export default function DashboardPage() {
       {/* ═══════════════════════════════════════════════════════════════
           NO PROGRAM → PERSONALIZED PLAN SELECTION
           ═══════════════════════════════════════════════════════════════ */}
-      {!currentProgram.data && (
+      {(!currentProgram.data || showPlanSelection) && (
         <div className="space-y-4">
           <div className="rounded-xl bg-blue-500/10 border border-blue-500/30 p-6">
             <div className="flex items-center gap-3 mb-2">
@@ -394,6 +404,17 @@ export default function DashboardPage() {
           >
             View All Workouts
           </Link>
+          <button
+            onClick={() => {
+              if (window.confirm("This will delete your current program and all workout history. Are you sure?")) {
+                deleteProgram.mutate({ userId });
+              }
+            }}
+            disabled={deleteProgram.isPending}
+            className="mt-2 block w-full rounded-xl border border-zinc-700 py-3 text-center text-sm font-medium text-zinc-500 hover:text-zinc-300 hover:border-zinc-600 transition-colors disabled:opacity-50"
+          >
+            {deleteProgram.isPending ? "Deleting..." : "Change Program"}
+          </button>
         </div>
       )}
 
