@@ -3,6 +3,13 @@
 import { useParams, useRouter } from "next/navigation";
 import { api } from "@/lib/api/trpc-client";
 import { WorkoutLogger } from "@/components/workout/workout-logger";
+import { useFormattedDate } from "@/hooks/use-client-date";
+
+/** Renders a formatted time from an ISO string, avoiding hydration mismatch. */
+function SessionTime({ startedAt }: { startedAt: string }) {
+  const time = useFormattedDate(startedAt, "time");
+  return <>{time || "\u00A0"}</>;
+}
 
 export default function WorkoutSessionPage() {
   const params = useParams();
@@ -65,7 +72,7 @@ export default function WorkoutSessionPage() {
                 {session.data.day?.name ?? "Workout"}
               </h1>
               <p className="text-sm text-zinc-400">
-                Started at {new Date(session.data.startedAt).toLocaleTimeString()}
+                Started at <SessionTime startedAt={session.data.startedAt} />
               </p>
             </div>
           </div>

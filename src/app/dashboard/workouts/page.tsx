@@ -3,6 +3,19 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { api } from "@/lib/api/trpc-client";
+import { useFormattedDate } from "@/hooks/use-client-date";
+
+/** Renders a formatted date/time from an ISO string, avoiding hydration mismatch. */
+function FormattedDate({
+  isoString,
+  format,
+}: {
+  isoString: string;
+  format: "date" | "time" | "datetime";
+}) {
+  const formatted = useFormattedDate(isoString, format);
+  return <>{formatted || "\u00A0"}</>;
+}
 
 const userId = "cmtg8qhsf0000pgkzcm8m2mma";
 
@@ -36,7 +49,7 @@ export default function WorkoutsPage() {
               </p>
               <p className="text-xs text-zinc-400">
                 {activeSession.data.day?.name ?? "Workout"} • Started{" "}
-                {new Date(activeSession.data.startedAt).toLocaleTimeString()}
+                <FormattedDate isoString={activeSession.data.startedAt} format="time" />
               </p>
             </div>
             <Link
@@ -105,8 +118,7 @@ export default function WorkoutsPage() {
                   <div className="flex-1">
                     <h3 className="font-semibold text-zinc-50">Workout Session</h3>
                     <p className="text-xs text-zinc-400">
-                      {new Date(session.startedAt).toLocaleDateString()} at{" "}
-                      {new Date(session.startedAt).toLocaleTimeString()}
+                      <FormattedDate isoString={session.startedAt} format="datetime" />
                     </p>
                   </div>
                   <Link

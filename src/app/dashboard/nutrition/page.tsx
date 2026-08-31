@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { api } from "@/lib/api/trpc-client";
+import { useClientDate } from "@/hooks/use-client-date";
 
 const userId = "cmtg8qhsf0000pgkzcm8m2mma";
 
@@ -34,6 +35,7 @@ export default function NutritionPage() {
   const [age, setAge] = useState("");
   const [gender, setGender] = useState<"male" | "female">("male");
   const [activityLevel, setActivityLevel] = useState(1.55);
+  const clientDate = useClientDate();
 
   // Meal logging state
   const [mealName, setMealName] = useState("");
@@ -289,7 +291,7 @@ export default function NutritionPage() {
           <div>
             <h2 className="font-semibold text-zinc-50">Today&apos;s Intake</h2>
             <p className="text-xs text-zinc-400">
-              {dailySummary.data?.date ?? new Date().toISOString().split("T")[0]}
+              {dailySummary.data?.date ?? (clientDate ? clientDate.toISOString().split("T")[0] : "")}
             </p>
           </div>
         </div>

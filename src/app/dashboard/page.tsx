@@ -3,6 +3,25 @@
 import { useState } from "react";
 import Link from "next/link";
 import { api } from "@/lib/api/trpc-client";
+import { useClientDate, useFormattedDate } from "@/hooks/use-client-date";
+
+/** Renders a formatted time from an ISO string, avoiding hydration mismatch. */
+function SessionTime({ startedAt }: { startedAt: string }) {
+  const time = useFormattedDate(startedAt, "time");
+  return <>{time || "\u00A0"}</>;
+}
+
+/** Renders a formatted date from an ISO string, avoiding hydration mismatch. */
+function FormattedDate({
+  isoString,
+  format,
+}: {
+  isoString: string;
+  format: "date" | "time" | "datetime";
+}) {
+  const formatted = useFormattedDate(isoString, format);
+  return <>{formatted || "\u00A0"}</>;
+}
 
 const userId = "cmtg8qhsf0000pgkzcm8m2mma";
 
@@ -39,6 +58,7 @@ const PRESET_PROGRAMS = [
 export default function DashboardPage() {
   const [generating, setGenerating] = useState(false);
   const [showPresets, setShowPresets] = useState(false);
+  const clientDate = useClientDate();
 
   const currentProgram = api.program.getCurrent.useQuery({ userId });
   const sessions = api.session.listByUser.useQuery({ userId });
@@ -67,22 +87,23 @@ export default function DashboardPage() {
     sessions.data?.filter((s) => s.completedAt !== null).length ?? 0;
   const totalSessions = sessions.data?.length ?? 0;
 
-  // Determine today's workout based on day of week and program
+  // Determine today's workout — only after client hydration to avoid mismatch
   const programDays = currentProgram.data?.days ?? [];
-  const today = new Date().getDay(); // 0=Sun, 1=Mon...
+  const today = clientDate?.getDay() ?? 0;
   const todayIndex = today === 0 ? 6 : today - 1; // Convert to 0=Mon...6=Sun
   const todayWorkout =
     programDays.length > 0 ? programDays[todayIndex % programDays.length] : null;
 
-  // Calculate weekly progress (sessions completed this week)
-  const now = new Date();
-  const weekStart = new Date(now);
-  weekStart.setDate(now.getDate() - now.getDay() + 1);
-  weekStart.setHours(0, 0, 0, 0);
-  const weekSessions =
-    sessions.data?.filter(
+  // Calculate weekly progress — only after client hydration
+  const weekSessions = (() => {
+    if (!clientDate || !sessions.data) return 0;
+    const weekStart = new Date(clientDate);
+    weekStart.setDate(clientDate.getDate() - clientDate.getDay() + 1);
+    weekStart.setHours(0, 0, 0, 0);
+    return sessions.data.filter(
       (s) => s.completedAt && new Date(s.completedAt) >= weekStart,
-    ).length ?? 0;
+    ).length;
+  })();
   const targetSessions = programDays.length;
 
   return (
@@ -144,7 +165,7 @@ export default function DashboardPage() {
               </p>
               <p className="text-xs text-zinc-400">
                 {activeSession.data.day?.name ?? "Workout"} • Started{" "}
-                {new Date(activeSession.data.startedAt).toLocaleTimeString()}
+                <SessionTime startedAt={activeSession.data.startedAt} />
               </p>
             </div>
             <Link
@@ -222,9 +243,11 @@ export default function DashboardPage() {
               <h2 className="font-semibold text-zinc-50">{currentProgram.data.name}</h2>
               <p className="text-xs text-zinc-400">
                 {currentProgram.data.splitType?.replace(/_/g, " ")} • Started{" "}
-                {currentProgram.data.startDate
-                  ? new Date(currentProgram.data.startDate).toLocaleDateString()
-                  : "—"}
+                {currentProgram.data.startDate ? (
+                  <FormattedDate isoString={currentProgram.data.startDate} format="date" />
+                ) : (
+                  "—"
+                )}
               </p>
             </div>
             <button
@@ -365,8 +388,7 @@ export default function DashboardPage() {
                       Workout Session
                     </h3>
                     <p className="text-sm text-zinc-400">
-                      {new Date(session.startedAt).toLocaleDateString()} at{" "}
-                      {new Date(session.startedAt).toLocaleTimeString()}
+                      <FormattedDate isoString={session.startedAt} format="datetime" />
                     </p>
                   </div>
                   <Link
