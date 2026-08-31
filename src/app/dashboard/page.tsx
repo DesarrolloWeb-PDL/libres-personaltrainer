@@ -218,7 +218,7 @@ export default function DashboardPage() {
         <div className="rounded-xl bg-zinc-900 border border-zinc-800 p-4">
           <div className="flex items-center gap-3 mb-3">
             <div className="w-1 h-10 bg-blue-500 rounded-full" />
-            <div>
+            <div className="flex-1">
               <h2 className="font-semibold text-zinc-50">{currentProgram.data.name}</h2>
               <p className="text-xs text-zinc-400">
                 {currentProgram.data.splitType?.replace(/_/g, " ")} • Started{" "}
@@ -227,6 +227,12 @@ export default function DashboardPage() {
                   : "—"}
               </p>
             </div>
+            <button
+              onClick={() => setShowPresets(!showPresets)}
+              className="rounded-lg bg-zinc-800 border border-zinc-700 px-3 py-1.5 text-xs font-medium text-zinc-400 hover:text-zinc-200 hover:border-zinc-600 transition-colors"
+            >
+              {showPresets ? "Close" : "Change Program"}
+            </button>
           </div>
           <div className="grid grid-cols-3 gap-2 sm:grid-cols-4 md:grid-cols-6">
             {programDays.map((day) => {
@@ -280,7 +286,7 @@ export default function DashboardPage() {
       )}
 
       {/* Preset Program Selection */}
-      {showPresets && (
+      {(showPresets || !currentProgram.data) && (
         <div className="rounded-xl bg-zinc-900 border border-zinc-800 p-4">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-3">
