@@ -4,13 +4,14 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
  * Unit tests for program tRPC router.
  */
 
-const { mockCreate, mockFindUnique, mockFindFirst, mockFindMany, mockFindAll } = vi.hoisted(
+const { mockCreate, mockFindUnique, mockFindFirst, mockFindMany, mockFindAll, mockProfileFindUnique } = vi.hoisted(
   () => ({
     mockCreate: vi.fn(),
     mockFindUnique: vi.fn(),
     mockFindFirst: vi.fn(),
     mockFindMany: vi.fn(),
     mockFindAll: vi.fn(),
+    mockProfileFindUnique: vi.fn(),
   }),
 );
 
@@ -21,6 +22,9 @@ vi.mock("@/lib/infrastructure/prisma/client", () => ({
       findUnique: mockFindUnique,
       findFirst: mockFindFirst,
       findMany: mockFindMany,
+    },
+    profile: {
+      findUnique: mockProfileFindUnique,
     },
   },
 }));
@@ -128,6 +132,13 @@ describe("programRouter", () => {
           equipment: { name: "Barbell" },
         },
       ]);
+      mockProfileFindUnique.mockResolvedValue({
+        userId: "user-1",
+        age: 25,
+        experienceLevel: "intermediate",
+        goals: "muscle_gain",
+        equipment: "full_gym",
+      });
       mockCreate.mockResolvedValue({
         id: "prog-1",
         userId: "user-1",
