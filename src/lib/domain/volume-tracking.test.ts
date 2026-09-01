@@ -1,11 +1,11 @@
-import { describe, it, expect, beforeEach, vi } from "vitest";
+import { describe, it, expect } from "vitest";
 import {
   checkVolumeStatus,
   calculateWeeklyVolume,
   getLandmarks,
   getLandmarksForMuscle,
 } from "@/lib/domain/volume";
-import type { VolumeLandmarks, WorkoutDay } from "@/lib/domain/types";
+import type { MuscleGroup, VolumeLandmarks, WorkoutDay } from "@/lib/domain/types";
 
 describe("Volume Engine", () => {
   describe("getLandmarks", () => {
@@ -46,7 +46,7 @@ describe("Volume Engine", () => {
     });
 
     it("returns undefined for non-existent muscle group", () => {
-      const landmarks = getLandmarksForMuscle("beginner", "forearms" as any);
+      const landmarks = getLandmarksForMuscle("beginner", "forearms" as MuscleGroup);
       expect(landmarks).toBeUndefined();
     });
   });
