@@ -11,6 +11,7 @@ const {
   mockFindFirst,
   mockFindMany,
   mockUpdate,
+  mockWorkoutExerciseUpdate,
 } = vi.hoisted(() => ({
   mockCreate: vi.fn(),
   mockCreateMany: vi.fn(),
@@ -18,6 +19,7 @@ const {
   mockFindFirst: vi.fn(),
   mockFindMany: vi.fn(),
   mockUpdate: vi.fn(),
+  mockWorkoutExerciseUpdate: vi.fn(),
 }));
 
 vi.mock("@/lib/infrastructure/prisma/client", () => ({
@@ -35,6 +37,9 @@ vi.mock("@/lib/infrastructure/prisma/client", () => ({
     workoutSet: {
       createMany: mockCreateMany,
       update: mockUpdate,
+    },
+    workoutExercise: {
+      update: mockWorkoutExerciseUpdate,
     },
   },
 }));
@@ -254,6 +259,54 @@ describe("PrismaWorkoutAdapter", () => {
       const result = await adapter.findActiveSession("user-1");
 
       expect(result).toBeNull();
+    });
+  });
+
+  describe("findRecentCompletedSessions", () => {
+    it("returns completed sessions ordered by most recent", async () => {
+      mockFindMany.mockResolvedValue([mockSessionWithExercises]);
+
+      const result = await adapter.findRecentCompletedSessions("user-1", 5);
+
+      expect(result).toHaveLength(1);
+      expect(mockFindMany).toHaveBeenCalledWith({
+        where: { userId: "user-1", completedAt: { not: null } },
+        orderBy: { startedAt: "desc" },
+        take: 5,
+        include: expect.any(Object),
+      });
+    });
+  });
+
+  describe("substituteExercise", () => {
+    it("updates only exerciseId and returns the exercise with sets", async () => {
+      mockWorkoutExerciseUpdate.mockResolvedValue({
+        ...mockSessionWithExercises.day.exercises[0],
+        exerciseId: "ex-2",
+        exercise: {
+          id: "ex-2",
+          name: "Dumbbell Bench Press",
+          nameEs: "Press con mancuernas",
+          muscleGroup: { id: "mg-1", name: "Chest", nameEs: "Pecho", category: "chest" },
+        },
+      });
+
+      const result = await adapter.substituteExercise({
+        workoutExerciseId: "we-1",
+        newExerciseId: "ex-2",
+      });
+
+      expect(result.exerciseId).toBe("ex-2");
+      expect(result.exercise.name).toBe("Dumbbell Bench Press");
+      expect(result.workoutSets).toHaveLength(3);
+      expect(mockWorkoutExerciseUpdate).toHaveBeenCalledWith({
+        where: { id: "we-1" },
+        data: { exerciseId: "ex-2" },
+        include: expect.objectContaining({
+          exercise: { include: { muscleGroup: true } },
+          workoutSets: { orderBy: { setNumber: "asc" } },
+        }),
+      });
     });
   });
 });

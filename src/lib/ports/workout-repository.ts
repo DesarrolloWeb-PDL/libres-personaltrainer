@@ -68,6 +68,11 @@ export interface LogSetData {
   rpe?: number;
 }
 
+export interface SubstituteExerciseData {
+  workoutExerciseId: string;
+  newExerciseId: string;
+}
+
 export interface WorkoutRepository {
   /** Start a new workout session */
   startSession(data: StartSessionData): Promise<WorkoutSession>;
@@ -86,4 +91,15 @@ export interface WorkoutRepository {
 
   /** Get the active (incomplete) session for a user, if any */
   findActiveSession(userId: string): Promise<WorkoutSessionWithExercises | null>;
+
+  /** Get the most recently completed sessions for a user */
+  findRecentCompletedSessions(
+    userId: string,
+    limit: number,
+  ): Promise<WorkoutSessionWithExercises[]>;
+
+  /** Swap the exercise for a workout exercise, preserving sets/reps/RPE */
+  substituteExercise(
+    data: SubstituteExerciseData,
+  ): Promise<WorkoutExerciseWithSets>;
 }
