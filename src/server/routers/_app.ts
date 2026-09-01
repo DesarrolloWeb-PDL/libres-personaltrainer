@@ -9,6 +9,7 @@ import { sessionRouter } from "./session";
 import { progressRouter } from "./progress";
 import { volumeRouter } from "./volume";
 import { nutritionRouter } from "./nutrition";
+import { coachRouter } from "./coach";
 
 /**
  * Root tRPC router — aggregates all feature routers.
@@ -24,6 +25,7 @@ export const appRouter = createTRPCRouter({
   progress: progressRouter,
   volume: volumeRouter,
   nutrition: nutritionRouter,
+  coach: coachRouter,
 });
 
 export type AppRouter = typeof appRouter;
