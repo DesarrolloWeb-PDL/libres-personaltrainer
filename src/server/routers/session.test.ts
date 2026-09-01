@@ -10,12 +10,20 @@ const {
   mockFindFirst,
   mockFindMany,
   mockUpdate,
+  mockExerciseFindMany,
+  mockExerciseFindUnique,
+  mockProfileFindUnique,
+  mockWorkoutExerciseUpdate,
 } = vi.hoisted(() => ({
   mockCreate: vi.fn(),
   mockFindUnique: vi.fn(),
   mockFindFirst: vi.fn(),
   mockFindMany: vi.fn(),
   mockUpdate: vi.fn(),
+  mockExerciseFindMany: vi.fn(),
+  mockExerciseFindUnique: vi.fn(),
+  mockProfileFindUnique: vi.fn(),
+  mockWorkoutExerciseUpdate: vi.fn(),
 }));
 
 vi.mock("@/lib/infrastructure/prisma/client", () => ({
@@ -33,6 +41,16 @@ vi.mock("@/lib/infrastructure/prisma/client", () => ({
     workoutSet: {
       createMany: vi.fn().mockResolvedValue({ count: 3 }),
       update: mockUpdate,
+    },
+    exercise: {
+      findMany: mockExerciseFindMany,
+      findUnique: mockExerciseFindUnique,
+    },
+    profile: {
+      findUnique: mockProfileFindUnique,
+    },
+    workoutExercise: {
+      update: mockWorkoutExerciseUpdate,
     },
   },
 }));
@@ -167,6 +185,138 @@ describe("sessionRouter", () => {
       const result = await caller.getActive({ userId: "user-1" });
 
       expect(result).toBeNull();
+    });
+  });
+
+  describe("getSuggestions", () => {
+    const chestExercises = [
+      {
+        id: "ex-1",
+        name: "Bench Press",
+        nameEs: "Press de banca",
+        muscleGroup: { id: "mg-1", name: "Chest", nameEs: "Pecho", category: "chest" },
+        equipment: { id: "eq-1", name: "Barbell", nameEs: "Barra" },
+      },
+      {
+        id: "ex-2",
+        name: "Dumbbell Bench Press",
+        nameEs: "Press con mancuernas",
+        muscleGroup: { id: "mg-1", name: "Chest", nameEs: "Pecho", category: "chest" },
+        equipment: { id: "eq-2", name: "Dumbbell", nameEs: "Mancuerna" },
+      },
+      {
+        id: "ex-3",
+        name: "Push-up",
+        nameEs: "Flexión",
+        muscleGroup: { id: "mg-1", name: "Chest", nameEs: "Pecho", category: "chest" },
+        equipment: { id: "eq-3", name: "Bodyweight", nameEs: "Peso corporal" },
+      },
+      {
+        id: "ex-4",
+        name: "Cable Fly",
+        nameEs: "Aperturas en polea",
+        muscleGroup: { id: "mg-1", name: "Chest", nameEs: "Pecho", category: "chest" },
+        equipment: { id: "eq-4", name: "Cable", nameEs: "Polea" },
+      },
+    ];
+
+    beforeEach(() => {
+      mockExerciseFindMany.mockResolvedValue(chestExercises);
+    });
+
+    it("returns up to 3 suggestions for the current exercise", async () => {
+      mockExerciseFindUnique.mockResolvedValue(chestExercises[0]);
+      mockProfileFindUnique.mockResolvedValue({
+        userId: "user-1",
+        equipment: "full_gym",
+        injuries: null,
+      });
+
+      const caller = sessionRouter.createCaller(mockCtx);
+      const result = await caller.getSuggestions({ userId: "user-1", exerciseId: "ex-1" });
+
+      expect(result.suggestions).toHaveLength(3);
+      expect(result.suggestions[0].id).toBe("ex-2");
+      expect(result.suggestions.every((s) => s.muscleGroupName === "Chest")).toBe(true);
+    });
+
+    it("filters out injury-restricted alternatives", async () => {
+      mockExerciseFindUnique.mockResolvedValue(chestExercises[0]);
+      mockProfileFindUnique.mockResolvedValue({
+        userId: "user-1",
+        equipment: "full_gym",
+        injuries: "shoulder",
+      });
+
+      const caller = sessionRouter.createCaller(mockCtx);
+      const result = await caller.getSuggestions({ userId: "user-1", exerciseId: "ex-1" });
+
+      expect(result.suggestions.every((s) => s.muscleGroupName === "Chest")).toBe(true);
+    });
+
+    it("throws NOT_FOUND when the exercise does not exist", async () => {
+      mockExerciseFindUnique.mockResolvedValue(null);
+
+      const caller = sessionRouter.createCaller(mockCtx);
+      await expect(
+        caller.getSuggestions({ userId: "user-1", exerciseId: "missing" }),
+      ).rejects.toMatchObject({ code: "NOT_FOUND" });
+    });
+
+    it("returns an empty list when no alternatives exist", async () => {
+      mockExerciseFindUnique.mockResolvedValue(chestExercises[0]);
+      mockProfileFindUnique.mockResolvedValue({
+        userId: "user-1",
+        equipment: "full_gym",
+        injuries: null,
+      });
+      mockExerciseFindMany.mockResolvedValue([chestExercises[0]]);
+
+      const caller = sessionRouter.createCaller(mockCtx);
+      const result = await caller.getSuggestions({ userId: "user-1", exerciseId: "ex-1" });
+
+      expect(result.suggestions).toHaveLength(0);
+    });
+  });
+
+  describe("applySubstitution", () => {
+    it("updates only the exerciseId and returns the workout exercise with sets", async () => {
+      mockWorkoutExerciseUpdate.mockResolvedValue({
+        id: "we-1",
+        exerciseId: "ex-2",
+        sets: 3,
+        reps: 10,
+        weight: null,
+        rpe: null,
+        order: 1,
+        exercise: {
+          id: "ex-2",
+          name: "Dumbbell Bench Press",
+          nameEs: "Press con mancuernas",
+          muscleGroup: { id: "mg-1", name: "Chest", nameEs: "Pecho", category: "chest" },
+        },
+        workoutSets: [
+          { id: "ws-1", workoutExerciseId: "we-1", setNumber: 1, reps: null, weight: null, rpe: null, completed: false },
+        ],
+      });
+
+      const caller = sessionRouter.createCaller(mockCtx);
+      const result = await caller.applySubstitution({
+        workoutExerciseId: "we-1",
+        newExerciseId: "ex-2",
+      });
+
+      expect(result.exerciseId).toBe("ex-2");
+      expect(result.exercise.name).toBe("Dumbbell Bench Press");
+      expect(result.workoutSets).toHaveLength(1);
+      expect(mockWorkoutExerciseUpdate).toHaveBeenCalledWith({
+        where: { id: "we-1" },
+        data: { exerciseId: "ex-2" },
+        include: expect.objectContaining({
+          exercise: { include: { muscleGroup: true } },
+          workoutSets: { orderBy: { setNumber: "asc" } },
+        }),
+      });
     });
   });
 });

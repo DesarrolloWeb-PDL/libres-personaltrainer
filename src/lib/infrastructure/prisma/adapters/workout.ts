@@ -2,9 +2,11 @@ import type {
   WorkoutRepository,
   WorkoutSession,
   WorkoutSessionWithExercises,
+  WorkoutExerciseWithSets,
   StartSessionData,
   LogSetData,
   WorkoutSetRecord,
+  SubstituteExerciseData,
 } from "@/lib/ports/workout-repository";
 import { prisma } from "../client";
 
@@ -119,5 +121,40 @@ export class PrismaWorkoutAdapter implements WorkoutRepository {
     });
 
     return session as unknown as WorkoutSessionWithExercises | null;
+  }
+
+  async findRecentCompletedSessions(
+    userId: string,
+    limit: number,
+  ): Promise<WorkoutSessionWithExercises[]> {
+    const sessions = await prisma.workoutSession.findMany({
+      where: { userId, completedAt: { not: null } },
+      orderBy: { startedAt: "desc" },
+      take: limit,
+      include: this.sessionWithExercises,
+    });
+
+    return sessions as unknown as WorkoutSessionWithExercises[];
+  }
+
+  async substituteExercise(
+    data: SubstituteExerciseData,
+  ): Promise<WorkoutExerciseWithSets> {
+    const updated = await prisma.workoutExercise.update({
+      where: { id: data.workoutExerciseId },
+      data: { exerciseId: data.newExerciseId },
+      include: {
+        exercise: {
+          include: {
+            muscleGroup: true,
+          },
+        },
+        workoutSets: {
+          orderBy: { setNumber: "asc" as const },
+        },
+      },
+    });
+
+    return updated as unknown as WorkoutExerciseWithSets;
   }
 }
