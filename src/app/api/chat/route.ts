@@ -32,6 +32,8 @@ const chatBodySchema = z.object({
   messages: z.array(messageSchema),
 });
 
+export const maxDuration = 60;
+
 /**
  * POST /api/chat
  *
@@ -73,7 +75,6 @@ export async function POST(req: Request) {
       maxOutputTokens: 500,
       abortSignal: req.signal,
       onFinish: ({ usage }) => {
-        // eslint-disable-next-line no-console
         console.log("[coach] usage:", usage);
       },
     });
