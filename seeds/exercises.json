@@ -118,5 +118,13 @@
     "muscleGroup": "Glutes",
     "equipment": "Bodyweight",
     "media": []
+  },
+  {
+    "name": "Neck Flexion",
+    "nameEs": "Flexión de cuello",
+    "instructions": "Gently flex the neck forward and return to neutral. Keep movement slow and controlled.",
+    "muscleGroup": "Neck",
+    "equipment": "Bodyweight",
+    "media": []
   }
 ]
