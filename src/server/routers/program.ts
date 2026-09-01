@@ -6,46 +6,13 @@ import { PrismaVolumeTrackingAdapter } from "@/lib/infrastructure/prisma/adapter
 import { PrismaProfileAdapter } from "@/lib/infrastructure/prisma/adapters/user-profile";
 import { generateProgram, selectSplit } from "@/lib/domain/training-engine";
 import { applyDeload, shouldDeload } from "@/lib/domain/deload";
-import type { Exercise as DomainExercise } from "@/lib/domain/types";
+import { toDomainExercise } from "@/lib/infrastructure/prisma/mappers";
 import type { Equipment, SplitType, UserProfile } from "@/lib/domain/types";
 
 const programRepo = new PrismaProgramAdapter();
 const exerciseRepo = new PrismaExerciseAdapter();
 const volumeRepo = new PrismaVolumeTrackingAdapter();
 const profileRepo = new PrismaProfileAdapter();
-
-/**
- * Maps DB equipment name to domain Equipment type.
- */
-function mapEquipment(name: string): Equipment {
-  const map: Record<string, Equipment> = {
-    Barbell: "full_gym",
-    Dumbbell: "full_gym",
-    Cable: "full_gym",
-    Machine: "full_gym",
-    "Pull-up Bar": "full_gym",
-    "Bodyweight": "bodyweight_only",
-    Resistance: "home_gym",
-  };
-  return map[name] ?? "full_gym";
-}
-
-/**
- * Maps DB exercise to domain Exercise type for the training engine.
- */
-function toDomainExercise(
-  ex: { id: string; name: string; muscleGroup: { category: string | null } | null; equipment: { name: string } | null },
-  isCompound: boolean = true,
-): DomainExercise {
-  const mgCategory = ex.muscleGroup?.category ?? "chest";
-  return {
-    id: ex.id,
-    name: ex.name,
-    muscleGroup: mgCategory as DomainExercise["muscleGroup"],
-    equipment: ex.equipment ? [mapEquipment(ex.equipment.name)] : ["full_gym"],
-    isCompound,
-  };
-}
 
 /**
  * Program tRPC router — generate, get, list programs.
