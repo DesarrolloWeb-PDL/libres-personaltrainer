@@ -1,5 +1,9 @@
 import { defineConfig, devices } from "@playwright/test";
 
+// Make the AI coach FAB available in E2E tests. The actual /api/chat endpoint
+// is mocked in coach-chat.spec.ts, so no live LLM calls are made.
+process.env.OPENAI_API_KEY ??= "dummy-test-key";
+
 export default defineConfig({
   testDir: "./e2e",
   fullyParallel: true,
