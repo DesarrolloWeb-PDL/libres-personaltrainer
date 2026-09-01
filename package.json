@@ -23,6 +23,8 @@
     "db:reset": "prisma migrate reset --force"
   },
   "dependencies": {
+    "@ai-sdk/openai": "^4.0.53",
+    "@ai-sdk/react": "^4.0.90",
     "@auth/prisma-adapter": "^2.11.3",
     "@prisma/client": "^5.22.0",
     "@tailwindcss/postcss": "^4.3.3",
@@ -31,6 +33,7 @@
     "@trpc/next": "^11.13.0",
     "@trpc/react-query": "^11.13.0",
     "@trpc/server": "^11.13.0",
+    "ai": "^7.0.87",
     "next": "^16.3.3",
     "next-auth": "^5.0.0-beta.32",
     "prisma": "^5.22.0",
