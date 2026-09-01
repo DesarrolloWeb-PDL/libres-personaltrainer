@@ -265,4 +265,48 @@ describe("WorkoutLogger", () => {
       screen.getByText("No hay alternativas disponibles"),
     ).toBeInTheDocument();
   });
+
+  it("shows Cambiar button when userId is provided", () => {
+    render(
+      <WorkoutLogger
+        exercises={mockExercises}
+        userId="user-1"
+        onLogSet={vi.fn()}
+        onCompleteWorkout={vi.fn()}
+        onSubstitutionApplied={vi.fn()}
+      />,
+    );
+
+    expect(screen.getByText("Cambiar")).toBeInTheDocument();
+  });
+
+  it("does not show Cambiar button when userId is missing", () => {
+    render(
+      <WorkoutLogger
+        exercises={mockExercises}
+        onLogSet={vi.fn()}
+        onCompleteWorkout={vi.fn()}
+      />,
+    );
+
+    expect(screen.queryByText("Cambiar")).toBeNull();
+  });
+
+  it("opens substitution sheet when Cambiar is clicked", () => {
+    render(
+      <WorkoutLogger
+        exercises={mockExercises}
+        userId="user-1"
+        onLogSet={vi.fn()}
+        onCompleteWorkout={vi.fn()}
+        onSubstitutionApplied={vi.fn()}
+      />,
+    );
+
+    fireEvent.click(screen.getByText("Cambiar"));
+
+    expect(
+      screen.getByText("No hay alternativas disponibles"),
+    ).toBeInTheDocument();
+  });
 });
