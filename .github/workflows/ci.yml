@@ -154,7 +154,15 @@ jobs:
       - name: Start server
         run: |
           npm run start &
-          sleep 5
+          for i in $(seq 1 30); do
+            if curl -s http://localhost:3000 > /dev/null 2>&1; then
+              echo "Server ready"
+              break
+            fi
+            echo "Waiting for server... ($i)"
+            sleep 2
+          done
+          curl -s http://localhost:3000 > /dev/null || (echo "Server failed to start" && exit 1)
       - name: Install matching Chrome + ChromeDriver
         run: |
           npx browser-driver-manager install chrome
