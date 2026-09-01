@@ -46,18 +46,18 @@ npm run dev
 
 ### Commands
 
-| Command | Description |
-|---------|-------------|
-| `npm run dev` | Start development server |
-| `npm run build` | Production build |
-| `npm run test` | Run unit tests (Vitest) |
-| `npm run test:watch` | Run tests in watch mode |
-| `npm run test:coverage` | Run tests with coverage |
-| `npm run test:e2e` | Run E2E tests (Playwright) |
-| `npm run test:e2e:ui` | Run E2E tests with UI mode |
-| `npm run lint` | Run ESLint |
-| `npm run format` | Format with Prettier |
-| `npm run typecheck` | Type-check without emitting |
+| Command                 | Description                 |
+| ----------------------- | --------------------------- |
+| `npm run dev`           | Start development server    |
+| `npm run build`         | Production build            |
+| `npm run test`          | Run unit tests (Vitest)     |
+| `npm run test:watch`    | Run tests in watch mode     |
+| `npm run test:coverage` | Run tests with coverage     |
+| `npm run test:e2e`      | Run E2E tests (Playwright)  |
+| `npm run test:e2e:ui`   | Run E2E tests with UI mode  |
+| `npm run lint`          | Run ESLint                  |
+| `npm run format`        | Format with Prettier        |
+| `npm run typecheck`     | Type-check without emitting |
 
 ## Project Structure
 
@@ -112,6 +112,7 @@ npm run test:e2e:ui       # Run with Playwright UI
 ## E2E Test Coverage
 
 ### Onboarding Flow
+
 - Complete 5-step wizard (profile, experience, goals, equipment, limitations)
 - Form validation (age required, age range)
 - Step navigation (back/forward)
@@ -119,6 +120,7 @@ npm run test:e2e:ui       # Run with Playwright UI
 - Progress indicator
 
 ### Workout Flow
+
 - Generate training program
 - Start workout session
 - Log sets (reps, weight, RPE)
@@ -126,6 +128,7 @@ npm run test:e2e:ui       # Run with Playwright UI
 - Workout history
 
 ### Progress View
+
 - Render charts (body weight, 1RM, volume load)
 - Add body weight entries
 - Date range filtering
@@ -134,6 +137,7 @@ npm run test:e2e:ui       # Run with Playwright UI
 ## CI/CD
 
 GitHub Actions pipeline with:
+
 - **Lint**: ESLint + Prettier checks
 - **Type Check**: TypeScript strict mode validation
 - **Unit Tests**: Vitest with coverage

@@ -90,7 +90,14 @@ describe("PrismaProfileAdapter", () => {
     });
 
     it("creates profile with minimal data", async () => {
-      const minimalProfile = { ...mockProfile, age: null, experienceLevel: null, goals: null, equipment: null, injuries: null };
+      const minimalProfile = {
+        ...mockProfile,
+        age: null,
+        experienceLevel: null,
+        goals: null,
+        equipment: null,
+        injuries: null,
+      };
       mockCreate.mockResolvedValue(minimalProfile);
 
       const result = await adapter.create({ userId: "user-1" });

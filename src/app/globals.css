@@ -6,5 +6,8 @@
 
 body {
   @apply bg-zinc-950 text-zinc-50 antialiased;
-  font-family: system-ui, -apple-system, sans-serif;
+  font-family:
+    system-ui,
+    -apple-system,
+    sans-serif;
 }

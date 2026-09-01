@@ -11,20 +11,17 @@ const EQUIPMENT = [
   {
     value: "full_gym" as const,
     label: "Full Gym",
-    description:
-      "Access to barbells, dumbbells, cable machines, squat racks, and benches.",
+    description: "Access to barbells, dumbbells, cable machines, squat racks, and benches.",
   },
   {
     value: "home_gym" as const,
     label: "Home Gym",
-    description:
-      "Dumbbells, an adjustable bench, and minimal equipment at home.",
+    description: "Dumbbells, an adjustable bench, and minimal equipment at home.",
   },
   {
     value: "bodyweight_only" as const,
     label: "Bodyweight Only",
-    description:
-      "No equipment — using bodyweight exercises like push-ups, dips, and squats.",
+    description: "No equipment — using bodyweight exercises like push-ups, dips, and squats.",
   },
 ];
 
@@ -33,9 +30,7 @@ export function StepEquipment({ data, onUpdate }: StepEquipmentProps) {
     <div className="space-y-6">
       <div>
         <h2 className="text-xl font-semibold text-zinc-50">Available Equipment</h2>
-        <p className="mt-1 text-sm text-zinc-400">
-          What equipment do you have access to?
-        </p>
+        <p className="mt-1 text-sm text-zinc-400">What equipment do you have access to?</p>
       </div>
 
       <div className="space-y-3">
@@ -59,12 +54,8 @@ export function StepEquipment({ data, onUpdate }: StepEquipmentProps) {
                 className="mt-0.5 h-4 w-4 border-zinc-600 text-blue-500 focus:ring-blue-500"
               />
               <div className="ml-3">
-                <span className="block text-sm font-medium text-zinc-100">
-                  {eq.label}
-                </span>
-                <span className="block text-xs text-zinc-400">
-                  {eq.description}
-                </span>
+                <span className="block text-sm font-medium text-zinc-100">{eq.label}</span>
+                <span className="block text-xs text-zinc-400">{eq.description}</span>
               </div>
             </label>
           );

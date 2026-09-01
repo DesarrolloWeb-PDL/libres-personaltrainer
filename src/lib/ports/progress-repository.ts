@@ -34,25 +34,13 @@ export interface ProgressRepository {
   record(data: RecordProgressData): Promise<ProgressEntry>;
 
   /** Get body weight history for a user, optionally filtered by date range */
-  getWeightHistory(
-    userId: string,
-    startDate?: Date,
-    endDate?: Date,
-  ): Promise<ProgressEntry[]>;
+  getWeightHistory(userId: string, startDate?: Date, endDate?: Date): Promise<ProgressEntry[]>;
 
   /** Get estimated 1RM history for a user, optionally filtered by date range */
-  get1RMHistory(
-    userId: string,
-    startDate?: Date,
-    endDate?: Date,
-  ): Promise<ProgressEntry[]>;
+  get1RMHistory(userId: string, startDate?: Date, endDate?: Date): Promise<ProgressEntry[]>;
 
   /** Get volume load history aggregated by muscle group and week */
-  getVolumeHistory(
-    userId: string,
-    startDate?: Date,
-    endDate?: Date,
-  ): Promise<VolumeLoadEntry[]>;
+  getVolumeHistory(userId: string, startDate?: Date, endDate?: Date): Promise<VolumeLoadEntry[]>;
 
   /** Get the latest progress entry for a user */
   getLatest(userId: string): Promise<ProgressEntry | null>;

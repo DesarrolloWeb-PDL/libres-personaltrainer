@@ -6,16 +6,9 @@
  * - DUP (Daily Undulating): Varies rep ranges within each week (heavy/moderate/light)
  */
 
-import type {
-  PeriodizationMode,
-  WorkoutDay,
-  WorkoutExercise,
-} from './types'
+import type { PeriodizationMode, WorkoutDay, WorkoutExercise } from "./types";
 
-import {
-  DUP_REP_RANGES,
-  LINEAR_REP_PROGRESSION,
-} from './constants'
+import { DUP_REP_RANGES, LINEAR_REP_PROGRESSION } from "./constants";
 
 // ─── Public API ──────────────────────────────────────────────────────
 
@@ -35,10 +28,10 @@ export function applyPeriodization(
   totalWeeks: number,
 ): WorkoutDay[] {
   switch (mode) {
-    case 'linear':
-      return applyLinear(days, week, totalWeeks)
-    case 'dup':
-      return applyDUP(days, week)
+    case "linear":
+      return applyLinear(days, week, totalWeeks);
+    case "dup":
+      return applyDUP(days, week);
   }
 }
 
@@ -53,31 +46,25 @@ export function applyPeriodization(
  *
  * Interpolates linearly between these endpoints.
  */
-function applyLinear(
-  days: WorkoutDay[],
-  week: number,
-  totalWeeks: number,
-): WorkoutDay[] {
-  const progress = totalWeeks > 1
-    ? (week - 1) / (totalWeeks - 1)
-    : 0
+function applyLinear(days: WorkoutDay[], week: number, totalWeeks: number): WorkoutDay[] {
+  const progress = totalWeeks > 1 ? (week - 1) / (totalWeeks - 1) : 0;
 
   const reps = Math.round(
     LINEAR_REP_PROGRESSION.startReps +
-    progress * (LINEAR_REP_PROGRESSION.endReps - LINEAR_REP_PROGRESSION.startReps),
-  )
+      progress * (LINEAR_REP_PROGRESSION.endReps - LINEAR_REP_PROGRESSION.startReps),
+  );
 
-  const rpe = Math.round(
-    (LINEAR_REP_PROGRESSION.startRpe +
-    progress * (LINEAR_REP_PROGRESSION.endRpe - LINEAR_REP_PROGRESSION.startRpe)) * 10,
-  ) / 10
+  const rpe =
+    Math.round(
+      (LINEAR_REP_PROGRESSION.startRpe +
+        progress * (LINEAR_REP_PROGRESSION.endRpe - LINEAR_REP_PROGRESSION.startRpe)) *
+        10,
+    ) / 10;
 
-  return days.map(day => ({
+  return days.map((day) => ({
     ...day,
-    exercises: day.exercises.map(exercise =>
-      adjustExerciseForLinear(exercise, reps, rpe),
-    ),
-  }))
+    exercises: day.exercises.map((exercise) => adjustExerciseForLinear(exercise, reps, rpe)),
+  }));
 }
 
 function adjustExerciseForLinear(
@@ -89,7 +76,7 @@ function adjustExerciseForLinear(
     ...exercise,
     reps: targetReps,
     rpe: targetRpe,
-  }
+  };
 }
 
 // ─── DUP (Daily Undulating Periodization) ────────────────────────────
@@ -108,45 +95,45 @@ function adjustExerciseForLinear(
  * - Cycle 3 (weeks 7-8): peak intensity
  */
 function applyDUP(days: WorkoutDay[], week: number): WorkoutDay[] {
-  const cycleWeek = ((week - 1) % 3) // 0, 1, 2 within cycle
-  const cycleNumber = Math.floor((week - 1) / 3) // which cycle we're in
+  const cycleWeek = (week - 1) % 3; // 0, 1, 2 within cycle
+  const cycleNumber = Math.floor((week - 1) / 3); // which cycle we're in
 
   // Cycle progression shifts the baseline toward heavier loads
-  const cycleShift = Math.min(cycleNumber * 0.5, 2) // cap at +2 reps shift
+  const cycleShift = Math.min(cycleNumber * 0.5, 2); // cap at +2 reps shift
 
   return days.map((day, dayIndex) => {
-    const template = getDUPTemplate(dayIndex)
+    const template = getDUPTemplate(dayIndex);
 
     // Apply cycle progression: shift reps slightly heavier each cycle
-    const adjustedMin = Math.max(template.min - Math.round(cycleShift), 1)
-    const adjustedMax = Math.max(template.max - Math.round(cycleShift), adjustedMin + 1)
+    const adjustedMin = Math.max(template.min - Math.round(cycleShift), 1);
+    const adjustedMax = Math.max(template.max - Math.round(cycleShift), adjustedMin + 1);
 
     // Pick reps within range (use middle)
-    const reps = Math.round((adjustedMin + adjustedMax) / 2)
+    const reps = Math.round((adjustedMin + adjustedMax) / 2);
 
     return {
       ...day,
-      exercises: day.exercises.map(exercise => ({
+      exercises: day.exercises.map((exercise) => ({
         ...exercise,
         sets: template.sets,
         reps: exercise.exercise.isCompound ? reps : Math.min(reps + 4, 20),
         rpe: template.rpe,
         restSeconds: exercise.exercise.isCompound ? 180 : 90,
       })),
-    }
-  })
+    };
+  });
 }
 
 /**
  * Maps day index to a DUP template (heavy → moderate → light rotation).
  */
 function getDUPTemplate(dayIndex: number): {
-  min: number
-  max: number
-  sets: number
-  rpe: number
+  min: number;
+  max: number;
+  sets: number;
+  rpe: number;
 } {
-  const templates = [DUP_REP_RANGES.heavy, DUP_REP_RANGES.moderate, DUP_REP_RANGES.light]
-  const t = templates[dayIndex % 3]
-  return { min: t.min, max: t.max, sets: t.sets, rpe: t.rpe }
+  const templates = [DUP_REP_RANGES.heavy, DUP_REP_RANGES.moderate, DUP_REP_RANGES.light];
+  const t = templates[dayIndex % 3];
+  return { min: t.min, max: t.max, sets: t.sets, rpe: t.rpe };
 }

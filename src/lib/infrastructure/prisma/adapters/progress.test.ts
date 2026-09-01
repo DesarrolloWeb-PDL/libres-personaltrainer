@@ -4,11 +4,7 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
  * Unit tests for PrismaProgressAdapter.
  */
 
-const {
-  mockCreate,
-  mockFindMany,
-  mockFindFirst,
-} = vi.hoisted(() => ({
+const { mockCreate, mockFindMany, mockFindFirst } = vi.hoisted(() => ({
   mockCreate: vi.fn(),
   mockFindMany: vi.fn(),
   mockFindFirst: vi.fn(),

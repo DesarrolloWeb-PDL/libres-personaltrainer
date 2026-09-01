@@ -24,7 +24,9 @@ describe("Volume Landmarks Component", () => {
 
   it("renders empty state when no statuses", () => {
     render(<VolumeLandmarks statuses={[]} />);
-    expect(screen.getByText("No volume data yet. Complete workouts to see volume status.")).toBeTruthy();
+    expect(
+      screen.getByText("No volume data yet. Complete workouts to see volume status."),
+    ).toBeTruthy();
   });
 
   it("renders muscle group cards", () => {
@@ -49,19 +51,15 @@ describe("Volume Landmarks Component", () => {
 
 describe("Overreaching Warning Component", () => {
   it("renders nothing when no overreaching muscles", () => {
-    const { container } = render(
-      <OverreachingWarning overreachingMuscles={[]} />
-    );
+    const { container } = render(<OverreachingWarning overreachingMuscles={[]} />);
     expect(container.innerHTML).toBe("");
   });
 
   it("shows warning for overreaching muscles", () => {
     render(
       <OverreachingWarning
-        overreachingMuscles={[
-          { muscleGroup: "quadriceps", status: "overreaching", sets: 22 },
-        ]}
-      />
+        overreachingMuscles={[{ muscleGroup: "quadriceps", status: "overreaching", sets: 22 }]}
+      />,
     );
     expect(screen.getByText("Overreaching Detected")).toBeTruthy();
     expect(screen.getByText(/Quadriceps/)).toBeTruthy();
@@ -74,7 +72,7 @@ describe("Overreaching Warning Component", () => {
           { muscleGroup: "quadriceps", status: "overreaching", sets: 22 },
           { muscleGroup: "chest", status: "overreaching", sets: 24 },
         ]}
-      />
+      />,
     );
     expect(screen.getByText(/Quadriceps, Chest/)).toBeTruthy();
   });
@@ -83,11 +81,9 @@ describe("Overreaching Warning Component", () => {
     const onDismiss = vi.fn();
     render(
       <OverreachingWarning
-        overreachingMuscles={[
-          { muscleGroup: "chest", status: "overreaching", sets: 24 },
-        ]}
+        overreachingMuscles={[{ muscleGroup: "chest", status: "overreaching", sets: 24 }]}
         onDismiss={onDismiss}
-      />
+      />,
     );
     // Find and click the dismiss button
     const dismissButton = screen.getByLabelText("Dismiss warning");
@@ -112,11 +108,7 @@ describe("Deload Recommendation Component", () => {
   });
 
   it("renders deload now status", () => {
-    render(
-      <DeloadRecommendation
-        data={{ ...baseData, recommendation: "deload_now" }}
-      />
-    );
+    render(<DeloadRecommendation data={{ ...baseData, recommendation: "deload_now" }} />);
     expect(screen.getByText("Deload Now")).toBeTruthy();
   });
 
@@ -132,15 +124,13 @@ describe("Deload Recommendation Component", () => {
       <DeloadRecommendation
         data={{ ...baseData, recommendation: "deload_now" }}
         onActivateDeload={() => {}}
-      />
+      />,
     );
     expect(screen.getByText("Activate Deload Week")).toBeTruthy();
   });
 
   it("hides action button when recommendation is continue", () => {
-    render(
-      <DeloadRecommendation data={baseData} onActivateDeload={() => {}} />
-    );
+    render(<DeloadRecommendation data={baseData} onActivateDeload={() => {}} />);
     expect(screen.queryByText("Activate Deload Week")).toBeNull();
   });
 
@@ -150,7 +140,7 @@ describe("Deload Recommendation Component", () => {
       <DeloadRecommendation
         data={{ ...baseData, recommendation: "deload_now" }}
         onActivateDeload={onActivate}
-      />
+      />,
     );
     screen.getByText("Activate Deload Week").click();
     expect(onActivate).toHaveBeenCalled();

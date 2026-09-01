@@ -4,9 +4,7 @@ test.describe("Workout Flow", () => {
   test("generates program and starts workout session", async ({ page }) => {
     // Navigate to dashboard
     await page.goto("/dashboard");
-    await expect(
-      page.getByRole("heading", { name: /welcome back/i }),
-    ).toBeVisible();
+    await expect(page.getByRole("heading", { name: /welcome back/i })).toBeVisible();
 
     // If no program exists, generate one
     const generateButton = page.locator('button:has-text("Generate Program")');

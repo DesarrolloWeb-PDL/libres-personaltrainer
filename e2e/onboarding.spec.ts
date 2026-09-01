@@ -11,15 +11,11 @@ test.describe("Onboarding Flow", () => {
     await page.reload();
   });
 
-  test("completes all 5 steps and redirects to dashboard", async ({
-    page,
-  }) => {
+  test("completes all 5 steps and redirects to dashboard", async ({ page }) => {
     await page.goto("/onboarding");
 
     // Verify onboarding page loads
-    await expect(
-      page.getByRole("heading", { name: /welcome to libres/i }),
-    ).toBeVisible();
+    await expect(page.getByRole("heading", { name: /welcome to libres/i })).toBeVisible();
     await expect(page.getByText(/let.*set up your profile/i)).toBeVisible();
 
     // Step 1: Profile (age required, name optional)
@@ -49,9 +45,7 @@ test.describe("Onboarding Flow", () => {
 
     // Verify redirect to dashboard
     await expect(page).toHaveURL(/\/dashboard/);
-    await expect(
-      page.getByRole("heading", { name: /welcome back/i }),
-    ).toBeVisible();
+    await expect(page.getByRole("heading", { name: /welcome back/i })).toBeVisible();
   });
 
   test("validates age is required on step 1", async ({ page }) => {

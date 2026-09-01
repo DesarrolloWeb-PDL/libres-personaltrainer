@@ -36,12 +36,7 @@ describe("StepGoals", () => {
 
   it("allows multiple selections", () => {
     const onUpdate = vi.fn();
-    render(
-      <StepGoals
-        data={{ goals: ["muscle_gain", "strength"] }}
-        onUpdate={onUpdate}
-      />
-    );
+    render(<StepGoals data={{ goals: ["muscle_gain", "strength"] }} onUpdate={onUpdate} />);
 
     fireEvent.click(screen.getByText("Fat Loss"));
 
@@ -52,12 +47,7 @@ describe("StepGoals", () => {
 
   it("deselects a goal when clicked again", () => {
     const onUpdate = vi.fn();
-    render(
-      <StepGoals
-        data={{ goals: ["muscle_gain", "strength"] }}
-        onUpdate={onUpdate}
-      />
-    );
+    render(<StepGoals data={{ goals: ["muscle_gain", "strength"] }} onUpdate={onUpdate} />);
 
     fireEvent.click(screen.getByText("Muscle Gain"));
 
@@ -67,23 +57,13 @@ describe("StepGoals", () => {
   });
 
   it("shows selected count", () => {
-    render(
-      <StepGoals
-        data={{ goals: ["muscle_gain", "fat_loss"] }}
-        onUpdate={vi.fn()}
-      />
-    );
+    render(<StepGoals data={{ goals: ["muscle_gain", "fat_loss"] }} onUpdate={vi.fn()} />);
 
     expect(screen.getByText("2 goals selected")).toBeInTheDocument();
   });
 
   it("shows checked state for selected goals", () => {
-    render(
-      <StepGoals
-        data={{ goals: ["muscle_gain"] }}
-        onUpdate={vi.fn()}
-      />
-    );
+    render(<StepGoals data={{ goals: ["muscle_gain"] }} onUpdate={vi.fn()} />);
 
     // The checkbox doesn't have a value attr; find it by label association
     const muscleGainLabel = screen.getByText("Muscle Gain").closest("label")!;

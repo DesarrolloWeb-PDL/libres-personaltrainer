@@ -8,12 +8,9 @@
  * - RPE > 9  → decrease weight by 5%
  */
 
-import type {
-  Prescription,
-  WorkoutExercise,
-} from './types'
+import type { Prescription, WorkoutExercise } from "./types";
 
-import { OVERLOAD_CONFIG, RPE_THRESHOLDS } from './constants'
+import { OVERLOAD_CONFIG, RPE_THRESHOLDS } from "./constants";
 
 // ─── Public API ──────────────────────────────────────────────────────
 
@@ -24,34 +21,32 @@ import { OVERLOAD_CONFIG, RPE_THRESHOLDS } from './constants'
  * @returns Prescription[] with specific recommendations
  */
 export function recommendOverload(exercises: WorkoutExercise[]): Prescription[] {
-  return exercises.map(exercise => generatePrescription(exercise))
+  return exercises.map((exercise) => generatePrescription(exercise));
 }
 
 /**
  * Generates a single prescription for an exercise based on its RPE.
  */
 function generatePrescription(exercise: WorkoutExercise): Prescription {
-  const rpe = exercise.rpe ?? 7.5 // default assumption
+  const rpe = exercise.rpe ?? 7.5; // default assumption
 
   if (rpe < RPE_THRESHOLDS.EASY_MAX) {
-    return handleEasyLoad(exercise, rpe)
+    return handleEasyLoad(exercise, rpe);
   }
 
   if (rpe <= RPE_THRESHOLDS.MODERATE_MAX) {
-    return handleModerateLoad(exercise, rpe)
+    return handleModerateLoad(exercise, rpe);
   }
 
-  return handleHardLoad(exercise, rpe)
+  return handleHardLoad(exercise, rpe);
 }
 
 // ─── Easy Load (RPE < 7) ─────────────────────────────────────────────
 
 function handleEasyLoad(exercise: WorkoutExercise, rpe: number): Prescription {
-  const currentWeight = exercise.weight ?? 0
-  const increasePercent = clampWeightIncrease(
-    OVERLOAD_CONFIG.EASY_WEIGHT_INCREASE_PERCENT,
-  )
-  const recommendedWeight = Math.round(currentWeight * (1 + increasePercent))
+  const currentWeight = exercise.weight ?? 0;
+  const increasePercent = clampWeightIncrease(OVERLOAD_CONFIG.EASY_WEIGHT_INCREASE_PERCENT);
+  const recommendedWeight = Math.round(currentWeight * (1 + increasePercent));
 
   return {
     exerciseId: exercise.exercise.id,
@@ -63,14 +58,14 @@ function handleEasyLoad(exercise: WorkoutExercise, rpe: number): Prescription {
     recommendedReps: exercise.reps,
     recommendedWeight: Math.max(recommendedWeight, currentWeight + 2.5),
     reason: `RPE ${rpe} is below ${RPE_THRESHOLDS.EASY_MAX} — load is too light. Increase weight by ${Math.round(increasePercent * 100)}%.`,
-  }
+  };
 }
 
 // ─── Moderate Load (RPE 7-9) ─────────────────────────────────────────
 
 function handleModerateLoad(exercise: WorkoutExercise, rpe: number): Prescription {
-  const currentWeight = exercise.weight ?? 0
-  const recommendedReps = exercise.reps + OVERLOAD_CONFIG.MODERATE_REP_INCREMENT
+  const currentWeight = exercise.weight ?? 0;
+  const recommendedReps = exercise.reps + OVERLOAD_CONFIG.MODERATE_REP_INCREMENT;
 
   return {
     exerciseId: exercise.exercise.id,
@@ -82,17 +77,15 @@ function handleModerateLoad(exercise: WorkoutExercise, rpe: number): Prescriptio
     recommendedReps,
     recommendedWeight: currentWeight,
     reason: `RPE ${rpe} is in the ${RPE_THRESHOLDS.MODERATE_MIN}-${RPE_THRESHOLDS.MODERATE_MAX} range — load is appropriate. Add ${OVERLOAD_CONFIG.MODERATE_REP_INCREMENT} rep.`,
-  }
+  };
 }
 
 // ─── Hard Load (RPE > 9) ─────────────────────────────────────────────
 
 function handleHardLoad(exercise: WorkoutExercise, rpe: number): Prescription {
-  const currentWeight = exercise.weight ?? 0
-  const decreasePercent = clampWeightDecrease(
-    OVERLOAD_CONFIG.HARD_WEIGHT_DECREASE_PERCENT,
-  )
-  const recommendedWeight = Math.round(currentWeight * (1 - decreasePercent))
+  const currentWeight = exercise.weight ?? 0;
+  const decreasePercent = clampWeightDecrease(OVERLOAD_CONFIG.HARD_WEIGHT_DECREASE_PERCENT);
+  const recommendedWeight = Math.round(currentWeight * (1 - decreasePercent));
 
   return {
     exerciseId: exercise.exercise.id,
@@ -104,15 +97,15 @@ function handleHardLoad(exercise: WorkoutExercise, rpe: number): Prescription {
     recommendedReps: exercise.reps,
     recommendedWeight: Math.min(recommendedWeight, currentWeight - 2.5),
     reason: `RPE ${rpe} is above ${RPE_THRESHOLDS.HARD_MIN} — load is too heavy. Decrease weight by ${Math.round(decreasePercent * 100)}%.`,
-  }
+  };
 }
 
 // ─── Safety Clamps ───────────────────────────────────────────────────
 
 function clampWeightIncrease(percent: number): number {
-  return Math.min(percent, OVERLOAD_CONFIG.MAX_WEIGHT_INCREASE_PERCENT)
+  return Math.min(percent, OVERLOAD_CONFIG.MAX_WEIGHT_INCREASE_PERCENT);
 }
 
 function clampWeightDecrease(percent: number): number {
-  return Math.min(percent, OVERLOAD_CONFIG.HARD_WEIGHT_DECREASE_PERCENT)
+  return Math.min(percent, OVERLOAD_CONFIG.HARD_WEIGHT_DECREASE_PERCENT);
 }

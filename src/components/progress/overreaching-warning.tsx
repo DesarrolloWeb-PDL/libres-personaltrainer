@@ -13,10 +13,7 @@ interface OverreachingWarningProps {
   onDismiss?: () => void;
 }
 
-export function OverreachingWarning({
-  overreachingMuscles,
-  onDismiss,
-}: OverreachingWarningProps) {
+export function OverreachingWarning({ overreachingMuscles, onDismiss }: OverreachingWarningProps) {
   if (overreachingMuscles.length === 0) {
     return null;
   }
@@ -30,9 +27,7 @@ export function OverreachingWarning({
       <div className="flex items-start gap-3">
         <div className="w-1 h-10 bg-red-500 rounded-full flex-shrink-0 mt-1" />
         <div className="flex-1">
-          <h3 className="text-sm font-bold text-red-400">
-            Overreaching Detected
-          </h3>
+          <h3 className="text-sm font-bold text-red-400">Overreaching Detected</h3>
           <p className="mt-1 text-sm text-zinc-300">
             You&apos;re training <strong className="text-zinc-100">{muscleNames}</strong> above your
             Maximum Recoverable Volume (MRV). This can lead to:
@@ -43,8 +38,8 @@ export function OverreachingWarning({
             <li>Accumulated fatigue</li>
           </ul>
           <p className="mt-2 text-sm text-zinc-300">
-            <strong className="text-zinc-100">Recommendation:</strong> Consider a deload week or reduce
-            volume for these muscle groups.
+            <strong className="text-zinc-100">Recommendation:</strong> Consider a deload week or
+            reduce volume for these muscle groups.
           </p>
         </div>
         {onDismiss && (

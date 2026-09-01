@@ -6,9 +6,7 @@ test.describe("Progress View", () => {
 
     // Verify page loads
     await expect(page.getByRole("heading", { name: /progress/i })).toBeVisible();
-    await expect(
-      page.getByText(/track your body weight/i),
-    ).toBeVisible();
+    await expect(page.getByText(/track your body weight/i)).toBeVisible();
 
     // Verify overview cards are present
     await expect(page.getByText("Current Weight")).toBeVisible();
@@ -56,9 +54,7 @@ test.describe("Progress View", () => {
     await page.click('button:has-text("Log")');
 
     // Should show validation error
-    await expect(
-      page.getByText("Please enter a valid weight greater than 0"),
-    ).toBeVisible();
+    await expect(page.getByText("Please enter a valid weight greater than 0")).toBeVisible();
   });
 
   test("date range selector filters data", async ({ page }) => {
@@ -66,19 +62,13 @@ test.describe("Progress View", () => {
 
     // Click different date ranges
     await page.click('button:has-text("3M")');
-    await expect(page.locator('button:has-text("3M")')).toHaveClass(
-      /bg-blue-600/,
-    );
+    await expect(page.locator('button:has-text("3M")')).toHaveClass(/bg-blue-600/);
 
     await page.click('button:has-text("6M")');
-    await expect(page.locator('button:has-text("6M")')).toHaveClass(
-      /bg-blue-600/,
-    );
+    await expect(page.locator('button:has-text("6M")')).toHaveClass(/bg-blue-600/);
 
     await page.click('button:has-text("All")');
-    await expect(page.locator('button:has-text("All")')).toHaveClass(
-      /bg-blue-600/,
-    );
+    await expect(page.locator('button:has-text("All")')).toHaveClass(/bg-blue-600/);
   });
 
   test("export CSV button is present", async ({ page }) => {
@@ -86,12 +76,8 @@ test.describe("Progress View", () => {
 
     // Verify export section
     await expect(page.getByText("Export Data")).toBeVisible();
-    await expect(
-      page.getByText(/download your progress data as csv/i),
-    ).toBeVisible();
-    await expect(
-      page.locator('button:has-text("Download CSV")'),
-    ).toBeVisible();
+    await expect(page.getByText(/download your progress data as csv/i)).toBeVisible();
+    await expect(page.locator('button:has-text("Download CSV")')).toBeVisible();
   });
 
   test("navigates to progress from dashboard", async ({ page }) => {
@@ -107,8 +93,6 @@ test.describe("Progress View", () => {
     await page.goto("/dashboard/volume");
 
     // Verify volume page loads
-    await expect(
-      page.getByRole("heading", { name: /volume/i }),
-    ).toBeVisible();
+    await expect(page.getByRole("heading", { name: /volume/i })).toBeVisible();
   });
 });

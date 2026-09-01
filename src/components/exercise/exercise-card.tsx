@@ -34,8 +34,18 @@ export function ExerciseCard({ exercise, onSelect }: ExerciseCardProps) {
           />
         ) : (
           <div className="flex h-full items-center justify-center text-zinc-600">
-            <svg className="h-12 w-12" fill="none" viewBox="0 0 24 24" strokeWidth={1} stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 10.5l4.72-4.72a.75.75 0 011.28.53v11.38a.75.75 0 01-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 002.25-2.25v-9a2.25 2.25 0 00-2.25-2.25h-9A2.25 2.25 0 002.25 7.5v9a2.25 2.25 0 002.25 2.25z" />
+            <svg
+              className="h-12 w-12"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1}
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M15.75 10.5l4.72-4.72a.75.75 0 011.28.53v11.38a.75.75 0 01-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 002.25-2.25v-9a2.25 2.25 0 00-2.25-2.25h-9A2.25 2.25 0 002.25 7.5v9a2.25 2.25 0 002.25 2.25z"
+              />
             </svg>
           </div>
         )}
@@ -78,9 +88,7 @@ export function ExerciseCard({ exercise, onSelect }: ExerciseCardProps) {
 
         {/* Instructions preview */}
         {exercise.instructions && (
-          <p className="mt-2 line-clamp-2 text-xs text-zinc-500">
-            {exercise.instructions}
-          </p>
+          <p className="mt-2 line-clamp-2 text-xs text-zinc-500">{exercise.instructions}</p>
         )}
       </div>
     </article>

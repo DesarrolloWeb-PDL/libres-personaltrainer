@@ -34,11 +34,7 @@ export const progressRouter = createTRPCRouter({
       }),
     )
     .query(({ input }) => {
-      return progressRepo.getWeightHistory(
-        input.userId,
-        input.startDate,
-        input.endDate,
-      );
+      return progressRepo.getWeightHistory(input.userId, input.startDate, input.endDate);
     }),
 
   /** Get estimated 1RM history */
@@ -51,11 +47,7 @@ export const progressRouter = createTRPCRouter({
       }),
     )
     .query(({ input }) => {
-      return progressRepo.get1RMHistory(
-        input.userId,
-        input.startDate,
-        input.endDate,
-      );
+      return progressRepo.get1RMHistory(input.userId, input.startDate, input.endDate);
     }),
 
   /** Get volume load history by muscle group */
@@ -68,19 +60,13 @@ export const progressRouter = createTRPCRouter({
       }),
     )
     .query(({ input }) => {
-      return progressRepo.getVolumeHistory(
-        input.userId,
-        input.startDate,
-        input.endDate,
-      );
+      return progressRepo.getVolumeHistory(input.userId, input.startDate, input.endDate);
     }),
 
   /** Get latest progress entry */
-  getLatest: publicProcedure
-    .input(z.object({ userId: z.string() }))
-    .query(({ input }) => {
-      return progressRepo.getLatest(input.userId);
-    }),
+  getLatest: publicProcedure.input(z.object({ userId: z.string() })).query(({ input }) => {
+    return progressRepo.getLatest(input.userId);
+  }),
 
   /** Detect plateaus in progress data */
   detectPlateau: publicProcedure
@@ -123,17 +109,11 @@ export const progressRouter = createTRPCRouter({
       }),
     )
     .query(({ input }) => {
-      return progressRepo.exportCSV(
-        input.userId,
-        input.startDate,
-        input.endDate,
-      );
+      return progressRepo.exportCSV(input.userId, input.startDate, input.endDate);
     }),
 
   /** Get all progress entries */
-  getAll: publicProcedure
-    .input(z.object({ userId: z.string() }))
-    .query(({ input }) => {
-      return progressRepo.getAllByUserId(input.userId);
-    }),
+  getAll: publicProcedure.input(z.object({ userId: z.string() })).query(({ input }) => {
+    return progressRepo.getAllByUserId(input.userId);
+  }),
 });

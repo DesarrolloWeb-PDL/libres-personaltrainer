@@ -8,12 +8,9 @@
  * - Overreaching: RPE consistently >9
  */
 
-import type {
-  PerformanceSnapshot,
-  WorkoutDay,
-} from './types'
+import type { PerformanceSnapshot, WorkoutDay } from "./types";
 
-import { DELOAD_CONFIG } from './constants'
+import { DELOAD_CONFIG } from "./constants";
 
 // ─── Public API ──────────────────────────────────────────────────────
 
@@ -29,15 +26,15 @@ export function shouldDeload(
   performanceSnapshots: PerformanceSnapshot[] = [],
 ): boolean {
   // Time-based trigger
-  if (isTimeForDeload(weeksSinceDeload)) return true
+  if (isTimeForDeload(weeksSinceDeload)) return true;
 
   // Performance regression trigger
-  if (hasPerformanceRegression(performanceSnapshots)) return true
+  if (hasPerformanceRegression(performanceSnapshots)) return true;
 
   // Overreaching trigger (high RPE sustained)
-  if (isOverreaching(performanceSnapshots)) return true
+  if (isOverreaching(performanceSnapshots)) return true;
 
-  return false
+  return false;
 }
 
 /**
@@ -45,30 +42,27 @@ export function shouldDeload(
  * Reduces volume and intensity to facilitate recovery.
  */
 export function applyDeload(days: WorkoutDay[]): WorkoutDay[] {
-  return days.map(day => ({
+  return days.map((day) => ({
     ...day,
-    exercises: day.exercises.map(exercise => ({
+    exercises: day.exercises.map((exercise) => ({
       ...exercise,
-      sets: Math.max(1, Math.round(
-        exercise.sets * (1 - DELOAD_CONFIG.VOLUME_REDUCTION_PERCENT),
-      )),
-      reps: Math.max(1, Math.round(
-        exercise.reps * (1 - DELOAD_CONFIG.INTENSITY_REDUCTION_PERCENT),
-      )),
+      sets: Math.max(1, Math.round(exercise.sets * (1 - DELOAD_CONFIG.VOLUME_REDUCTION_PERCENT))),
+      reps: Math.max(
+        1,
+        Math.round(exercise.reps * (1 - DELOAD_CONFIG.INTENSITY_REDUCTION_PERCENT)),
+      ),
       weight: exercise.weight
         ? Math.round(exercise.weight * (1 - DELOAD_CONFIG.INTENSITY_REDUCTION_PERCENT))
         : undefined,
-      rpe: exercise.rpe
-        ? Math.max(5, exercise.rpe - 2)
-        : undefined,
+      rpe: exercise.rpe ? Math.max(5, exercise.rpe - 2) : undefined,
     })),
-  }))
+  }));
 }
 
 // ─── Time-Based Detection ────────────────────────────────────────────
 
 function isTimeForDeload(weeksSinceDeload: number): boolean {
-  return weeksSinceDeload >= DELOAD_CONFIG.DEFAULT_INTERVAL_WEEKS
+  return weeksSinceDeload >= DELOAD_CONFIG.DEFAULT_INTERVAL_WEEKS;
 }
 
 // ─── Performance Regression Detection ────────────────────────────────
@@ -78,17 +72,16 @@ function isTimeForDeload(weeksSinceDeload: number): boolean {
  * multiple exercises.
  */
 function hasPerformanceRegression(snapshots: PerformanceSnapshot[]): boolean {
-  if (snapshots.length === 0) return false
+  if (snapshots.length === 0) return false;
 
-  const regressedCount = snapshots.filter(s => {
-    const dropPercent = s.baselineWeight > 0
-      ? (s.baselineWeight - s.currentWeight) / s.baselineWeight
-      : 0
-    return dropPercent > DELOAD_CONFIG.PERFORMANCE_DROP_THRESHOLD
-  }).length
+  const regressedCount = snapshots.filter((s) => {
+    const dropPercent =
+      s.baselineWeight > 0 ? (s.baselineWeight - s.currentWeight) / s.baselineWeight : 0;
+    return dropPercent > DELOAD_CONFIG.PERFORMANCE_DROP_THRESHOLD;
+  }).length;
 
   // If >50% of tracked exercises show regression
-  return regressedCount > snapshots.length / 2
+  return regressedCount > snapshots.length / 2;
 }
 
 // ─── Overreaching Detection ──────────────────────────────────────────
@@ -98,12 +91,15 @@ function hasPerformanceRegression(snapshots: PerformanceSnapshot[]): boolean {
  * indicating accumulated fatigue.
  */
 function isOverreaching(snapshots: PerformanceSnapshot[]): boolean {
-  if (snapshots.length === 0) return false
+  if (snapshots.length === 0) return false;
 
   const highRpeCount = snapshots.filter(
-    s => s.currentRpe >= DELOAD_CONFIG.HIGH_RPE_THRESHOLD,
-  ).length
+    (s) => s.currentRpe >= DELOAD_CONFIG.HIGH_RPE_THRESHOLD,
+  ).length;
 
   // If all tracked exercises are consistently high RPE
-  return highRpeCount === snapshots.length && snapshots.length >= DELOAD_CONFIG.HIGH_RPE_SESSIONS_BEFORE_DELOAD
+  return (
+    highRpeCount === snapshots.length &&
+    snapshots.length >= DELOAD_CONFIG.HIGH_RPE_SESSIONS_BEFORE_DELOAD
+  );
 }

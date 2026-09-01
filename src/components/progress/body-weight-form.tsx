@@ -7,10 +7,7 @@ interface BodyWeightFormProps {
   isSubmitting?: boolean;
 }
 
-export function BodyWeightForm({
-  onSubmit,
-  isSubmitting = false,
-}: BodyWeightFormProps) {
+export function BodyWeightForm({ onSubmit, isSubmitting = false }: BodyWeightFormProps) {
   const [weight, setWeight] = useState("");
   const [notes, setNotes] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -129,11 +126,7 @@ export function BodyWeightForm({
       </div>
 
       {error && (
-        <p
-          id="weight-error"
-          role="alert"
-          className="mt-2 text-xs text-red-400"
-        >
+        <p id="weight-error" role="alert" className="mt-2 text-xs text-red-400">
           {error}
         </p>
       )}

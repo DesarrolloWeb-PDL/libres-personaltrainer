@@ -46,9 +46,7 @@ export function detectPlateau(
   }
 
   // Sort by date ascending
-  const sorted = [...data].sort(
-    (a, b) => a.date.getTime() - b.date.getTime(),
-  );
+  const sorted = [...data].sort((a, b) => a.date.getTime() - b.date.getTime());
 
   const currentValue = sorted[sorted.length - 1].value;
   const peakValue = Math.max(...sorted.map((d) => d.value));
@@ -66,24 +64,16 @@ export function detectPlateau(
 
   const now = new Date();
   const daysSinceImprovement = lastImprovementDate
-    ? Math.floor(
-        (now.getTime() - lastImprovementDate.getTime()) / (1000 * 60 * 60 * 24),
-      )
+    ? Math.floor((now.getTime() - lastImprovementDate.getTime()) / (1000 * 60 * 60 * 24))
     : sorted.length > 0
-      ? Math.floor(
-          (now.getTime() - sorted[0].date.getTime()) /
-            (1000 * 60 * 60 * 24),
-        )
+      ? Math.floor((now.getTime() - sorted[0].date.getTime()) / (1000 * 60 * 60 * 24))
       : 0;
 
   const weeksSinceImprovement = Math.floor(daysSinceImprovement / 7);
 
   const isPlateau = daysSinceImprovement >= minDaysForPlateau;
 
-  const percentChange =
-    peakValue > 0
-      ? ((currentValue - peakValue) / peakValue) * 100
-      : 0;
+  const percentChange = peakValue > 0 ? ((currentValue - peakValue) / peakValue) * 100 : 0;
 
   let suggestion: string | null = null;
   if (isPlateau) {
@@ -119,14 +109,9 @@ export function calculateWeeklyAverages(
 ): { weekStart: Date; average: number; count: number }[] {
   if (data.length === 0) return [];
 
-  const sorted = [...data].sort(
-    (a, b) => a.date.getTime() - b.date.getTime(),
-  );
+  const sorted = [...data].sort((a, b) => a.date.getTime() - b.date.getTime());
 
-  const weekMap = new Map<
-    string,
-    { sum: number; count: number; firstDate: Date }
-  >();
+  const weekMap = new Map<string, { sum: number; count: number; firstDate: Date }>();
 
   for (const point of sorted) {
     const weekKey = getWeekKey(point.date);
@@ -159,9 +144,7 @@ function getWeekKey(date: Date): string {
   const dayNum = d.getUTCDay() || 7;
   d.setUTCDate(d.getUTCDate() + 4 - dayNum);
   const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
-  const weekNo = Math.ceil(
-    ((d.getTime() - yearStart.getTime()) / 86400000 + 1) / 7,
-  );
+  const weekNo = Math.ceil(((d.getTime() - yearStart.getTime()) / 86400000 + 1) / 7);
   return `${d.getUTCFullYear()}-W${String(weekNo).padStart(2, "0")}`;
 }
 

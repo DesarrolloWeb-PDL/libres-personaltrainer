@@ -84,11 +84,7 @@ export const VolumeLoadChart = memo(function VolumeLoadChart({
       <ResponsiveContainer width="100%" height={350}>
         <BarChart data={data}>
           <CartesianGrid {...gridStyle} strokeDasharray="3 3" />
-          <XAxis
-            dataKey="week"
-            tick={{ fontSize: 11, fill: "#71717A" }}
-            stroke="#3F3F46"
-          />
+          <XAxis dataKey="week" tick={{ fontSize: 11, fill: "#71717A" }} stroke="#3F3F46" />
           <YAxis tick={{ fontSize: 12, fill: "#71717A" }} stroke="#3F3F46" />
           <Tooltip contentStyle={tooltipStyle} />
           <Legend />
@@ -140,11 +136,7 @@ export const BodyWeightChart = memo(function BodyWeightChart({
       <ResponsiveContainer width="100%" height={300}>
         <LineChart data={chartData}>
           <CartesianGrid {...gridStyle} strokeDasharray="3 3" />
-          <XAxis
-            dataKey="date"
-            tick={{ fontSize: 12, fill: "#71717A" }}
-            stroke="#3F3F46"
-          />
+          <XAxis dataKey="date" tick={{ fontSize: 12, fill: "#71717A" }} stroke="#3F3F46" />
           <YAxis
             tick={{ fontSize: 12, fill: "#71717A" }}
             stroke="#3F3F46"
@@ -201,11 +193,7 @@ export const OneRMChart = memo(function OneRMChart({
       <ResponsiveContainer width="100%" height={300}>
         <LineChart data={data}>
           <CartesianGrid {...gridStyle} strokeDasharray="3 3" />
-          <XAxis
-            dataKey="date"
-            tick={{ fontSize: 12, fill: "#71717A" }}
-            stroke="#3F3F46"
-          />
+          <XAxis dataKey="date" tick={{ fontSize: 12, fill: "#71717A" }} stroke="#3F3F46" />
           <YAxis
             tick={{ fontSize: 12, fill: "#71717A" }}
             stroke="#3F3F46"

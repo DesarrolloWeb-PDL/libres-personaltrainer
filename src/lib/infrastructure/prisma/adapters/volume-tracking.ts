@@ -73,10 +73,7 @@ export class PrismaVolumeTrackingAdapter implements VolumeTrackingRepository {
     }) as Promise<VolumeTrackingEntry[]>;
   }
 
-  async calculateVolumeFromSessions(
-    userId: string,
-    week: string,
-  ): Promise<VolumeTrackingEntry[]> {
+  async calculateVolumeFromSessions(userId: string, week: string): Promise<VolumeTrackingEntry[]> {
     // Get week date range from ISO week string
     const weekStart = getWeekStartDate(week);
     const weekEnd = new Date(weekStart);
@@ -116,14 +113,10 @@ export class PrismaVolumeTrackingAdapter implements VolumeTrackingRepository {
     });
 
     // Group by muscle group
-    const volumeMap = new Map<
-      string,
-      { sets: number; volumeLoad: number }
-    >();
+    const volumeMap = new Map<string, { sets: number; volumeLoad: number }>();
 
     for (const set of sets) {
-      const muscleGroup =
-        set.workoutExercise.exercise.muscleGroup?.name ?? "Unknown";
+      const muscleGroup = set.workoutExercise.exercise.muscleGroup?.name ?? "Unknown";
       const weight = set.weight ?? 0;
       const reps = set.reps ?? 0;
       const volumeLoad = weight * reps;
@@ -202,9 +195,7 @@ function dateToWeekString(date: Date): string {
   const dayNum = d.getUTCDay() || 7;
   d.setUTCDate(d.getUTCDate() + 4 - dayNum);
   const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
-  const weekNo = Math.ceil(
-    ((d.getTime() - yearStart.getTime()) / 86400000 + 1) / 7,
-  );
+  const weekNo = Math.ceil(((d.getTime() - yearStart.getTime()) / 86400000 + 1) / 7);
   return `${d.getUTCFullYear()}-W${String(weekNo).padStart(2, "0")}`;
 }
 

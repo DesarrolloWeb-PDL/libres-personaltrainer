@@ -59,12 +59,8 @@ export function StepExperience({ data, onUpdate }: StepExperienceProps) {
                 className="mt-0.5 h-4 w-4 border-zinc-600 text-blue-500 focus:ring-blue-500"
               />
               <div className="ml-3">
-                <span className="block text-sm font-medium text-zinc-100">
-                  {level.label}
-                </span>
-                <span className="block text-xs text-zinc-400">
-                  {level.description}
-                </span>
+                <span className="block text-sm font-medium text-zinc-100">{level.label}</span>
+                <span className="block text-xs text-zinc-400">{level.description}</span>
               </div>
             </label>
           );

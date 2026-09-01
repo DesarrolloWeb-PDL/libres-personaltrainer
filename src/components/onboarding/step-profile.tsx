@@ -18,10 +18,7 @@ export function StepProfile({ data, onUpdate }: StepProfileProps) {
       </div>
 
       <div>
-        <label
-          htmlFor="name"
-          className="block text-sm font-medium text-zinc-300"
-        >
+        <label htmlFor="name" className="block text-sm font-medium text-zinc-300">
           Name <span className="text-zinc-500">(optional)</span>
         </label>
         <input
@@ -36,11 +33,11 @@ export function StepProfile({ data, onUpdate }: StepProfileProps) {
       </div>
 
       <div>
-        <label
-          htmlFor="age"
-          className="block text-sm font-medium text-zinc-300"
-        >
-          Age <span className="text-red-500" aria-hidden="true">*</span>
+        <label htmlFor="age" className="block text-sm font-medium text-zinc-300">
+          Age{" "}
+          <span className="text-red-500" aria-hidden="true">
+            *
+          </span>
           <span className="sr-only">(required)</span>
         </label>
         <input
@@ -55,8 +52,12 @@ export function StepProfile({ data, onUpdate }: StepProfileProps) {
           }}
           placeholder="e.g. 28"
           aria-required="true"
-          aria-invalid={data.age !== undefined && (data.age < 10 || data.age > 100) ? "true" : "false"}
-          aria-describedby={data.age !== undefined && (data.age < 10 || data.age > 100) ? "age-error" : undefined}
+          aria-invalid={
+            data.age !== undefined && (data.age < 10 || data.age > 100) ? "true" : "false"
+          }
+          aria-describedby={
+            data.age !== undefined && (data.age < 10 || data.age > 100) ? "age-error" : undefined
+          }
           className="mt-1 block w-full rounded-xl border border-zinc-700 bg-zinc-800 px-3 py-2.5 text-sm text-zinc-100 placeholder-zinc-500 focus:border-blue-500 focus:outline-none"
         />
         {data.age !== undefined && (data.age < 10 || data.age > 100) && (

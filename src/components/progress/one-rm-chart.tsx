@@ -21,10 +21,7 @@ interface OneRMChartProps {
   title?: string;
 }
 
-export function OneRMChart({
-  data,
-  title = "Estimated 1RM Progression",
-}: OneRMChartProps) {
+export function OneRMChart({ data, title = "Estimated 1RM Progression" }: OneRMChartProps) {
   if (data.length === 0) {
     return (
       <div className="rounded-xl bg-zinc-900 border border-zinc-800 p-4">
@@ -42,11 +39,7 @@ export function OneRMChart({
       <ResponsiveContainer width="100%" height={300}>
         <LineChart data={data}>
           <CartesianGrid strokeDasharray="3 3" stroke="#27272A" />
-          <XAxis
-            dataKey="date"
-            tick={{ fontSize: 12, fill: "#71717A" }}
-            stroke="#3F3F46"
-          />
+          <XAxis dataKey="date" tick={{ fontSize: 12, fill: "#71717A" }} stroke="#3F3F46" />
           <YAxis
             tick={{ fontSize: 12, fill: "#71717A" }}
             stroke="#3F3F46"

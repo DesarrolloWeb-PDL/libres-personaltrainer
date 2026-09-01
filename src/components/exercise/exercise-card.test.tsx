@@ -69,9 +69,7 @@ describe("ExerciseCard", () => {
 
   it("renders instructions preview", () => {
     render(<ExerciseCard exercise={mockExercise} />);
-    expect(
-      screen.getByText(/Lie on bench, grip bar/)
-    ).toBeInTheDocument();
+    expect(screen.getByText(/Lie on bench, grip bar/)).toBeInTheDocument();
   });
 
   it("renders without optional fields", () => {

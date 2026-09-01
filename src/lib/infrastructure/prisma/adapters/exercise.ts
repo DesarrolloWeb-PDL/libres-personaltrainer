@@ -30,10 +30,7 @@ export class PrismaExerciseAdapter implements ExerciseRepository {
     }
 
     if (filters?.search) {
-      where.OR = [
-        { name: { contains: filters.search } },
-        { nameEs: { contains: filters.search } },
-      ];
+      where.OR = [{ name: { contains: filters.search } }, { nameEs: { contains: filters.search } }];
     }
 
     return prisma.exercise.findMany({
@@ -53,10 +50,7 @@ export class PrismaExerciseAdapter implements ExerciseRepository {
   async search(query: string): Promise<ExerciseWithRelations[]> {
     return prisma.exercise.findMany({
       where: {
-        OR: [
-          { name: { contains: query } },
-          { nameEs: { contains: query } },
-        ],
+        OR: [{ name: { contains: query } }, { nameEs: { contains: query } }],
       },
       include: this.include,
       orderBy: { name: "asc" },

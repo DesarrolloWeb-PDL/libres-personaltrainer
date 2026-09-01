@@ -15,14 +15,8 @@ export default async function ExercisesPage() {
 
   return (
     <main className="mx-auto max-w-7xl px-4 py-6 pb-24">
-      <h1 className="mb-6 text-2xl font-bold text-zinc-50">
-        Exercise Database
-      </h1>
-      <ExerciseBrowser
-        exercises={exercises}
-        muscleGroups={muscleGroups}
-        equipment={equipment}
-      />
+      <h1 className="mb-6 text-2xl font-bold text-zinc-50">Exercise Database</h1>
+      <ExerciseBrowser exercises={exercises} muscleGroups={muscleGroups} equipment={equipment} />
     </main>
   );
 }

@@ -13,9 +13,7 @@ import { useSession } from "next-auth/react";
 export default function ProgressPage() {
   const { data: session } = useSession();
   const userId = session?.user?.id ?? "";
-  const [dateRange, setDateRange] = useState<"3m" | "6m" | "1y" | "all">(
-    "all",
-  );
+  const [dateRange, setDateRange] = useState<"3m" | "6m" | "1y" | "all">("all");
 
   const weightQuery = api.progress.getWeightHistory.useQuery({
     userId,
@@ -50,10 +48,7 @@ export default function ProgressPage() {
   const { volumeHistory, muscleGroups } = useMemo(() => {
     if (!volumeQuery.data) return { volumeHistory: [], muscleGroups: [] };
 
-    const grouped = new Map<
-      string,
-      { week: string; [key: string]: string | number }
-    >();
+    const grouped = new Map<string, { week: string; [key: string]: string | number }>();
     const groups = new Set<string>();
 
     for (const entry of volumeQuery.data) {
@@ -78,13 +73,10 @@ export default function ProgressPage() {
     };
   }, [volumeQuery.data]);
 
-  const latestWeight = weightHistory.length > 0
-    ? weightHistory[weightHistory.length - 1].value
-    : null;
+  const latestWeight =
+    weightHistory.length > 0 ? weightHistory[weightHistory.length - 1].value : null;
 
-  const latest1RM = oneRMHistory.length > 0
-    ? oneRMHistory[oneRMHistory.length - 1].value
-    : null;
+  const latest1RM = oneRMHistory.length > 0 ? oneRMHistory[oneRMHistory.length - 1].value : null;
 
   const totalVolume = useMemo(() => {
     return volumeHistory.reduce((sum, week) => {
@@ -139,9 +131,7 @@ export default function ProgressPage() {
               <p className="text-3xl font-black text-zinc-50">
                 {isLoading ? "..." : latestWeight !== null ? `${latestWeight}` : "—"}
               </p>
-              {latestWeight !== null && (
-                <p className="text-xs text-zinc-400">kg</p>
-              )}
+              {latestWeight !== null && <p className="text-xs text-zinc-400">kg</p>}
             </div>
           </div>
         </div>
@@ -155,9 +145,7 @@ export default function ProgressPage() {
               <p className="text-3xl font-black text-zinc-50">
                 {isLoading ? "..." : latest1RM !== null ? `${latest1RM}` : "—"}
               </p>
-              {latest1RM !== null && (
-                <p className="text-xs text-zinc-400">kg</p>
-              )}
+              {latest1RM !== null && <p className="text-xs text-zinc-400">kg</p>}
             </div>
           </div>
         </div>
@@ -171,9 +159,7 @@ export default function ProgressPage() {
               <p className="text-3xl font-black text-zinc-50">
                 {isLoading ? "..." : totalVolume > 0 ? totalVolume.toLocaleString() : "—"}
               </p>
-              {totalVolume > 0 && (
-                <p className="text-xs text-zinc-400">kg</p>
-              )}
+              {totalVolume > 0 && <p className="text-xs text-zinc-400">kg</p>}
             </div>
           </div>
         </div>
@@ -181,9 +167,7 @@ export default function ProgressPage() {
 
       {/* Date Range Selector */}
       <div className="flex items-center gap-2">
-        <span className="text-xs font-medium text-zinc-500 uppercase tracking-wider">
-          Range:
-        </span>
+        <span className="text-xs font-medium text-zinc-500 uppercase tracking-wider">Range:</span>
         {(["3m", "6m", "1y", "all"] as const).map((range) => (
           <button
             key={range}

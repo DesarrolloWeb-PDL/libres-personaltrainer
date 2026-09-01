@@ -33,12 +33,7 @@ describe("StepEquipment", () => {
   });
 
   it("shows selected equipment as checked", () => {
-    render(
-      <StepEquipment
-        data={{ equipment: "full_gym" }}
-        onUpdate={vi.fn()}
-      />
-    );
+    render(<StepEquipment data={{ equipment: "full_gym" }} onUpdate={vi.fn()} />);
 
     const radio = screen.getByDisplayValue("full_gym");
     expect(radio).toBeChecked();
@@ -46,14 +41,8 @@ describe("StepEquipment", () => {
 
   it("renders descriptions for each option", () => {
     render(<StepEquipment {...defaultProps} />);
-    expect(
-      screen.getByText(/Access to barbells, dumbbells/)
-    ).toBeInTheDocument();
-    expect(
-      screen.getByText(/Dumbbells, an adjustable bench/)
-    ).toBeInTheDocument();
-    expect(
-      screen.getByText(/No equipment — using bodyweight/)
-    ).toBeInTheDocument();
+    expect(screen.getByText(/Access to barbells, dumbbells/)).toBeInTheDocument();
+    expect(screen.getByText(/Dumbbells, an adjustable bench/)).toBeInTheDocument();
+    expect(screen.getByText(/No equipment — using bodyweight/)).toBeInTheDocument();
   });
 });

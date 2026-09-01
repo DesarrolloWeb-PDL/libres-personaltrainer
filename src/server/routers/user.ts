@@ -9,18 +9,14 @@ const userRepo = new PrismaUserAdapter();
  */
 export const userRouter = createTRPCRouter({
   /** Get user by ID */
-  getById: publicProcedure
-    .input(z.object({ id: z.string() }))
-    .query(({ input }) => {
-      return userRepo.findById(input.id);
-    }),
+  getById: publicProcedure.input(z.object({ id: z.string() })).query(({ input }) => {
+    return userRepo.findById(input.id);
+  }),
 
   /** Get user by email */
-  getByEmail: publicProcedure
-    .input(z.object({ email: z.string().email() }))
-    .query(({ input }) => {
-      return userRepo.findByEmail(input.email);
-    }),
+  getByEmail: publicProcedure.input(z.object({ email: z.string().email() })).query(({ input }) => {
+    return userRepo.findByEmail(input.email);
+  }),
 
   /** Create a new user */
   create: publicProcedure
@@ -28,7 +24,7 @@ export const userRouter = createTRPCRouter({
       z.object({
         email: z.string().email(),
         name: z.string().optional(),
-      })
+      }),
     )
     .mutation(({ input }) => {
       return userRepo.create(input);

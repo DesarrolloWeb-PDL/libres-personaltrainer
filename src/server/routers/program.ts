@@ -25,13 +25,14 @@ export const programRouter = createTRPCRouter({
       const profile = await profileRepo.findByUserId(input.userId);
 
       // Build user profile for domain engine
-      const goals = (profile?.goals
-        ? profile.goals.split(",").filter(Boolean)
-        : ["muscle_gain"]) as UserProfile["goals"];
+      const goals = (
+        profile?.goals ? profile.goals.split(",").filter(Boolean) : ["muscle_gain"]
+      ) as UserProfile["goals"];
 
       const userProfile: UserProfile = {
         age: profile?.age ?? 25,
-        experienceLevel: (profile?.experienceLevel as UserProfile["experienceLevel"]) ?? "intermediate",
+        experienceLevel:
+          (profile?.experienceLevel as UserProfile["experienceLevel"]) ?? "intermediate",
         goals,
         equipment: (profile?.equipment as Equipment) ?? "full_gym",
         trainingFrequency: 4, // default, will be overridden per option
@@ -84,7 +85,7 @@ export const programRouter = createTRPCRouter({
       }
 
       // Option 4: Upper/Lower (if not already included)
-      if (autoSplit !== "upper_lower" && !options.find(o => o.splitType === "upper_lower")) {
+      if (autoSplit !== "upper_lower" && !options.find((o) => o.splitType === "upper_lower")) {
         options.push({
           splitType: "upper_lower",
           name: "Upper / Lower",
@@ -107,7 +108,7 @@ export const programRouter = createTRPCRouter({
         splitType: z.enum(["push_pull_legs", "upper_lower", "full_body", "custom"]).optional(),
         trainingFrequency: z.number().int().min(1).max(7),
         experienceLevel: z.enum(["beginner", "intermediate", "advanced"]),
-      })
+      }),
     )
     .mutation(async ({ input }) => {
       // Fetch user profile for personalized generation
@@ -120,9 +121,9 @@ export const programRouter = createTRPCRouter({
       const exercises = dbExercises.map((ex) => toDomainExercise(ex));
 
       // Build user profile from DB (with fallbacks)
-      const goals = (profile?.goals
-        ? profile.goals.split(",").filter(Boolean)
-        : ["muscle_gain"]) as UserProfile["goals"];
+      const goals = (
+        profile?.goals ? profile.goals.split(",").filter(Boolean) : ["muscle_gain"]
+      ) as UserProfile["goals"];
 
       const userProfile: UserProfile = {
         age: profile?.age ?? 25,
@@ -136,14 +137,17 @@ export const programRouter = createTRPCRouter({
       const program = generateProgram(userProfile, exercises);
 
       // Override split type if user explicitly chose one
-      const finalSplitType = input.splitType && input.splitType !== "custom"
-        ? input.splitType
-        : program.splitType;
+      const finalSplitType =
+        input.splitType && input.splitType !== "custom" ? input.splitType : program.splitType;
 
       // Regenerate with the chosen split if different
-      const finalProgram = input.splitType && input.splitType !== program.splitType
-        ? generateProgram({ ...userProfile, trainingFrequency: getFrequencyForSplit(input.splitType) }, exercises)
-        : program;
+      const finalProgram =
+        input.splitType && input.splitType !== program.splitType
+          ? generateProgram(
+              { ...userProfile, trainingFrequency: getFrequencyForSplit(input.splitType) },
+              exercises,
+            )
+          : program;
 
       // Persist the generated program
       const created = await programRepo.create({
@@ -179,7 +183,7 @@ export const programRouter = createTRPCRouter({
         trainingFrequency: z.number().int().min(1).max(7),
         experienceLevel: z.enum(["beginner", "intermediate", "advanced"]),
         weeksSinceDeload: z.number().min(0),
-      })
+      }),
     )
     .mutation(async ({ input }) => {
       // Fetch available exercises from DB
@@ -217,9 +221,7 @@ export const programRouter = createTRPCRouter({
       // Persist the generated program
       const created = await programRepo.create({
         userId: input.userId,
-        name: shouldDeloadNow
-          ? `${input.name} (Deload Week)`
-          : input.name,
+        name: shouldDeloadNow ? `${input.name} (Deload Week)` : input.name,
         splitType: program.splitType,
         startDate: new Date(),
         days: program.days.map((day) => ({
@@ -246,25 +248,19 @@ export const programRouter = createTRPCRouter({
     }),
 
   /** Get the current active program for a user */
-  getCurrent: publicProcedure
-    .input(z.object({ userId: z.string() }))
-    .query(({ input }) => {
-      return programRepo.findActiveByUserId(input.userId);
-    }),
+  getCurrent: publicProcedure.input(z.object({ userId: z.string() })).query(({ input }) => {
+    return programRepo.findActiveByUserId(input.userId);
+  }),
 
   /** Get a program by ID */
-  getById: publicProcedure
-    .input(z.object({ id: z.string() }))
-    .query(({ input }) => {
-      return programRepo.findById(input.id);
-    }),
+  getById: publicProcedure.input(z.object({ id: z.string() })).query(({ input }) => {
+    return programRepo.findById(input.id);
+  }),
 
   /** List all programs for a user */
-  listByUser: publicProcedure
-    .input(z.object({ userId: z.string() }))
-    .query(({ input }) => {
-      return programRepo.findByUserId(input.userId);
-    }),
+  listByUser: publicProcedure.input(z.object({ userId: z.string() })).query(({ input }) => {
+    return programRepo.findByUserId(input.userId);
+  }),
 
   /** Delete current program and all sessions for a user (start over) */
   deleteCurrent: publicProcedure
@@ -283,18 +279,20 @@ function getCurrentWeekString(): string {
   const dayNum = d.getUTCDay() || 7;
   d.setUTCDate(d.getUTCDate() + 4 - dayNum);
   const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
-  const weekNo = Math.ceil(
-    ((d.getTime() - yearStart.getTime()) / 86400000 + 1) / 7,
-  );
+  const weekNo = Math.ceil(((d.getTime() - yearStart.getTime()) / 86400000 + 1) / 7);
   return `${d.getUTCFullYear()}-W${String(weekNo).padStart(2, "0")}`;
 }
 
 function formatSplitName(split: SplitType): string {
   switch (split) {
-    case "push_pull_legs": return "Push / Pull / Legs";
-    case "upper_lower": return "Upper / Lower";
-    case "full_body": return "Full Body";
-    default: return "Custom";
+    case "push_pull_legs":
+      return "Push / Pull / Legs";
+    case "upper_lower":
+      return "Upper / Lower";
+    case "full_body":
+      return "Full Body";
+    default:
+      return "Custom";
   }
 }
 
@@ -346,9 +344,13 @@ function getSplitBestFor(split: SplitType, level: string): string {
 
 function getFrequencyForSplit(split: SplitType): number {
   switch (split) {
-    case "push_pull_legs": return 5;
-    case "upper_lower": return 4;
-    case "full_body": return 3;
-    default: return 4;
+    case "push_pull_legs":
+      return 5;
+    case "upper_lower":
+      return 4;
+    case "full_body":
+      return 3;
+    default:
+      return 4;
   }
 }

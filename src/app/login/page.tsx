@@ -40,9 +40,7 @@ export default function LoginPage() {
       <div className="w-full max-w-md space-y-6">
         <div className="text-center">
           <h1 className="text-2xl font-bold text-zinc-50">Welcome to Libres</h1>
-          <p className="mt-2 text-sm text-zinc-400">
-            Sign in to access your personal trainer
-          </p>
+          <p className="mt-2 text-sm text-zinc-400">Sign in to access your personal trainer</p>
         </div>
 
         <div className="rounded-xl bg-zinc-900 border border-zinc-800 p-6">
@@ -63,9 +61,7 @@ export default function LoginPage() {
           {/* Credentials Login */}
           <form onSubmit={handleCredentialsLogin} className="space-y-4">
             <div>
-              <label className="block text-xs font-medium text-zinc-400 mb-1">
-                Email
-              </label>
+              <label className="block text-xs font-medium text-zinc-400 mb-1">Email</label>
               <input
                 type="email"
                 value={email}
@@ -76,9 +72,7 @@ export default function LoginPage() {
               />
             </div>
             <div>
-              <label className="block text-xs font-medium text-zinc-400 mb-1">
-                Password
-              </label>
+              <label className="block text-xs font-medium text-zinc-400 mb-1">Password</label>
               <input
                 type="password"
                 value={password}
@@ -89,9 +83,7 @@ export default function LoginPage() {
               />
             </div>
 
-            {error && (
-              <p className="text-sm text-red-400">{error}</p>
-            )}
+            {error && <p className="text-sm text-red-400">{error}</p>}
 
             <button
               type="submit"

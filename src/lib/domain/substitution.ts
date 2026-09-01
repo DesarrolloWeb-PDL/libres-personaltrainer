@@ -8,13 +8,9 @@
  * - Injury constraints
  */
 
-import type {
-  Exercise,
-  Equipment,
-  MuscleGroup,
-} from './types'
+import type { Exercise, Equipment, MuscleGroup } from "./types";
 
-import { INJURY_CONSTRAINTS } from './constants'
+import { INJURY_CONSTRAINTS } from "./constants";
 
 // ─── Public API ──────────────────────────────────────────────────────
 
@@ -36,20 +32,21 @@ export function findSubstitute(
   equipment: Equipment,
   injuries: string[] = [],
 ): Exercise {
-  const candidates = allExercises.filter(e =>
-    e.id !== exercise.id &&
-    e.muscleGroup === exercise.muscleGroup &&
-    isEquipmentCompatible(e, equipment) &&
-    !isInjuryRestricted(e, injuries),
-  )
+  const candidates = allExercises.filter(
+    (e) =>
+      e.id !== exercise.id &&
+      e.muscleGroup === exercise.muscleGroup &&
+      isEquipmentCompatible(e, equipment) &&
+      !isInjuryRestricted(e, injuries),
+  );
 
   // Prefer compounds if original was compound, else isolations
   const preferred = exercise.isCompound
-    ? candidates.filter(c => c.isCompound)
-    : candidates.filter(c => !c.isCompound)
+    ? candidates.filter((c) => c.isCompound)
+    : candidates.filter((c) => !c.isCompound);
 
   // Fall back to any candidate
-  return preferred[0] ?? candidates[0] ?? exercise
+  return preferred[0] ?? candidates[0] ?? exercise;
 }
 
 /**
@@ -61,28 +58,25 @@ export function swapInjuredExercises(
   equipment: Equipment,
   injuries: string[],
 ): Exercise[] {
-  return exercises.map(exercise => {
+  return exercises.map((exercise) => {
     if (isInjuryRestricted(exercise, injuries)) {
-      return findSubstitute(exercise, allExercises, equipment, injuries)
+      return findSubstitute(exercise, allExercises, equipment, injuries);
     }
-    return exercise
-  })
+    return exercise;
+  });
 }
 
 /**
  * Checks if an exercise is contraindicated given a list of injuries.
  */
-export function isInjuryRestricted(
-  exercise: Exercise,
-  injuries: string[],
-): boolean {
+export function isInjuryRestricted(exercise: Exercise, injuries: string[]): boolean {
   for (const injury of injuries) {
-    const restrictedMuscles = INJURY_CONSTRAINTS[injury.toLowerCase()]
+    const restrictedMuscles = INJURY_CONSTRAINTS[injury.toLowerCase()];
     if (restrictedMuscles && restrictedMuscles.includes(exercise.muscleGroup)) {
-      return true
+      return true;
     }
   }
-  return false
+  return false;
 }
 
 // ─── Equipment Compatibility ─────────────────────────────────────────
@@ -94,19 +88,20 @@ export function isInjuryRestricted(
  */
 function isEquipmentCompatible(exercise: Exercise, userEquipment: Equipment): boolean {
   // Bodyweight exercises are always compatible
-  if (exercise.equipment.includes('bodyweight_only')) return true
+  if (exercise.equipment.includes("bodyweight_only")) return true;
 
   // Full gym has everything
-  if (userEquipment === 'full_gym') return true
+  if (userEquipment === "full_gym") return true;
 
   // Home gym: check if exercise requires only home equipment
-  if (userEquipment === 'home_gym') {
-    return exercise.equipment.includes('home_gym') ||
-           exercise.equipment.includes('bodyweight_only')
+  if (userEquipment === "home_gym") {
+    return (
+      exercise.equipment.includes("home_gym") || exercise.equipment.includes("bodyweight_only")
+    );
   }
 
   // Bodyweight only
-  return exercise.equipment.includes('bodyweight_only')
+  return exercise.equipment.includes("bodyweight_only");
 }
 
 // ─── Substitution Suggestions ────────────────────────────────────────
@@ -122,19 +117,20 @@ export function getSuggestions(
   injuries: string[],
   maxSuggestions: number = 3,
 ): Exercise[] {
-  const candidates = allExercises.filter(e =>
-    e.id !== exercise.id &&
-    e.muscleGroup === exercise.muscleGroup &&
-    isEquipmentCompatible(e, equipment) &&
-    !isInjuryRestricted(e, injuries),
-  )
+  const candidates = allExercises.filter(
+    (e) =>
+      e.id !== exercise.id &&
+      e.muscleGroup === exercise.muscleGroup &&
+      isEquipmentCompatible(e, equipment) &&
+      !isInjuryRestricted(e, injuries),
+  );
 
   // Sort: prefer matching compound/isolation status, then by name
   const sorted = candidates.sort((a, b) => {
-    const aMatch = a.isCompound === exercise.isCompound ? 0 : 1
-    const bMatch = b.isCompound === exercise.isCompound ? 0 : 1
-    return aMatch - bMatch
-  })
+    const aMatch = a.isCompound === exercise.isCompound ? 0 : 1;
+    const bMatch = b.isCompound === exercise.isCompound ? 0 : 1;
+    return aMatch - bMatch;
+  });
 
-  return sorted.slice(0, maxSuggestions)
+  return sorted.slice(0, maxSuggestions);
 }

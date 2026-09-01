@@ -33,12 +33,7 @@ describe("StepExperience", () => {
   });
 
   it("shows selected level as checked", () => {
-    render(
-      <StepExperience
-        data={{ experienceLevel: "advanced" }}
-        onUpdate={vi.fn()}
-      />
-    );
+    render(<StepExperience data={{ experienceLevel: "advanced" }} onUpdate={vi.fn()} />);
 
     const radio = screen.getByDisplayValue("advanced");
     expect(radio).toBeChecked();
@@ -46,14 +41,8 @@ describe("StepExperience", () => {
 
   it("renders descriptions for each level", () => {
     render(<StepExperience {...defaultProps} />);
-    expect(
-      screen.getByText(/New to weight training/)
-    ).toBeInTheDocument();
-    expect(
-      screen.getByText(/6–18 months of consistent training/)
-    ).toBeInTheDocument();
-    expect(
-      screen.getByText(/2\+ years of serious training/)
-    ).toBeInTheDocument();
+    expect(screen.getByText(/New to weight training/)).toBeInTheDocument();
+    expect(screen.getByText(/6–18 months of consistent training/)).toBeInTheDocument();
+    expect(screen.getByText(/2\+ years of serious training/)).toBeInTheDocument();
   });
 });

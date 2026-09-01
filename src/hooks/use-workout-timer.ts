@@ -31,9 +31,7 @@ interface UseWorkoutTimerReturn {
  * start(60);
  * ```
  */
-export function useWorkoutTimer(
-  options: UseWorkoutTimerOptions = {},
-): UseWorkoutTimerReturn {
+export function useWorkoutTimer(options: UseWorkoutTimerOptions = {}): UseWorkoutTimerReturn {
   const { defaultSeconds = 90, onTick, onComplete } = options;
   const [seconds, setSeconds] = useState(defaultSeconds);
   const [isRunning, setIsRunning] = useState(false);

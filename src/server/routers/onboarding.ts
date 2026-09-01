@@ -4,23 +4,9 @@ import { PrismaProfileAdapter } from "@/lib/infrastructure/prisma/adapters/user-
 
 const profileRepo = new PrismaProfileAdapter();
 
-const experienceLevelEnum = z.enum([
-  "beginner",
-  "intermediate",
-  "advanced",
-]);
-const goalsEnum = z.enum([
-  "muscle_gain",
-  "fat_loss",
-  "strength",
-  "endurance",
-  "maintenance",
-]);
-const equipmentEnum = z.enum([
-  "full_gym",
-  "home_gym",
-  "bodyweight_only",
-]);
+const experienceLevelEnum = z.enum(["beginner", "intermediate", "advanced"]);
+const goalsEnum = z.enum(["muscle_gain", "fat_loss", "strength", "endurance", "maintenance"]);
+const equipmentEnum = z.enum(["full_gym", "home_gym", "bodyweight_only"]);
 const genderEnum = z.enum(["male", "female", "other"]);
 
 /**
@@ -28,11 +14,9 @@ const genderEnum = z.enum(["male", "female", "other"]);
  */
 export const onboardingRouter = createTRPCRouter({
   /** Get profile by user ID */
-  getProfile: publicProcedure
-    .input(z.object({ userId: z.string() }))
-    .query(({ input }) => {
-      return profileRepo.findByUserId(input.userId);
-    }),
+  getProfile: publicProcedure.input(z.object({ userId: z.string() })).query(({ input }) => {
+    return profileRepo.findByUserId(input.userId);
+  }),
 
   /** Submit full onboarding wizard data */
   submitWizard: publicProcedure
@@ -48,7 +32,7 @@ export const onboardingRouter = createTRPCRouter({
         gender: genderEnum.optional(),
         weight: z.number().min(20).max(300).optional(),
         height: z.number().min(100).max(250).optional(),
-      })
+      }),
     )
     .mutation(async ({ input }) => {
       const { userId, goals, ...profileData } = input;
@@ -75,7 +59,7 @@ export const onboardingRouter = createTRPCRouter({
         gender: genderEnum.optional(),
         weight: z.number().min(20).max(300).optional(),
         height: z.number().min(100).max(250).optional(),
-      })
+      }),
     )
     .mutation(async ({ input }) => {
       const { userId, goals, ...profileData } = input;

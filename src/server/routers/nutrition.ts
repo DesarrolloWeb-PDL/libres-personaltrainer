@@ -7,14 +7,12 @@ import { prisma } from "@/lib/infrastructure/prisma/client";
  */
 export const nutritionRouter = createTRPCRouter({
   /** Get user profile for nutrition calculations */
-  getProfile: publicProcedure
-    .input(z.object({ userId: z.string() }))
-    .query(async ({ input }) => {
-      const profile = await prisma.profile.findUnique({
-        where: { userId: input.userId },
-      });
-      return profile;
-    }),
+  getProfile: publicProcedure.input(z.object({ userId: z.string() })).query(async ({ input }) => {
+    const profile = await prisma.profile.findUnique({
+      where: { userId: input.userId },
+    });
+    return profile;
+  }),
 
   /** Update nutrition profile fields */
   updateProfile: publicProcedure
@@ -25,7 +23,7 @@ export const nutritionRouter = createTRPCRouter({
         weight: z.number().min(20).max(300).optional(),
         height: z.number().min(100).max(250).optional(),
         age: z.number().int().min(10).max(100).optional(),
-      })
+      }),
     )
     .mutation(async ({ input }) => {
       const { userId, ...data } = input;
@@ -47,7 +45,7 @@ export const nutritionRouter = createTRPCRouter({
         carbs: z.number().min(0).optional(),
         fat: z.number().min(0).optional(),
         date: z.string().optional(), // ISO date string, defaults to today
-      })
+      }),
     )
     .mutation(async ({ input }) => {
       const date = input.date ? new Date(input.date) : new Date();
@@ -74,12 +72,10 @@ export const nutritionRouter = createTRPCRouter({
         userId: z.string(),
         startDate: z.string().optional(),
         endDate: z.string().optional(),
-      })
+      }),
     )
     .query(async ({ input }) => {
-      const startDate = input.startDate
-        ? new Date(input.startDate)
-        : new Date();
+      const startDate = input.startDate ? new Date(input.startDate) : new Date();
       startDate.setHours(0, 0, 0, 0);
 
       const endDate = input.endDate ? new Date(input.endDate) : new Date();
@@ -98,13 +94,11 @@ export const nutritionRouter = createTRPCRouter({
     }),
 
   /** Delete a meal entry */
-  deleteMeal: publicProcedure
-    .input(z.object({ id: z.string() }))
-    .mutation(async ({ input }) => {
-      return prisma.mealEntry.delete({
-        where: { id: input.id },
-      });
-    }),
+  deleteMeal: publicProcedure.input(z.object({ id: z.string() })).mutation(async ({ input }) => {
+    return prisma.mealEntry.delete({
+      where: { id: input.id },
+    });
+  }),
 
   /** Get daily nutrition summary */
   getDailySummary: publicProcedure
@@ -112,7 +106,7 @@ export const nutritionRouter = createTRPCRouter({
       z.object({
         userId: z.string(),
         date: z.string().optional(),
-      })
+      }),
     )
     .query(async ({ input }) => {
       const date = input.date ? new Date(input.date) : new Date();
@@ -138,7 +132,7 @@ export const nutritionRouter = createTRPCRouter({
           carbs: acc.carbs + meal.carbs,
           fat: acc.fat + meal.fat,
         }),
-        { calories: 0, protein: 0, carbs: 0, fat: 0 }
+        { calories: 0, protein: 0, carbs: 0, fat: 0 },
       );
 
       return {

@@ -44,9 +44,7 @@ const mockExercise = {
   muscleGroup: mockMuscleGroup,
   equipmentId: "eq-1",
   equipment: mockEquipment,
-  media: [
-    { id: "m-1", type: "gif", url: "https://example.com/bench.gif", isPrimary: true },
-  ],
+  media: [{ id: "m-1", type: "gif", url: "https://example.com/bench.gif", isPrimary: true }],
 };
 
 describe("PrismaExerciseAdapter", () => {
@@ -81,7 +79,7 @@ describe("PrismaExerciseAdapter", () => {
       expect(mockFindMany).toHaveBeenCalledWith(
         expect.objectContaining({
           where: expect.objectContaining({ muscleGroupId: "mg-1" }),
-        })
+        }),
       );
     });
 
@@ -93,7 +91,7 @@ describe("PrismaExerciseAdapter", () => {
       expect(mockFindMany).toHaveBeenCalledWith(
         expect.objectContaining({
           where: expect.objectContaining({ equipmentId: "eq-1" }),
-        })
+        }),
       );
     });
 
@@ -105,12 +103,9 @@ describe("PrismaExerciseAdapter", () => {
       expect(mockFindMany).toHaveBeenCalledWith(
         expect.objectContaining({
           where: expect.objectContaining({
-            OR: [
-              { name: { contains: "bench" } },
-              { nameEs: { contains: "bench" } },
-            ],
+            OR: [{ name: { contains: "bench" } }, { nameEs: { contains: "bench" } }],
           }),
-        })
+        }),
       );
     });
 
@@ -128,12 +123,9 @@ describe("PrismaExerciseAdapter", () => {
           where: expect.objectContaining({
             muscleGroupId: "mg-1",
             equipmentId: "eq-1",
-            OR: [
-              { name: { contains: "bench" } },
-              { nameEs: { contains: "bench" } },
-            ],
+            OR: [{ name: { contains: "bench" } }, { nameEs: { contains: "bench" } }],
           }),
-        })
+        }),
       );
     });
   });
@@ -169,14 +161,11 @@ describe("PrismaExerciseAdapter", () => {
       expect(mockFindMany).toHaveBeenCalledWith(
         expect.objectContaining({
           where: expect.objectContaining({
-            OR: [
-              { name: { contains: "Press" } },
-              { nameEs: { contains: "Press" } },
-            ],
+            OR: [{ name: { contains: "Press" } }, { nameEs: { contains: "Press" } }],
           }),
           include: { muscleGroup: true, equipment: true, media: true },
           orderBy: { name: "asc" },
-        })
+        }),
       );
     });
 

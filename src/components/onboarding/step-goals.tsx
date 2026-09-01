@@ -41,9 +41,7 @@ export function StepGoals({ data, onUpdate }: StepGoalsProps) {
   const selected = data.goals ?? [];
 
   const toggleGoal = (goal: GoalOption) => {
-    const next = selected.includes(goal)
-      ? selected.filter((g) => g !== goal)
-      : [...selected, goal];
+    const next = selected.includes(goal) ? selected.filter((g) => g !== goal) : [...selected, goal];
     onUpdate({ goals: next.length > 0 ? next : undefined });
   };
 
@@ -75,12 +73,8 @@ export function StepGoals({ data, onUpdate }: StepGoalsProps) {
                 className="mt-0.5 h-4 w-4 rounded border-zinc-600 text-blue-500 focus:ring-blue-500"
               />
               <div className="ml-3">
-                <span className="block text-sm font-medium text-zinc-100">
-                  {goal.label}
-                </span>
-                <span className="block text-xs text-zinc-400">
-                  {goal.description}
-                </span>
+                <span className="block text-sm font-medium text-zinc-100">{goal.label}</span>
+                <span className="block text-xs text-zinc-400">{goal.description}</span>
               </div>
             </label>
           );

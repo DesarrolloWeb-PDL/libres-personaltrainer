@@ -21,9 +21,7 @@ export function useClientDate(): Date | null {
  * Returns a stable date string for display, avoiding hydration mismatch.
  * During SSR returns a placeholder — client fills it in after hydration.
  */
-export function useClientDateString(
-  format: "date" | "time" | "datetime" = "date",
-): string {
+export function useClientDateString(format: "date" | "time" | "datetime" = "date"): string {
   const [formatted, setFormatted] = useState("");
 
   useEffect(() => {

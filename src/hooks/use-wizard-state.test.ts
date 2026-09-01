@@ -201,10 +201,7 @@ describe("useWizardState", () => {
   });
 
   it("restores state from localStorage", () => {
-    localStorage.setItem(
-      "onboarding-wizard-data",
-      JSON.stringify({ age: 25, name: "Restored" })
-    );
+    localStorage.setItem("onboarding-wizard-data", JSON.stringify({ age: 25, name: "Restored" }));
     localStorage.setItem("onboarding-wizard-step", "2");
 
     const { result } = renderHook(() => useWizardState());

@@ -296,7 +296,15 @@ describe("sessionRouter", () => {
           muscleGroup: { id: "mg-1", name: "Chest", nameEs: "Pecho", category: "chest" },
         },
         workoutSets: [
-          { id: "ws-1", workoutExerciseId: "we-1", setNumber: 1, reps: null, weight: null, rpe: null, completed: false },
+          {
+            id: "ws-1",
+            workoutExerciseId: "we-1",
+            setNumber: 1,
+            reps: null,
+            weight: null,
+            rpe: null,
+            completed: false,
+          },
         ],
       });
 

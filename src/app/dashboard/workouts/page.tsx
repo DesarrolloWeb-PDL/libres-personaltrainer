@@ -45,9 +45,7 @@ export default function WorkoutsPage() {
           <div className="flex items-center gap-3">
             <div className="w-1 h-10 bg-lime-500 rounded-full" />
             <div className="flex-1">
-              <p className="text-sm font-medium text-lime-400">
-                Active Workout in Progress
-              </p>
+              <p className="text-sm font-medium text-lime-400">Active Workout in Progress</p>
               <p className="text-xs text-zinc-400">
                 {activeSession.data.day?.name ?? "Workout"} • Started{" "}
                 <FormattedDate isoString={activeSession.data.startedAt} format="time" />
@@ -110,10 +108,7 @@ export default function WorkoutsPage() {
           <h2 className="mb-3 text-lg font-semibold text-zinc-50">History</h2>
           <div className="space-y-2">
             {completedSessions.map((session) => (
-              <div
-                key={session.id}
-                className="rounded-xl bg-zinc-900 border border-zinc-800 p-4"
-              >
+              <div key={session.id} className="rounded-xl bg-zinc-900 border border-zinc-800 p-4">
                 <div className="flex items-center gap-3">
                   <div className="w-1 h-10 bg-zinc-700 rounded-full" />
                   <div className="flex-1">

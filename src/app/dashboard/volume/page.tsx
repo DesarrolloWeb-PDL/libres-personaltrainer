@@ -46,12 +46,8 @@ export default function VolumeDashboardPage() {
     const totalSets = statuses.reduce((sum, s) => sum + s.sets, 0);
     const totalVolume = statuses.reduce((sum, s) => sum + s.volumeLoad, 0);
     const optimalCount = statuses.filter((s) => s.status === "optimal").length;
-    const undertrainingCount = statuses.filter(
-      (s) => s.status === "undertraining",
-    ).length;
-    const overreachingCount = statuses.filter(
-      (s) => s.status === "overreaching",
-    ).length;
+    const undertrainingCount = statuses.filter((s) => s.status === "undertraining").length;
+    const overreachingCount = statuses.filter((s) => s.status === "overreaching").length;
 
     return {
       totalSets,
@@ -111,9 +107,7 @@ export default function VolumeDashboardPage() {
           <div className="flex items-center gap-3">
             <div className="w-1 h-10 bg-lime-500 rounded-full" />
             <div>
-              <p className="text-xs font-medium text-zinc-500 uppercase tracking-wider">
-                Optimal
-              </p>
+              <p className="text-xs font-medium text-zinc-500 uppercase tracking-wider">Optimal</p>
               <p className="text-3xl font-black text-lime-400">
                 {isLoading ? "..." : summaryStats.optimalCount}
               </p>
@@ -124,11 +118,11 @@ export default function VolumeDashboardPage() {
           <div className="flex items-center gap-3">
             <div className="w-1 h-10 bg-rose-500 rounded-full" />
             <div>
-              <p className="text-xs font-medium text-zinc-500 uppercase tracking-wider">
-                Issues
-              </p>
+              <p className="text-xs font-medium text-zinc-500 uppercase tracking-wider">Issues</p>
               <p className="text-3xl font-black text-rose-400">
-                {isLoading ? "..." : summaryStats.undertrainingCount + summaryStats.overreachingCount}
+                {isLoading
+                  ? "..."
+                  : summaryStats.undertrainingCount + summaryStats.overreachingCount}
               </p>
             </div>
           </div>

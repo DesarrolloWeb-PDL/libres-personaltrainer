@@ -70,12 +70,7 @@ export function OnboardingWizard({ userId }: OnboardingWizardProps) {
 
   return (
     <div className="mx-auto max-w-xl">
-      <div
-        className="sr-only"
-        role="status"
-        aria-live="polite"
-        aria-atomic="true"
-      >
+      <div className="sr-only" role="status" aria-live="polite" aria-atomic="true">
         Step {currentStep} of {totalSteps}: {STEP_LABELS[currentStep - 1]}
       </div>
 
@@ -109,11 +104,7 @@ export function OnboardingWizard({ userId }: OnboardingWizardProps) {
                           strokeWidth={2}
                           aria-hidden="true"
                         >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M5 13l4 4L19 7"
-                          />
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                         </svg>
                       ) : (
                         step
@@ -121,11 +112,7 @@ export function OnboardingWizard({ userId }: OnboardingWizardProps) {
                     </div>
                     <span
                       className={`mt-1 text-[10px] font-medium ${
-                        isActive
-                          ? "text-blue-500"
-                          : isCompleted
-                            ? "text-blue-500"
-                            : "text-zinc-500"
+                        isActive ? "text-blue-500" : isCompleted ? "text-blue-500" : "text-zinc-500"
                       }`}
                       aria-hidden="true"
                     >
@@ -135,9 +122,7 @@ export function OnboardingWizard({ userId }: OnboardingWizardProps) {
                   {i < STEP_LABELS.length - 1 && (
                     <div
                       className={`mx-1 h-0.5 flex-1 ${
-                        step < currentStep
-                          ? "bg-blue-500"
-                          : "bg-zinc-700"
+                        step < currentStep ? "bg-blue-500" : "bg-zinc-700"
                       }`}
                       aria-hidden="true"
                     />
@@ -149,7 +134,11 @@ export function OnboardingWizard({ userId }: OnboardingWizardProps) {
         </div>
       </nav>
 
-      <div className="min-h-[280px]" role="region" aria-label={`Step ${currentStep}: ${STEP_LABELS[currentStep - 1]}`}>
+      <div
+        className="min-h-[280px]"
+        role="region"
+        aria-label={`Step ${currentStep}: ${STEP_LABELS[currentStep - 1]}`}
+      >
         {renderStep()}
       </div>
 

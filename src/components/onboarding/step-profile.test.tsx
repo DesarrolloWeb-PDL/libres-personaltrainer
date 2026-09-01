@@ -48,9 +48,7 @@ describe("StepProfile", () => {
   });
 
   it("displays existing values", () => {
-    render(
-      <StepProfile data={{ name: "Jane", age: 32 }} onUpdate={vi.fn()} />
-    );
+    render(<StepProfile data={{ name: "Jane", age: 32 }} onUpdate={vi.fn()} />);
     expect(screen.getByLabelText(/name/i)).toHaveValue("Jane");
     expect(screen.getByLabelText(/age/i)).toHaveValue(32);
   });

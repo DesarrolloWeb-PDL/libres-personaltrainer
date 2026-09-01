@@ -5,16 +5,16 @@ import { Session } from "next-auth";
 /**
  * tRPC context — created per request.
  */
-export const createTRPCContext = async (_opts?: unknown): Promise<{
+export const createTRPCContext = async (
+  _opts?: unknown,
+): Promise<{
   session: Session | null;
 }> => {
   const session = await auth();
   return { session };
 };
 
-const t = initTRPC
-  .context<Awaited<ReturnType<typeof createTRPCContext>>>()
-  .create();
+const t = initTRPC.context<Awaited<ReturnType<typeof createTRPCContext>>>().create();
 
 /** Reusable router and procedure helpers */
 export const createTRPCRouter = t.router;

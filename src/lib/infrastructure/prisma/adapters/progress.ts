@@ -46,11 +46,7 @@ export class PrismaProgressAdapter implements ProgressRepository {
     }) as Promise<ProgressEntry[]>;
   }
 
-  async get1RMHistory(
-    userId: string,
-    startDate?: Date,
-    endDate?: Date,
-  ): Promise<ProgressEntry[]> {
+  async get1RMHistory(userId: string, startDate?: Date, endDate?: Date): Promise<ProgressEntry[]> {
     return prisma.progress.findMany({
       where: {
         userId,
@@ -144,15 +140,13 @@ export class PrismaProgressAdapter implements ProgressRepository {
     >();
 
     for (const set of sets) {
-      const muscleGroup =
-        set.workoutExercise.exercise.muscleGroup?.name ?? "Unknown";
+      const muscleGroup = set.workoutExercise.exercise.muscleGroup?.name ?? "Unknown";
       const weight = set.weight ?? 0;
       const reps = set.reps ?? 0;
       const volumeLoad = weight * reps;
 
       // Get week key from session date
-      const sessionDate =
-        set.workoutExercise.day.sessions[0]?.startedAt ?? new Date();
+      const sessionDate = set.workoutExercise.day.sessions[0]?.startedAt ?? new Date();
       const weekKey = getWeekKey(sessionDate);
       const groupKey = `${weekKey}-${muscleGroup}`;
 
@@ -170,9 +164,7 @@ export class PrismaProgressAdapter implements ProgressRepository {
       }
     }
 
-    return Array.from(grouped.values()).sort(
-      (a, b) => a.date.getTime() - b.date.getTime(),
-    );
+    return Array.from(grouped.values()).sort((a, b) => a.date.getTime() - b.date.getTime());
   }
 
   async getLatest(userId: string): Promise<ProgressEntry | null> {
@@ -189,11 +181,7 @@ export class PrismaProgressAdapter implements ProgressRepository {
     }) as Promise<ProgressEntry[]>;
   }
 
-  async exportCSV(
-    userId: string,
-    startDate?: Date,
-    endDate?: Date,
-  ): Promise<string> {
+  async exportCSV(userId: string, startDate?: Date, endDate?: Date): Promise<string> {
     const entries = await prisma.progress.findMany({
       where: {
         userId,
@@ -226,9 +214,7 @@ function getWeekKey(date: Date): string {
   const dayNum = d.getUTCDay() || 7;
   d.setUTCDate(d.getUTCDate() + 4 - dayNum);
   const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
-  const weekNo = Math.ceil(
-    ((d.getTime() - yearStart.getTime()) / 86400000 + 1) / 7,
-  );
+  const weekNo = Math.ceil(((d.getTime() - yearStart.getTime()) / 86400000 + 1) / 7);
   return `${d.getUTCFullYear()}-W${String(weekNo).padStart(2, "0")}`;
 }
 

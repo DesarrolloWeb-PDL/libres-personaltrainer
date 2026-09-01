@@ -111,9 +111,7 @@ export class PrismaWorkoutAdapter implements WorkoutRepository {
     }) as Promise<WorkoutSession[]>;
   }
 
-  async findActiveSession(
-    userId: string
-  ): Promise<WorkoutSessionWithExercises | null> {
+  async findActiveSession(userId: string): Promise<WorkoutSessionWithExercises | null> {
     const session = await prisma.workoutSession.findFirst({
       where: { userId, completedAt: null },
       orderBy: { startedAt: "desc" },
@@ -137,9 +135,7 @@ export class PrismaWorkoutAdapter implements WorkoutRepository {
     return sessions as unknown as WorkoutSessionWithExercises[];
   }
 
-  async substituteExercise(
-    data: SubstituteExerciseData,
-  ): Promise<WorkoutExerciseWithSets> {
+  async substituteExercise(data: SubstituteExerciseData): Promise<WorkoutExerciseWithSets> {
     const updated = await prisma.workoutExercise.update({
       where: { id: data.workoutExerciseId },
       data: { exerciseId: data.newExerciseId },

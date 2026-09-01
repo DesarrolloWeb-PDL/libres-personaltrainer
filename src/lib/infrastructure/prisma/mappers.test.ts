@@ -120,6 +120,8 @@ describe("toDomainExercise", () => {
       "core",
     ];
     expect(muscleGroups).toContain(result.muscleGroup);
-    expect(result.equipment.every((e) => ["full_gym", "home_gym", "bodyweight_only"].includes(e))).toBe(true);
+    expect(
+      result.equipment.every((e) => ["full_gym", "home_gym", "bodyweight_only"].includes(e)),
+    ).toBe(true);
   });
 });

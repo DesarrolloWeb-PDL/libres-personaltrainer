@@ -65,11 +65,7 @@ export default function DashboardPage() {
     },
   });
 
-  const handleSelectPlan = (option: {
-    splitType: string;
-    name: string;
-    frequency: number;
-  }) => {
+  const handleSelectPlan = (option: { splitType: string; name: string; frequency: number }) => {
     setGenerating(true);
     setSelectedSplit(option.splitType);
     generateProgram.mutate({
@@ -81,15 +77,13 @@ export default function DashboardPage() {
     });
   };
 
-  const completedSessions =
-    sessions.data?.filter((s) => s.completedAt !== null).length ?? 0;
+  const completedSessions = sessions.data?.filter((s) => s.completedAt !== null).length ?? 0;
 
   // Determine today's workout — only after client hydration
   const programDays = currentProgram.data?.days ?? [];
   const today = clientDate?.getDay() ?? 0;
   const todayIndex = today === 0 ? 6 : today - 1;
-  const todayWorkout =
-    programDays.length > 0 ? programDays[todayIndex % programDays.length] : null;
+  const todayWorkout = programDays.length > 0 ? programDays[todayIndex % programDays.length] : null;
 
   // Calculate weekly progress
   const weekSessions = (() => {
@@ -97,9 +91,8 @@ export default function DashboardPage() {
     const weekStart = new Date(clientDate);
     weekStart.setDate(clientDate.getDate() - clientDate.getDay() + 1);
     weekStart.setHours(0, 0, 0, 0);
-    return sessions.data.filter(
-      (s) => s.completedAt && new Date(s.completedAt) >= weekStart,
-    ).length;
+    return sessions.data.filter((s) => s.completedAt && new Date(s.completedAt) >= weekStart)
+      .length;
   })();
   const targetSessions = programDays.length;
 
@@ -133,9 +126,7 @@ export default function DashboardPage() {
             <div className="flex items-center gap-3 mb-2">
               <div className="w-1 h-10 bg-blue-500 rounded-full" />
               <div>
-                <h2 className="text-xl font-bold text-zinc-50">
-                  Choose Your Training Plan
-                </h2>
+                <h2 className="text-xl font-bold text-zinc-50">Choose Your Training Plan</h2>
                 <p className="text-sm text-zinc-400">
                   Based on your profile, here are the best options for you.
                 </p>
@@ -188,9 +179,7 @@ export default function DashboardPage() {
                     <div className="shrink-0">
                       <svg
                         className={`h-5 w-5 transition-colors ${
-                          selectedSplit === option.splitType
-                            ? "text-blue-500"
-                            : "text-zinc-600"
+                          selectedSplit === option.splitType ? "text-blue-500" : "text-zinc-600"
                         }`}
                         fill="none"
                         viewBox="0 0 24 24"
@@ -234,9 +223,7 @@ export default function DashboardPage() {
           <div className="flex items-center gap-3">
             <div className="w-1 h-10 bg-lime-500 rounded-full" />
             <div className="flex-1">
-              <p className="text-sm font-medium text-lime-400">
-                Active Workout in Progress
-              </p>
+              <p className="text-sm font-medium text-lime-400">Active Workout in Progress</p>
               <p className="text-xs text-zinc-400">
                 {activeSession.data.day?.name ?? "Workout"} • Started{" "}
                 <SessionTime startedAt={activeSession.data.startedAt} />
@@ -270,10 +257,12 @@ export default function DashboardPage() {
           </div>
           <p className="text-sm text-zinc-400 mb-4">
             {todayWorkout.exercises.length} exercises • ~
-            {todayWorkout.exercises.reduce(
+            {(todayWorkout.exercises.reduce(
               (acc, e) => acc + (e.sets ?? 3) * ((e.reps ?? 10) * 3 + 90),
               0,
-            ) / 60 | 0}{" "}
+            ) /
+              60) |
+              0}{" "}
             min
           </p>
           <Link
@@ -296,9 +285,7 @@ export default function DashboardPage() {
               <p className="text-xs font-medium text-zinc-500 uppercase tracking-wider">
                 Total Workouts
               </p>
-              <p className="text-3xl font-black text-zinc-50">
-                {completedSessions}
-              </p>
+              <p className="text-3xl font-black text-zinc-50">{completedSessions}</p>
             </div>
           </div>
         </div>
@@ -355,16 +342,11 @@ export default function DashboardPage() {
           <div className="flex items-center gap-3 mb-3">
             <div className="w-1 h-10 bg-blue-500 rounded-full" />
             <div className="flex-1">
-              <h2 className="font-semibold text-zinc-50">
-                {currentProgram.data.name}
-              </h2>
+              <h2 className="font-semibold text-zinc-50">{currentProgram.data.name}</h2>
               <p className="text-xs text-zinc-400">
                 {currentProgram.data.splitType?.replace(/_/g, " ")} • Started{" "}
                 {currentProgram.data.startDate ? (
-                  <FormattedDate
-                    isoString={currentProgram.data.startDate}
-                    format="date"
-                  />
+                  <FormattedDate isoString={currentProgram.data.startDate} format="date" />
                 ) : (
                   "—"
                 )}
@@ -373,28 +355,21 @@ export default function DashboardPage() {
           </div>
           <div className="grid grid-cols-3 gap-2 sm:grid-cols-4 md:grid-cols-6">
             {programDays.map((day) => {
-              const isToday =
-                todayIndex % programDays.length === day.dayNumber - 1;
+              const isToday = todayIndex % programDays.length === day.dayNumber - 1;
               return (
                 <div
                   key={day.id}
                   className={`rounded-lg border p-3 text-center ${
-                    isToday
-                      ? "bg-blue-500/20 border-blue-500/50"
-                      : "bg-zinc-800 border-zinc-700"
+                    isToday ? "bg-blue-500/20 border-blue-500/50" : "bg-zinc-800 border-zinc-700"
                   }`}
                 >
                   <p className="text-xs text-zinc-500">Day {day.dayNumber}</p>
                   <p
-                    className={`text-sm font-medium ${
-                      isToday ? "text-blue-400" : "text-zinc-100"
-                    }`}
+                    className={`text-sm font-medium ${isToday ? "text-blue-400" : "text-zinc-100"}`}
                   >
                     {day.name ?? "Workout"}
                   </p>
-                  <p className="mt-1 text-xs text-zinc-500">
-                    {day.exercises.length} exercises
-                  </p>
+                  <p className="mt-1 text-xs text-zinc-500">{day.exercises.length} exercises</p>
                 </div>
               );
             })}
@@ -407,7 +382,11 @@ export default function DashboardPage() {
           </Link>
           <button
             onClick={() => {
-              if (window.confirm("This will delete your current program and all workout history. Are you sure?")) {
+              if (
+                window.confirm(
+                  "This will delete your current program and all workout history. Are you sure?",
+                )
+              ) {
                 deleteProgram.mutate({ userId });
               }
             }}
@@ -436,29 +415,19 @@ export default function DashboardPage() {
           ═══════════════════════════════════════════════════════════════ */}
       {sessions.data && sessions.data.length > 0 && (
         <div>
-          <h2 className="mb-3 text-lg font-semibold text-zinc-50">
-            Recent Workouts
-          </h2>
+          <h2 className="mb-3 text-lg font-semibold text-zinc-50">Recent Workouts</h2>
           <div className="space-y-2">
             {sessions.data
               .slice(-5)
               .reverse()
               .map((session) => (
-                <div
-                  key={session.id}
-                  className="rounded-xl bg-zinc-900 border border-zinc-800 p-4"
-                >
+                <div key={session.id} className="rounded-xl bg-zinc-900 border border-zinc-800 p-4">
                   <div className="flex items-center gap-3">
                     <div className="w-1 h-10 bg-lime-500 rounded-full" />
                     <div className="flex-1">
-                      <h3 className="font-semibold text-zinc-50">
-                        Workout Session
-                      </h3>
+                      <h3 className="font-semibold text-zinc-50">Workout Session</h3>
                       <p className="text-sm text-zinc-400">
-                        <FormattedDate
-                          isoString={session.startedAt}
-                          format="datetime"
-                        />
+                        <FormattedDate isoString={session.startedAt} format="datetime" />
                       </p>
                     </div>
                     <Link

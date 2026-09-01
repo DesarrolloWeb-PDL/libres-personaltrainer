@@ -78,20 +78,22 @@ export default function NutritionPage() {
 
   const cutMacroSplit = {
     protein: proteinGrams,
-    carbs: Math.round((cutting - proteinCalories - Math.round(cutting * 0.25) / 9 * 9) / 4),
-    fat: Math.round(cutting * 0.25 / 9),
+    carbs: Math.round((cutting - proteinCalories - (Math.round(cutting * 0.25) / 9) * 9) / 4),
+    fat: Math.round((cutting * 0.25) / 9),
   };
 
   const bulkMacroSplit = {
     protein: proteinGrams,
-    carbs: Math.round((bulking - proteinCalories - Math.round(bulking * 0.25) / 9 * 9) / 4),
-    fat: Math.round(bulking * 0.25 / 9),
+    carbs: Math.round((bulking - proteinCalories - (Math.round(bulking * 0.25) / 9) * 9) / 4),
+    fat: Math.round((bulking * 0.25) / 9),
   };
 
   const maintMacroSplit = {
     protein: proteinGrams,
-    carbs: Math.round((maintenance - proteinCalories - Math.round(maintenance * 0.25) / 9 * 9) / 4),
-    fat: Math.round(maintenance * 0.25 / 9),
+    carbs: Math.round(
+      (maintenance - proteinCalories - (Math.round(maintenance * 0.25) / 9) * 9) / 4,
+    ),
+    fat: Math.round((maintenance * 0.25) / 9),
   };
 
   const todayTotals = dailySummary.data?.totals ?? { calories: 0, protein: 0, carbs: 0, fat: 0 };
@@ -129,9 +131,7 @@ export default function NutritionPage() {
       {/* Header */}
       <div>
         <h1 className="text-2xl font-bold text-zinc-50">Nutrition</h1>
-        <p className="mt-1 text-sm text-zinc-400">
-          Calculate your calories and track your meals.
-        </p>
+        <p className="mt-1 text-sm text-zinc-400">Calculate your calories and track your meals.</p>
       </div>
 
       {/* TDEE Calculator */}
@@ -216,7 +216,9 @@ export default function NutritionPage() {
                 }`}
               >
                 <div className="flex items-center justify-between">
-                  <span className={`text-sm font-medium ${activityLevel === level.value ? "text-blue-400" : "text-zinc-200"}`}>
+                  <span
+                    className={`text-sm font-medium ${activityLevel === level.value ? "text-blue-400" : "text-zinc-200"}`}
+                  >
                     {level.label}
                   </span>
                   <span className="text-xs text-zinc-500">{level.description}</span>
@@ -266,7 +268,9 @@ export default function NutritionPage() {
 
           {/* Macro Split */}
           <div className="mt-4 rounded-lg bg-zinc-800 border border-zinc-700 p-3">
-            <p className="text-xs font-medium text-zinc-400 mb-2">Recommended Macros (Maintenance)</p>
+            <p className="text-xs font-medium text-zinc-400 mb-2">
+              Recommended Macros (Maintenance)
+            </p>
             <div className="grid grid-cols-3 gap-2 text-center">
               <div>
                 <p className="text-lg font-bold text-zinc-100">{maintMacroSplit.protein}g</p>
@@ -292,7 +296,8 @@ export default function NutritionPage() {
           <div>
             <h2 className="font-semibold text-zinc-50">Today&apos;s Intake</h2>
             <p className="text-xs text-zinc-400">
-              {dailySummary.data?.date ?? (clientDate ? clientDate.toISOString().split("T")[0] : "")}
+              {dailySummary.data?.date ??
+                (clientDate ? clientDate.toISOString().split("T")[0] : "")}
             </p>
           </div>
         </div>
@@ -311,9 +316,7 @@ export default function NutritionPage() {
                 style={{ width: `${Math.min(100, (todayTotals.calories / maintenance) * 100)}%` }}
               />
             </div>
-            <p className="mt-1 text-[10px] text-zinc-500">
-              {remaining.calories} cal remaining
-            </p>
+            <p className="mt-1 text-[10px] text-zinc-500">{remaining.calories} cal remaining</p>
           </div>
         )}
 

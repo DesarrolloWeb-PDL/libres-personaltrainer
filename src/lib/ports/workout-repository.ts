@@ -99,7 +99,5 @@ export interface WorkoutRepository {
   ): Promise<WorkoutSessionWithExercises[]>;
 
   /** Swap the exercise for a workout exercise, preserving sets/reps/RPE */
-  substituteExercise(
-    data: SubstituteExerciseData,
-  ): Promise<WorkoutExerciseWithSets>;
+  substituteExercise(data: SubstituteExerciseData): Promise<WorkoutExerciseWithSets>;
 }

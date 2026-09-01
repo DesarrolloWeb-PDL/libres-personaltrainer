@@ -22,7 +22,7 @@ export type {
   VolumeTracking,
   ExerciseHistoryEntry,
   PerformanceSnapshot,
-} from './types'
+} from "./types";
 
 // Constants
 export {
@@ -37,11 +37,11 @@ export {
   RPE_RIR_MAP,
   ALL_MUSCLE_GROUPS,
   INJURY_CONSTRAINTS,
-} from './constants'
+} from "./constants";
 
 // Engines
-export { selectSplit, generateProgram } from './training-engine'
-export { applyPeriodization } from './periodization'
+export { selectSplit, generateProgram } from "./training-engine";
+export { applyPeriodization } from "./periodization";
 export {
   getLandmarks,
   getLandmarksForMuscle,
@@ -49,10 +49,15 @@ export {
   checkVolumeStatus,
   checkAllVolumeStatuses,
   applyVolumeLandmarks,
-} from './volume'
-export { recommendOverload } from './overload'
-export { shouldDeload, applyDeload } from './deload'
-export { findSubstitute, swapInjuredExercises, isInjuryRestricted, getSuggestions } from './substitution'
-export { estimate1RM, estimate1RMEpley } from './one-rm'
-export { rpeToRir, rirToRpe, isValidRpe, isValidRir, describeRpe } from './rpe'
-export { detectPlateau, calculateWeeklyAverages } from './plateau'
+} from "./volume";
+export { recommendOverload } from "./overload";
+export { shouldDeload, applyDeload } from "./deload";
+export {
+  findSubstitute,
+  swapInjuredExercises,
+  isInjuryRestricted,
+  getSuggestions,
+} from "./substitution";
+export { estimate1RM, estimate1RMEpley } from "./one-rm";
+export { rpeToRir, rirToRpe, isValidRpe, isValidRir, describeRpe } from "./rpe";
+export { detectPlateau, calculateWeeklyAverages } from "./plateau";

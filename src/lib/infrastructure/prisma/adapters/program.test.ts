@@ -4,12 +4,7 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
  * Unit tests for PrismaProgramAdapter.
  */
 
-const {
-  mockCreate,
-  mockFindUnique,
-  mockFindFirst,
-  mockFindMany,
-} = vi.hoisted(() => ({
+const { mockCreate, mockFindUnique, mockFindFirst, mockFindMany } = vi.hoisted(() => ({
   mockCreate: vi.fn(),
   mockFindUnique: vi.fn(),
   mockFindFirst: vi.fn(),
@@ -120,9 +115,7 @@ describe("PrismaProgramAdapter", () => {
           {
             dayNumber: 1,
             name: "Push",
-            exercises: [
-              { exerciseId: "ex-1", sets: 3, reps: 10, order: 1 },
-            ],
+            exercises: [{ exerciseId: "ex-1", sets: 3, reps: 10, order: 1 }],
           },
         ],
       });

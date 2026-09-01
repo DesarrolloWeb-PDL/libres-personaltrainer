@@ -4,16 +4,21 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
  * Unit tests for program tRPC router.
  */
 
-const { mockCreate, mockFindUnique, mockFindFirst, mockFindMany, mockFindAll, mockProfileFindUnique } = vi.hoisted(
-  () => ({
-    mockCreate: vi.fn(),
-    mockFindUnique: vi.fn(),
-    mockFindFirst: vi.fn(),
-    mockFindMany: vi.fn(),
-    mockFindAll: vi.fn(),
-    mockProfileFindUnique: vi.fn(),
-  }),
-);
+const {
+  mockCreate,
+  mockFindUnique,
+  mockFindFirst,
+  mockFindMany,
+  mockFindAll,
+  mockProfileFindUnique,
+} = vi.hoisted(() => ({
+  mockCreate: vi.fn(),
+  mockFindUnique: vi.fn(),
+  mockFindFirst: vi.fn(),
+  mockFindMany: vi.fn(),
+  mockFindAll: vi.fn(),
+  mockProfileFindUnique: vi.fn(),
+}));
 
 vi.mock("@/lib/infrastructure/prisma/client", () => ({
   prisma: {
@@ -111,9 +116,7 @@ describe("programRouter", () => {
 
   describe("listByUser", () => {
     it("returns all programs for a user", async () => {
-      mockFindMany.mockResolvedValue([
-        { id: "prog-1", userId: "user-1", name: "Program 1" },
-      ]);
+      mockFindMany.mockResolvedValue([{ id: "prog-1", userId: "user-1", name: "Program 1" }]);
 
       const caller = programRouter.createCaller(mockCtx);
       const result = await caller.listByUser({ userId: "user-1" });

@@ -70,11 +70,14 @@ export function useWizardState(totalSteps = 5): UseWizardStateReturn {
     }
   }, [currentStep, hydrated]);
 
-  const setStep = useCallback((step: number) => {
-    if (step >= 1 && step <= totalSteps) {
-      setCurrentStep(step);
-    }
-  }, [totalSteps]);
+  const setStep = useCallback(
+    (step: number) => {
+      if (step >= 1 && step <= totalSteps) {
+        setCurrentStep(step);
+      }
+    },
+    [totalSteps],
+  );
 
   const nextStep = useCallback(() => {
     setCurrentStep((prev) => Math.min(prev + 1, totalSteps));

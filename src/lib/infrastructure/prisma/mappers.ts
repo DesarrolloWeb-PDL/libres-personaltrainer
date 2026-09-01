@@ -20,7 +20,12 @@ export function mapEquipment(name: string): Equipment {
  * Maps DB exercise to domain Exercise type for the training engine.
  */
 export function toDomainExercise(
-  ex: { id: string; name: string; muscleGroup: { category: string | null } | null; equipment: { name: string } | null },
+  ex: {
+    id: string;
+    name: string;
+    muscleGroup: { category: string | null } | null;
+    equipment: { name: string } | null;
+  },
   isCompound: boolean = true,
 ): DomainExercise {
   const mgCategory = ex.muscleGroup?.category ?? "chest";

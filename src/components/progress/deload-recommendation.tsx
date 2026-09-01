@@ -63,21 +63,15 @@ export function DeloadRecommendation({
           {/* Stats */}
           <div className="mt-3 grid grid-cols-3 gap-4 text-center">
             <div>
-              <p className="text-2xl font-black text-zinc-50">
-                {weeksSinceDeload}
-              </p>
+              <p className="text-2xl font-black text-zinc-50">{weeksSinceDeload}</p>
               <p className="text-xs text-zinc-500">Weeks Since Deload</p>
             </div>
             <div>
-              <p className="text-2xl font-black text-zinc-50">
-                {lastDeloadWeek ?? "Never"}
-              </p>
+              <p className="text-2xl font-black text-zinc-50">{lastDeloadWeek ?? "Never"}</p>
               <p className="text-xs text-zinc-500">Last Deload</p>
             </div>
             <div>
-              <p className="text-2xl font-black text-zinc-50">
-                {totalDeloads}
-              </p>
+              <p className="text-2xl font-black text-zinc-50">{totalDeloads}</p>
               <p className="text-xs text-zinc-500">Total Deloads</p>
             </div>
           </div>
@@ -92,11 +86,7 @@ export function DeloadRecommendation({
               >
                 {isActivating ? (
                   <span className="flex items-center justify-center gap-2">
-                    <svg
-                      className="h-4 w-4 animate-spin"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                    >
+                    <svg className="h-4 w-4 animate-spin" fill="none" viewBox="0 0 24 24">
                       <circle
                         className="opacity-25"
                         cx="12"

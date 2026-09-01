@@ -35,11 +35,7 @@ interface WorkoutLoggerProps {
   onCompleteWorkout?: () => void;
 }
 
-export function WorkoutLogger({
-  exercises,
-  onLogSet,
-  onCompleteWorkout,
-}: WorkoutLoggerProps) {
+export function WorkoutLogger({ exercises, onLogSet, onCompleteWorkout }: WorkoutLoggerProps) {
   const [localSets, setLocalSets] = useState<
     Record<string, { reps: string; weight: string; rpe: string }>
   >({});
@@ -49,8 +45,7 @@ export function WorkoutLogger({
   });
 
   const getLocalSet = useCallback(
-    (setId: string) =>
-      localSets[setId] ?? { reps: "", weight: "", rpe: "" },
+    (setId: string) => localSets[setId] ?? { reps: "", weight: "", rpe: "" },
     [localSets],
   );
 
@@ -92,9 +87,7 @@ export function WorkoutLogger({
     [getLocalSet, onLogSet, reset, start],
   );
 
-  const allExercisesComplete = exercises.every((ex) =>
-    ex.workoutSets.every((s) => s.completed),
-  );
+  const allExercisesComplete = exercises.every((ex) => ex.workoutSets.every((s) => s.completed));
 
   return (
     <div className="space-y-6">
@@ -105,12 +98,8 @@ export function WorkoutLogger({
           role="timer"
           aria-label={`Rest timer: ${display}`}
         >
-          <p className="text-xs font-medium text-zinc-500 uppercase tracking-wider">
-            Rest Timer
-          </p>
-          <p className="mt-2 text-6xl font-mono font-black text-zinc-50">
-            {display}
-          </p>
+          <p className="text-xs font-medium text-zinc-500 uppercase tracking-wider">Rest Timer</p>
+          <p className="mt-2 text-6xl font-mono font-black text-zinc-50">{display}</p>
           <div className="mt-4 flex justify-center gap-3">
             {isRunning ? (
               <button
@@ -142,9 +131,7 @@ export function WorkoutLogger({
 
       {/* Exercises */}
       {exercises.map((exercise) => {
-        const completedCount = exercise.workoutSets.filter(
-          (s) => s.completed,
-        ).length;
+        const completedCount = exercise.workoutSets.filter((s) => s.completed).length;
         const totalSets = exercise.workoutSets.length;
 
         return (
@@ -157,13 +144,9 @@ export function WorkoutLogger({
             <div className="flex items-center gap-3 mb-4">
               <div className="w-1 h-10 bg-blue-500 rounded-full" />
               <div className="flex-1">
-                <h3 className="font-semibold text-zinc-50">
-                  {exercise.exercise.name}
-                </h3>
+                <h3 className="font-semibold text-zinc-50">{exercise.exercise.name}</h3>
                 {exercise.exercise.muscleGroup && (
-                  <p className="text-xs text-zinc-400">
-                    {exercise.exercise.muscleGroup.name}
-                  </p>
+                  <p className="text-xs text-zinc-400">{exercise.exercise.muscleGroup.name}</p>
                 )}
               </div>
               <span
@@ -196,9 +179,7 @@ export function WorkoutLogger({
                           <span className="text-sm text-zinc-300">
                             {set.reps} × {set.weight}kg
                           </span>
-                          <span className="text-xs text-zinc-500">
-                            RPE {set.rpe}
-                          </span>
+                          <span className="text-xs text-zinc-500">RPE {set.rpe}</span>
                         </div>
                         <span className="text-lime-400 font-bold">✓</span>
                       </div>
@@ -210,9 +191,7 @@ export function WorkoutLogger({
                             <span className="flex h-8 w-8 items-center justify-center rounded-full bg-zinc-700 text-xs font-bold text-zinc-300">
                               {set.setNumber}
                             </span>
-                            <span className="text-xs text-zinc-500">
-                              Set {set.setNumber}
-                            </span>
+                            <span className="text-xs text-zinc-500">Set {set.setNumber}</span>
                           </div>
                           {/* Previous set info */}
                           {set.setNumber > 1 &&
@@ -244,9 +223,7 @@ export function WorkoutLogger({
                                 min={0}
                                 step={2.5}
                                 value={local.weight}
-                                onChange={(e) =>
-                                  updateLocalSet(set.id, "weight", e.target.value)
-                                }
+                                onChange={(e) => updateLocalSet(set.id, "weight", e.target.value)}
                                 aria-label={`Set ${set.setNumber} weight in kilograms`}
                                 className="flex-1 min-h-[44px] rounded-xl border border-zinc-600 bg-zinc-800 px-2 text-center text-2xl font-black text-zinc-50 focus:border-blue-500 focus:outline-none"
                                 placeholder="0"
@@ -278,9 +255,7 @@ export function WorkoutLogger({
                                 type="number"
                                 min={0}
                                 value={local.reps}
-                                onChange={(e) =>
-                                  updateLocalSet(set.id, "reps", e.target.value)
-                                }
+                                onChange={(e) => updateLocalSet(set.id, "reps", e.target.value)}
                                 aria-label={`Set ${set.setNumber} reps`}
                                 className="flex-1 min-h-[44px] rounded-xl border border-zinc-600 bg-zinc-800 px-2 text-center text-2xl font-black text-zinc-50 focus:border-blue-500 focus:outline-none"
                                 placeholder="0"
@@ -304,9 +279,7 @@ export function WorkoutLogger({
                             </label>
                             <select
                               value={local.rpe}
-                              onChange={(e) =>
-                                updateLocalSet(set.id, "rpe", e.target.value)
-                              }
+                              onChange={(e) => updateLocalSet(set.id, "rpe", e.target.value)}
                               aria-label={`Set ${set.setNumber} RPE`}
                               className="min-h-[44px] w-full rounded-xl border border-zinc-600 bg-zinc-800 px-3 text-sm text-zinc-100 focus:border-blue-500 focus:outline-none"
                             >

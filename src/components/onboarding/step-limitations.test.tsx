@@ -16,9 +16,7 @@ describe("StepLimitations", () => {
 
   it("renders a textarea for injuries", () => {
     render(<StepLimitations {...defaultProps} />);
-    expect(
-      screen.getByLabelText(/injuries or limitations/i)
-    ).toBeInTheDocument();
+    expect(screen.getByLabelText(/injuries or limitations/i)).toBeInTheDocument();
   });
 
   it("calls onUpdate when text is entered", () => {
@@ -35,30 +33,19 @@ describe("StepLimitations", () => {
   });
 
   it("displays existing injury text", () => {
-    render(
-      <StepLimitations
-        data={{ injuries: "Shoulder issue" }}
-        onUpdate={vi.fn()}
-      />
-    );
+    render(<StepLimitations data={{ injuries: "Shoulder issue" }} onUpdate={vi.fn()} />);
 
-    expect(screen.getByLabelText(/injuries or limitations/i)).toHaveValue(
-      "Shoulder issue"
-    );
+    expect(screen.getByLabelText(/injuries or limitations/i)).toHaveValue("Shoulder issue");
   });
 
   it("renders the info box explaining why injuries are collected", () => {
     render(<StepLimitations {...defaultProps} />);
-    expect(
-      screen.getByText(/Why we ask/)
-    ).toBeInTheDocument();
+    expect(screen.getByText(/Why we ask/)).toBeInTheDocument();
   });
 
   it("clears injuries when textarea is emptied", () => {
     const onUpdate = vi.fn();
-    render(
-      <StepLimitations data={{ injuries: "old" }} onUpdate={onUpdate} />
-    );
+    render(<StepLimitations data={{ injuries: "old" }} onUpdate={onUpdate} />);
 
     fireEvent.change(screen.getByLabelText(/injuries or limitations/i), {
       target: { value: "" },

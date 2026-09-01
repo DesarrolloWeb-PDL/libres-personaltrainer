@@ -69,12 +69,8 @@ async function main() {
   const existingMuscleGroups = await prisma.muscleGroup.findMany();
   const existingEquipment = await prisma.equipment.findMany();
 
-  const muscleGroupMap = new Map(
-    existingMuscleGroups.map((mg) => [mg.name, mg.id])
-  );
-  const equipmentMap = new Map(
-    existingEquipment.map((eq) => [eq.name, eq.id])
-  );
+  const muscleGroupMap = new Map(existingMuscleGroups.map((mg) => [mg.name, mg.id]));
+  const equipmentMap = new Map(existingEquipment.map((eq) => [eq.name, eq.id]));
 
   console.log(`  Found ${existingMuscleGroups.length} muscle groups in DB`);
   console.log(`  Found ${existingEquipment.length} equipment items in DB\n`);
@@ -87,20 +83,18 @@ async function main() {
   const BATCH_SIZE = 50;
   for (let i = 0; i < exercises.length; i += BATCH_SIZE) {
     const batch = exercises.slice(i, i + BATCH_SIZE);
-    
+
     for (const ex of batch) {
       try {
         // Map muscle group
         const muscleGroupName = MUSCLE_MAP[ex.muscle];
         const muscleGroupId = muscleGroupName
-          ? muscleGroupMap.get(muscleGroupName) ?? null
+          ? (muscleGroupMap.get(muscleGroupName) ?? null)
           : null;
 
         // Map equipment
         const equipmentName = EQUIPMENT_MAP[ex.equipment];
-        const equipmentId = equipmentName
-          ? equipmentMap.get(equipmentName) ?? null
-          : null;
+        const equipmentId = equipmentName ? (equipmentMap.get(equipmentName) ?? null) : null;
 
         // Check if exercise exists by name
         const existing = await prisma.exercise.findUnique({

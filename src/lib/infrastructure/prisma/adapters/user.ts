@@ -1,7 +1,4 @@
-import type {
-  UserRepository,
-  UserRecord,
-} from "@/lib/ports/user-repository";
+import type { UserRepository, UserRecord } from "@/lib/ports/user-repository";
 import { prisma } from "../client";
 
 /**
@@ -22,10 +19,7 @@ export class PrismaUserAdapter implements UserRepository {
     }) as Promise<UserRecord | null>;
   }
 
-  async create(data: {
-    email: string;
-    name?: string;
-  }): Promise<UserRecord> {
+  async create(data: { email: string; name?: string }): Promise<UserRecord> {
     return prisma.user.create({
       data,
     }) as Promise<UserRecord>;

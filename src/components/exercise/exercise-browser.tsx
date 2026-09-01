@@ -50,14 +50,11 @@ export function ExerciseBrowser({
       ex.name.toLowerCase().includes(search.toLowerCase()) ||
       (ex.nameEs?.toLowerCase().includes(search.toLowerCase()) ?? false);
 
-    const matchesMuscle =
-      !selectedMuscleGroup || ex.muscleGroupId === selectedMuscleGroup;
+    const matchesMuscle = !selectedMuscleGroup || ex.muscleGroupId === selectedMuscleGroup;
 
-    const matchesEquipment =
-      !selectedEquipment || ex.equipmentId === selectedEquipment;
+    const matchesEquipment = !selectedEquipment || ex.equipmentId === selectedEquipment;
 
-    const matchesBodyPart =
-      !selectedBodyPart || ex.bodyPart === selectedBodyPart;
+    const matchesBodyPart = !selectedBodyPart || ex.bodyPart === selectedBodyPart;
 
     return matchesSearch && matchesMuscle && matchesEquipment && matchesBodyPart;
   });
@@ -106,9 +103,7 @@ export function ExerciseBrowser({
           {bodyParts.map((bp) => (
             <button
               key={bp}
-              onClick={() =>
-                setSelectedBodyPart(selectedBodyPart === bp ? "" : bp)
-              }
+              onClick={() => setSelectedBodyPart(selectedBodyPart === bp ? "" : bp)}
               className={`rounded-full px-3 py-1.5 text-xs font-bold transition-colors ${
                 selectedBodyPart === bp
                   ? "bg-blue-500 text-white"
@@ -136,11 +131,7 @@ export function ExerciseBrowser({
         {muscleGroups.map((mg) => (
           <button
             key={mg.id}
-            onClick={() =>
-              setSelectedMuscleGroup(
-                selectedMuscleGroup === mg.id ? "" : mg.id,
-              )
-            }
+            onClick={() => setSelectedMuscleGroup(selectedMuscleGroup === mg.id ? "" : mg.id)}
             className={`rounded-full px-3 py-1.5 text-xs font-bold transition-colors ${
               selectedMuscleGroup === mg.id
                 ? "bg-blue-500 text-white"
@@ -167,11 +158,7 @@ export function ExerciseBrowser({
         {equipment.map((eq) => (
           <button
             key={eq.id}
-            onClick={() =>
-              setSelectedEquipment(
-                selectedEquipment === eq.id ? "" : eq.id,
-              )
-            }
+            onClick={() => setSelectedEquipment(selectedEquipment === eq.id ? "" : eq.id)}
             className={`rounded-full px-3 py-1.5 text-xs font-bold transition-colors ${
               selectedEquipment === eq.id
                 ? "bg-blue-500 text-white"
@@ -220,9 +207,7 @@ export function ExerciseBrowser({
       {/* Empty State */}
       {!isLoading && filtered.length === 0 && (
         <div className="flex flex-col items-center justify-center rounded-xl border-2 border-dashed border-zinc-700 py-12">
-          <p className="text-sm text-zinc-400">
-            No se encontraron ejercicios con esos filtros.
-          </p>
+          <p className="text-sm text-zinc-400">No se encontraron ejercicios con esos filtros.</p>
           <button
             onClick={() => {
               setSearch("");
@@ -241,11 +226,7 @@ export function ExerciseBrowser({
       {!isLoading && filtered.length > 0 && (
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
           {filtered.map((exercise) => (
-            <ExerciseCard
-              key={exercise.id}
-              exercise={exercise}
-              onSelect={onSelect}
-            />
+            <ExerciseCard key={exercise.id} exercise={exercise} onSelect={onSelect} />
           ))}
         </div>
       )}

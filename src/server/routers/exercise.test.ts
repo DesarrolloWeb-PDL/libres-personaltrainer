@@ -37,18 +37,22 @@ const { mockData } = vi.hoisted(() => ({
 vi.mock("@/lib/infrastructure/prisma/adapters/exercise", () => {
   class MockPrismaExerciseAdapter {
     findAll = vi.fn().mockResolvedValue(mockData);
-    findById = vi.fn().mockImplementation((id: string) =>
-      Promise.resolve(mockData.find((e) => e.id === id) ?? null)
-    );
-    search = vi.fn().mockImplementation((q: string) =>
-      Promise.resolve(
-        mockData.filter(
-          (e) =>
-            e.name.toLowerCase().includes(q.toLowerCase()) ||
-            e.nameEs?.toLowerCase().includes(q.toLowerCase())
-        )
-      )
-    );
+    findById = vi
+      .fn()
+      .mockImplementation((id: string) =>
+        Promise.resolve(mockData.find((e) => e.id === id) ?? null),
+      );
+    search = vi
+      .fn()
+      .mockImplementation((q: string) =>
+        Promise.resolve(
+          mockData.filter(
+            (e) =>
+              e.name.toLowerCase().includes(q.toLowerCase()) ||
+              e.nameEs?.toLowerCase().includes(q.toLowerCase()),
+          ),
+        ),
+      );
   }
 
   return {

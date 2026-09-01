@@ -6,11 +6,7 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
  * Mocks the Prisma client (same pattern as session.test.ts).
  */
 
-const {
-  mockCreate,
-  mockFindMany,
-  mockFindFirst,
-} = vi.hoisted(() => ({
+const { mockCreate, mockFindMany, mockFindFirst } = vi.hoisted(() => ({
   mockCreate: vi.fn(),
   mockFindMany: vi.fn(),
   mockFindFirst: vi.fn(),

@@ -22,10 +22,7 @@ interface VolumeLandmarksProps {
   title?: string;
 }
 
-export function VolumeLandmarks({
-  statuses,
-  title = "Volume Status",
-}: VolumeLandmarksProps) {
+export function VolumeLandmarks({ statuses, title = "Volume Status" }: VolumeLandmarksProps) {
   if (statuses.length === 0) {
     return (
       <div className="rounded-xl bg-zinc-900 border border-zinc-800 p-4">

@@ -25,10 +25,7 @@ export class PrismaProfileAdapter implements ProfileRepository {
     }) as Promise<ProfileRecord>;
   }
 
-  async update(
-    userId: string,
-    data: UpdateProfileData
-  ): Promise<ProfileRecord> {
+  async update(userId: string, data: UpdateProfileData): Promise<ProfileRecord> {
     return prisma.profile.upsert({
       where: { userId },
       create: { userId, ...data },

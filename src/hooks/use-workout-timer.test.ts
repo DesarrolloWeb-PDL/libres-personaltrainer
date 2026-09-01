@@ -19,9 +19,7 @@ describe("useWorkoutTimer", () => {
   });
 
   it("initializes with custom default seconds", () => {
-    const { result } = renderHook(() =>
-      useWorkoutTimer({ defaultSeconds: 60 }),
-    );
+    const { result } = renderHook(() => useWorkoutTimer({ defaultSeconds: 60 }));
     expect(result.current.seconds).toBe(60);
     expect(result.current.display).toBe("01:00");
   });
@@ -61,9 +59,7 @@ describe("useWorkoutTimer", () => {
 
   it("calls onTick callback", () => {
     const onTick = vi.fn();
-    const { result } = renderHook(() =>
-      useWorkoutTimer({ onTick }),
-    );
+    const { result } = renderHook(() => useWorkoutTimer({ onTick }));
 
     act(() => {
       result.current.start(5);
@@ -80,9 +76,7 @@ describe("useWorkoutTimer", () => {
 
   it("calls onComplete when timer reaches zero", () => {
     const onComplete = vi.fn();
-    const { result } = renderHook(() =>
-      useWorkoutTimer({ onComplete }),
-    );
+    const { result } = renderHook(() => useWorkoutTimer({ onComplete }));
 
     act(() => {
       result.current.start(2);
@@ -152,9 +146,7 @@ describe("useWorkoutTimer", () => {
   });
 
   it("reset stops timer and resets to default", () => {
-    const { result } = renderHook(() =>
-      useWorkoutTimer({ defaultSeconds: 60 }),
-    );
+    const { result } = renderHook(() => useWorkoutTimer({ defaultSeconds: 60 }));
 
     act(() => {
       result.current.start(30);

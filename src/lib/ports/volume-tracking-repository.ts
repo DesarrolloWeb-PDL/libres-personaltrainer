@@ -38,10 +38,7 @@ export interface VolumeTrackingRepository {
   ): Promise<VolumeTrackingEntry[]>;
 
   /** Calculate volume from workout sessions for a specific week */
-  calculateVolumeFromSessions(
-    userId: string,
-    week: string,
-  ): Promise<VolumeTrackingEntry[]>;
+  calculateVolumeFromSessions(userId: string, week: string): Promise<VolumeTrackingEntry[]>;
 
   /** Get the last deload week for a user */
   getLastDeloadWeek(userId: string): Promise<string | null>;

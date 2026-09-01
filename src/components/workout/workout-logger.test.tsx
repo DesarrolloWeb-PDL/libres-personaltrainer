@@ -24,11 +24,7 @@ const mockExercises = [
 describe("WorkoutLogger", () => {
   it("renders exercise name and set rows", () => {
     render(
-      <WorkoutLogger
-        exercises={mockExercises}
-        onLogSet={vi.fn()}
-        onCompleteWorkout={vi.fn()}
-      />,
+      <WorkoutLogger exercises={mockExercises} onLogSet={vi.fn()} onCompleteWorkout={vi.fn()} />,
     );
 
     expect(screen.getByText("Barbell Bench Press")).toBeDefined();
@@ -38,11 +34,7 @@ describe("WorkoutLogger", () => {
 
   it("displays set numbers for each set", () => {
     render(
-      <WorkoutLogger
-        exercises={mockExercises}
-        onLogSet={vi.fn()}
-        onCompleteWorkout={vi.fn()}
-      />,
+      <WorkoutLogger exercises={mockExercises} onLogSet={vi.fn()} onCompleteWorkout={vi.fn()} />,
     );
 
     const setNumbers = screen.getAllByText(/^[123]$/);
@@ -51,11 +43,7 @@ describe("WorkoutLogger", () => {
 
   it("renders RPE selector with options 1-10", () => {
     render(
-      <WorkoutLogger
-        exercises={mockExercises}
-        onLogSet={vi.fn()}
-        onCompleteWorkout={vi.fn()}
-      />,
+      <WorkoutLogger exercises={mockExercises} onLogSet={vi.fn()} onCompleteWorkout={vi.fn()} />,
     );
 
     const rpeSelects = screen.getAllByDisplayValue("RPE");
@@ -66,11 +54,7 @@ describe("WorkoutLogger", () => {
     const onLogSet = vi.fn().mockResolvedValue(undefined);
 
     render(
-      <WorkoutLogger
-        exercises={mockExercises}
-        onLogSet={onLogSet}
-        onCompleteWorkout={vi.fn()}
-      />,
+      <WorkoutLogger exercises={mockExercises} onLogSet={onLogSet} onCompleteWorkout={vi.fn()} />,
     );
 
     // Use +/- buttons to set values
@@ -143,11 +127,7 @@ describe("WorkoutLogger", () => {
     const onComplete = vi.fn();
 
     render(
-      <WorkoutLogger
-        exercises={allCompleted}
-        onLogSet={vi.fn()}
-        onCompleteWorkout={onComplete}
-      />,
+      <WorkoutLogger exercises={allCompleted} onLogSet={vi.fn()} onCompleteWorkout={onComplete} />,
     );
 
     const completeBtn = screen.getByText("Complete Workout");
@@ -159,11 +139,7 @@ describe("WorkoutLogger", () => {
 
   it("does not show Complete Workout button when sets are incomplete", () => {
     render(
-      <WorkoutLogger
-        exercises={mockExercises}
-        onLogSet={vi.fn()}
-        onCompleteWorkout={vi.fn()}
-      />,
+      <WorkoutLogger exercises={mockExercises} onLogSet={vi.fn()} onCompleteWorkout={vi.fn()} />,
     );
 
     expect(screen.queryByText("Complete Workout")).toBeNull();
