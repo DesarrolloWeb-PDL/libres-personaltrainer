@@ -1,6 +1,25 @@
-import { describe, it, expect, vi } from "vitest";
+import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { WorkoutLogger } from "./workout-logger";
+
+const { mockUseQuery, mockUseMutation } = vi.hoisted(() => ({
+  mockUseQuery: vi.fn(),
+  mockUseMutation: vi.fn(),
+}));
+
+vi.mock("@/lib/api/trpc-client", () => ({
+  api: {
+    session: {
+      getSuggestions: {
+        useQuery: (...args: unknown[]) => mockUseQuery(...args),
+      },
+      applySubstitution: {
+        useMutation: (options?: { onSuccess?: () => void }) =>
+          mockUseMutation(options),
+      },
+    },
+  },
+}));
 
 const mockExercises = [
   {
@@ -22,6 +41,20 @@ const mockExercises = [
 ];
 
 describe("WorkoutLogger", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    mockUseQuery.mockReturnValue({
+      data: { suggestions: [] },
+      isLoading: false,
+      isError: false,
+      error: null,
+    });
+    mockUseMutation.mockReturnValue({
+      mutate: vi.fn(),
+      isPending: false,
+    });
+  });
+
   it("renders exercise name and set rows", () => {
     render(
       <WorkoutLogger exercises={mockExercises} onLogSet={vi.fn()} onCompleteWorkout={vi.fn()} />,
@@ -143,5 +176,49 @@ describe("WorkoutLogger", () => {
     );
 
     expect(screen.queryByText("Complete Workout")).toBeNull();
+  });
+
+  it("shows Cambiar button when userId is provided", () => {
+    render(
+      <WorkoutLogger
+        exercises={mockExercises}
+        userId="user-1"
+        onLogSet={vi.fn()}
+        onCompleteWorkout={vi.fn()}
+        onSubstitutionApplied={vi.fn()}
+      />,
+    );
+
+    expect(screen.getByText("Cambiar")).toBeInTheDocument();
+  });
+
+  it("does not show Cambiar button when userId is missing", () => {
+    render(
+      <WorkoutLogger
+        exercises={mockExercises}
+        onLogSet={vi.fn()}
+        onCompleteWorkout={vi.fn()}
+      />,
+    );
+
+    expect(screen.queryByText("Cambiar")).toBeNull();
+  });
+
+  it("opens substitution sheet when Cambiar is clicked", () => {
+    render(
+      <WorkoutLogger
+        exercises={mockExercises}
+        userId="user-1"
+        onLogSet={vi.fn()}
+        onCompleteWorkout={vi.fn()}
+        onSubstitutionApplied={vi.fn()}
+      />,
+    );
+
+    fireEvent.click(screen.getByText("Cambiar"));
+
+    expect(
+      screen.getByText("No hay alternativas disponibles"),
+    ).toBeInTheDocument();
   });
 });

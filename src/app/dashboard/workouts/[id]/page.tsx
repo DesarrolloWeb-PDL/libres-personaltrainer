@@ -84,8 +84,10 @@ export default function WorkoutSessionPage() {
       {/* Workout Logger */}
       <WorkoutLogger
         exercises={exercises}
+        userId={userId}
         onLogSet={handleLogSet}
         onCompleteWorkout={handleCompleteWorkout}
+        onSubstitutionApplied={() => workoutSession.refetch()}
       />
     </div>
   );
