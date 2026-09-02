@@ -13,5 +13,6 @@
   { "name": "Obliques", "nameEs": "Oblicuos", "category": "core" },
   { "name": "Traps", "nameEs": "Trapecios", "category": "back" },
   { "name": "Lats", "nameEs": "Dorsales", "category": "back" },
-  { "name": "Hip Flexors", "nameEs": "Flexores de cadera", "category": "core" }
+  { "name": "Hip Flexors", "nameEs": "Flexores de cadera", "category": "core" },
+  { "name": "Neck", "nameEs": "Cuello", "category": "neck" }
 ]

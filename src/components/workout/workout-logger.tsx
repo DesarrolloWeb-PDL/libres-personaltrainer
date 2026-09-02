@@ -2,6 +2,7 @@
 
 import { useState, useCallback } from "react";
 import { useWorkoutTimer } from "@/hooks/use-workout-timer";
+import { SubstitutionButton } from "./substitution-button";
 
 interface SetData {
   id: string;
@@ -30,12 +31,20 @@ interface ExerciseData {
 
 interface WorkoutLoggerProps {
   exercises: ExerciseData[];
+  userId?: string;
   onLogSet: (setId: string, data: { reps: number; weight: number; rpe: number }) => Promise<void>;
   onCompleteExercise?: (exerciseId: string) => void;
   onCompleteWorkout?: () => void;
+  onSubstitutionApplied?: (workoutExerciseId: string) => void;
 }
 
-export function WorkoutLogger({ exercises, onLogSet, onCompleteWorkout }: WorkoutLoggerProps) {
+export function WorkoutLogger({
+  exercises,
+  userId,
+  onLogSet,
+  onCompleteWorkout,
+  onSubstitutionApplied,
+}: WorkoutLoggerProps) {
   const [localSets, setLocalSets] = useState<
     Record<string, { reps: string; weight: string; rpe: string }>
   >({});
@@ -155,6 +164,15 @@ export function WorkoutLogger({ exercises, onLogSet, onCompleteWorkout }: Workou
               >
                 {completedCount}/{totalSets}
               </span>
+              {userId && (
+                <SubstitutionButton
+                  userId={userId}
+                  workoutExerciseId={exercise.id}
+                  exerciseId={exercise.exerciseId}
+                  exerciseName={exercise.exercise.name}
+                  onApplied={() => onSubstitutionApplied?.(exercise.id)}
+                />
+              )}
             </div>
 
             {/* Sets */}
