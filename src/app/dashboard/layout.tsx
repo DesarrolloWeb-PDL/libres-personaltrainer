@@ -1,6 +1,7 @@
 "use client";
 
 import { BottomNav } from "@/components/layout/bottom-nav";
+import { CoachWidget } from "@/components/coach/coach-widget";
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -17,6 +18,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       </main>
 
       <BottomNav />
+      <CoachWidget />
     </div>
   );
 }

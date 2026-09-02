@@ -336,7 +336,7 @@ describe("buildCoachSystemPrompt", () => {
             name: `Día ${i + 1}`,
           })),
         },
-        recentSessions: Array.from({ length: 5 }, (_, i) => baseSession),
+        recentSessions: Array.from({ length: 5 }, () => baseSession),
         currentWeekVolume: ALL_MUSCLE_GROUPS.map((muscle) => ({
           id: `vt-${muscle}`,
           userId: "user-1",
