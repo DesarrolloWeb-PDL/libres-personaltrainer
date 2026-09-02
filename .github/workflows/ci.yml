@@ -61,6 +61,7 @@ jobs:
     env:
       DATABASE_URL: postgres://test:test@localhost:5432/libres-personaltrainer
       AUTH_SECRET: test-secret-for-ci-only-not-used-in-production
+      AUTH_TRUST_HOST: "true"
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -101,6 +102,7 @@ jobs:
     env:
       DATABASE_URL: postgres://test:test@localhost:5432/libres-personaltrainer
       AUTH_SECRET: test-secret-for-ci-only-not-used-in-production
+      AUTH_TRUST_HOST: "true"
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -141,6 +143,7 @@ jobs:
     env:
       DATABASE_URL: postgres://test:test@localhost:5432/libres-personaltrainer
       AUTH_SECRET: test-secret-for-ci-only-not-used-in-production
+      AUTH_TRUST_HOST: "true"
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
