@@ -1,7 +1,6 @@
 "use client";
 
 import { BottomNav } from "@/components/layout/bottom-nav";
-import { ClientOnly } from "@/components/client-only";
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -14,7 +13,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       </a>
 
       <main id="main-content" className="mx-auto max-w-7xl px-4 pb-24 pt-6">
-        <ClientOnly>{children}</ClientOnly>
+        {children}
       </main>
 
       <BottomNav />
