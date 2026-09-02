@@ -172,8 +172,8 @@ jobs:
           set -a
           source "$HOME/.browser-driver-manager/.env"
           set +a
-          echo "CHROMEDRIVER_TEST_PATH=$HOME/$CHROMEDRIVER_TEST_PATH" >> "$GITHUB_ENV"
-          echo "GOOGLE_CHROME_SHIM=$HOME/$CHROME_TEST_PATH" >> "$GITHUB_ENV"
+          echo "CHROMEDRIVER_TEST_PATH=$CHROMEDRIVER_TEST_PATH" >> "$GITHUB_ENV"
+          echo "GOOGLE_CHROME_SHIM=$CHROME_TEST_PATH" >> "$GITHUB_ENV"
       - name: Run axe accessibility tests
         run: npx @axe-core/cli http://localhost:3000 --exit --chromedriver-path "$CHROMEDRIVER_TEST_PATH"
       - name: Run axe on onboarding
